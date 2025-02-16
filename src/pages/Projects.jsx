@@ -27,7 +27,7 @@ const projects = [
 • Stunning UI: Futuristic design with neon animations and holographic effects
 • Personal database: Stores and recalls user interactions and preferences
 • Real-time processing: Handles complex queries and system controls efficiently`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=Genesis+AI',
+    image: null,
     technologies: ['Python', 'TensorFlow', 'OpenCV', 'React', 'SQLite', 'WebGL'],
     githubLink: '#',
     liveLink: '#',
@@ -42,7 +42,7 @@ const projects = [
 • Extensive UI/UX customization with Hyprland window manager
 • Voice-triggered system controls and automation
 • Seamless integration with Genesis AI assistant`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=Iris+OS',
+    image: null,
     technologies: ['Arch Linux', 'Python', 'C++', 'Shell', 'AI', 'Hyprland'],
     githubLink: '#',
     liveLink: '#',
@@ -57,7 +57,7 @@ const projects = [
 • Multi-domain skill training (coding, medicine, etc.)
 • Token-based incentive system
 • Cross-chain compatibility`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=MindMesh',
+    image: null,
     technologies: ['Solana', 'Rust', 'React', 'TensorFlow', 'Web3'],
     githubLink: '#',
     liveLink: '#',
@@ -72,7 +72,7 @@ const projects = [
 • Smart contract-based subscription logic
 • Cross-chain interoperability
 • User-friendly dashboard`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=Cross+Chain+Manager',
+    image: null,
     technologies: ['Solana', 'Agoric', 'Router Protocol', 'React', 'Web3.js'],
     githubLink: '#',
     liveLink: '#',
@@ -87,7 +87,7 @@ const projects = [
 • Machine learning model integration
 • Real-time contract execution
 • Advanced security features`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=Agoric+AI',
+    image: null,
     technologies: ['Agoric', 'JavaScript', 'AI', 'Smart Contracts'],
     githubLink: '#',
     liveLink: '#',
@@ -187,19 +187,58 @@ function ProjectCard({ project }) {
         },
       }}
     >
-      <CardMedia
-        component="img"
-        height="200"
-        image={project.image}
-        alt={project.title}
-        sx={{
-          objectFit: 'cover',
-          transition: 'transform 0.3s ease-in-out',
-          '&:hover': {
-            transform: 'scale(1.05)',
-          },
-        }}
-      />
+      {project.image ? (
+        <CardMedia
+          component="img"
+          height="200"
+          image={project.image}
+          alt={project.title}
+          sx={{
+            objectFit: 'cover',
+            transition: 'transform 0.3s ease-in-out',
+            '&:hover': {
+              transform: 'scale(1.05)',
+            },
+          }}
+        />
+      ) : (
+        <Box
+          sx={{
+            height: 200,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: `linear-gradient(45deg, #0a192f, #112240)`,
+            position: 'relative',
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: `linear-gradient(45deg, rgba(100, 255, 218, 0.1), rgba(121, 40, 202, 0.1))`,
+              animation: 'gradient 5s ease infinite',
+            },
+          }}
+        >
+          <Typography
+            variant="h4"
+            sx={{
+              color: 'primary.main',
+              opacity: 0.5,
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              textAlign: 'center',
+              padding: 2,
+            }}
+          >
+            {project.title}
+          </Typography>
+        </Box>
+      )}
       <CardContent sx={{ flexGrow: 1 }}>
         <Typography gutterBottom variant="h5" component="h3" sx={{ color: 'primary.main' }}>
           {project.title}
@@ -303,7 +342,12 @@ function ProjectCard({ project }) {
 
 function Projects() {
   return (
-    <Container>
+    <Container
+      sx={{
+        pt: { xs: 8, sm: 9 },
+        zIndex: 1,
+      }}
+    >
       <Box sx={{ py: 8 }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

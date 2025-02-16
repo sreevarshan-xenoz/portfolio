@@ -4,6 +4,7 @@ import theme from './theme';
 import Routes from './Routes';
 import Navbar from './components/Navbar';
 import GlobalStyles from './styles/GlobalStyles';
+import { Box } from '@mui/material';
 
 function App() {
   return (
@@ -11,8 +12,12 @@ function App() {
       <CssBaseline />
       <GlobalStyles />
       <Router>
-        <Navbar />
-        <Routes />
+        <Box sx={{ position: 'relative', zIndex: 1 }}>
+          <Navbar />
+          <Box sx={{ position: 'relative', zIndex: 1 }}>
+            <Routes />
+          </Box>
+        </Box>
       </Router>
     </ThemeProvider>
   );

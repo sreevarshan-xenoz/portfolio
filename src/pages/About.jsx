@@ -1,276 +1,477 @@
-import { Container, Grid, Typography, Box, Paper, Collapse } from '@mui/material';
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { Container, Box, Typography, Grid, Paper } from '@mui/material';
+import { motion, AnimatePresence, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+
 import CodeIcon from '@mui/icons-material/Code';
-import SecurityIcon from '@mui/icons-material/Security';
-import SmartToyIcon from '@mui/icons-material/SmartToy';
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import Print3Icon from '@mui/icons-material/Print';
-import BrushIcon from '@mui/icons-material/Brush';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import SchoolIcon from '@mui/icons-material/School';
+import WorkIcon from '@mui/icons-material/Work';
+import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 
-const skillCategories = [
-  {
-    title: 'Programming & Development',
-    icon: <CodeIcon />,
-    skills: [
-      'Python (AI, automation, cybersecurity)',
-      'C/C++ (system programming)',
-      'JavaScript (web, dApp)',
-      'Solidity (smart contracts)',
-      'Rust (blockchain)',
-      'Web3 (Solana, Agoric, Router)',
-      'Shell Scripting (Zsh, Bash)'
-    ]
-  },
-  {
-    title: 'AI & Machine Learning',
-    icon: <SmartToyIcon />,
-    skills: [
-      'AI Model Development',
-      'Speech Recognition',
-      'Computer Vision (OpenCV)',
-      'Chatbot Development',
-      'Neural Networks',
-      'Natural Language Processing'
-    ]
-  },
-  {
-    title: 'Cybersecurity',
-    icon: <SecurityIcon />,
-    skills: [
-      'Network Security',
-      'Penetration Testing',
-      'Cryptography',
-      'Forensics',
-      'Reverse Engineering',
-      'IDS/IPS Bypassing'
-    ]
-  },
-  {
-    title: 'Blockchain & Web3',
-    icon: <AccountTreeIcon />,
-    skills: [
-      'dApp Development',
-      'Smart Contracts',
-      'Decentralized Systems',
-      'MindMesh Project',
-      'Solana Development',
-      'Web3 Integration'
-    ]
-  },
-  {
-    title: '3D Printing & Hardware',
-    icon: <Print3Icon />,
-    skills: [
-      'Ender 3',
-      'OctoPrint',
-      'PrusaSlicer',
-      'DIY Projects',
-      'Embedded Systems',
-      'IoT Integration'
-    ]
-  },
-  {
-    title: 'UI/UX & Design',
-    icon: <BrushIcon />,
-    skills: [
-      'Futuristic UI Design',
-      'Animation Effects',
-      'Frontend Development',
-      'Mobile App Design',
-      'Custom OS Interface',
-      'AI Core Visualization'
-    ]
-  }
-];
+const About = () => {
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHoveringTimeline, setIsHoveringTimeline] = useState(false);
+  const controls = useAnimation();
+  const [ref, inView] = useInView({
+    threshold: 0.2,
+    triggerOnce: true
+  });
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      delayChildren: 0.3,
-      staggerChildren: 0.1
+  useEffect(() => {
+    if (inView) {
+      controls.start('visible');
     }
-  }
-};
+  }, [controls, inView]);
 
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1
-  }
-};
+  const handleMouseMove = (e) => {
+    setMousePosition({
+      x: e.clientX,
+      y: e.clientY,
+    });
+  };
 
-function About() {
-  return (
-    <Container>
-      <Box sx={{ py: 8 }}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Typography
-            variant="h4"
-            component="h2"
-            sx={{ 
-              mb: 4, 
-              color: 'primary.main',
-              position: 'relative',
-              display: 'inline-block',
-              '&::after': {
-                content: '""',
-                position: 'absolute',
-                width: '100%',
-                height: '2px',
-                bottom: '-4px',
-                left: 0,
-                background: 'linear-gradient(90deg, #64ffda, transparent)',
-              }
+  // 3D Card Effect
+  const handleCardMouseMove = (e, cardId) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    const rotateX = (y - centerY) / 10;
+    const rotateY = (centerX - x) / 10;
+
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+  };
+
+  const handleCardMouseLeave = (e) => {
+    e.currentTarget.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+  };
+
+  const cards = [
+    {
+      id: 'skills',
+      title: 'Technical Skills',
+      icon: <CodeIcon sx={{ fontSize: 40 }} />,
+      content: [
+        'Web Development (React, Node.js)',
+        'Programming (Python, JavaScript)',
+        'Database Management',
+        'UI/UX Design',
+        'Version Control (Git)'
+      ],
+      color: '#64ffda'
+    },
+    {
+      id: 'education',
+      title: 'Academic Journey',
+      icon: <SchoolIcon sx={{ fontSize: 40 }} />,
+      content: [
+        'Computer Science Student',
+        'Data Structures & Algorithms',
+        'Web Development Courses',
+        'Online Certifications',
+        'Academic Projects'
+      ],
+      color: '#7928ca'
+    },
+    {
+      id: 'projects',
+      title: 'Project Portfolio',
+      icon: <WorkIcon sx={{ fontSize: 40 }} />,
+      content: [
+        'Personal Portfolio Website',
+        'E-commerce Platform',
+        'Social Media Dashboard',
+        'Weather App',
+        'Task Management System'
+      ],
+      color: '#ff64b4'
+    },
+    {
+      id: 'interests',
+      title: 'Learning Goals',
+      icon: <EmojiObjectsIcon sx={{ fontSize: 40 }} />,
+      content: [
+        'Advanced Frontend Development',
+        'Backend Architecture',
+        'Cloud Computing',
+        'Mobile App Development',
+        'Open Source Contribution'
+      ],
+      color: '#64ff8d'
+    }
+  ];
+
+  const timelineEvents = [
+    { year: '2023', event: 'Started Learning Web Development', icon: '🚀' },
+    { year: '2023', event: 'First React Project Completion', icon: '⚛️' },
+    { year: '2024', event: 'Portfolio Website Launch', icon: '🎨' },
+    { year: '2024', event: 'Hackathon Participation', icon: '💻' },
+    { year: '2024', event: 'Learning Advanced Development', icon: '🎯' },
+  ];
+
+  // Floating particles effect
+  const ParticleEffect = () => {
+    return (
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          overflow: 'hidden',
+          zIndex: 0,
+          pointerEvents: 'none',
+          willChange: 'transform',
+        }}
+      >
+        {[...Array(15)].map((_, i) => (
+          <motion.div
+            key={i}
+            style={{
+              position: 'absolute',
+              width: Math.random() * 4 + 2,
+              height: Math.random() * 4 + 2,
+              borderRadius: '50%',
+              backgroundColor: 'rgba(100, 255, 218, 0.2)',
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              willChange: 'transform',
             }}
-          >
-            About Me
-          </Typography>
-        </motion.div>
+            animate={{
+              y: [0, -20, 0],
+              x: [0, Math.random() * 20 - 10, 0],
+              opacity: [0, 0.5, 0],
+            }}
+            transition={{
+              duration: Math.random() * 2 + 2,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+          />
+        ))}
+      </Box>
+    );
+  };
 
-        <Grid container spacing={6}>
-          <Grid item xs={12} md={7}>
+  // Update the background gradient to use a simpler animation
+  const BackgroundGradient = ({ mousePosition }) => (
+    <Box
+      sx={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: `radial-gradient(
+          circle at ${mousePosition.x}px ${mousePosition.y}px,
+          rgba(100, 255, 218, 0.15) 0%,
+          rgba(10, 25, 47, 0.8) 50%
+        )`,
+        transition: 'background 0.3s ease',
+        zIndex: -1,
+        willChange: 'background',
+      }}
+    />
+  );
+
+  return (
+    <Container 
+      maxWidth={false}
+      onMouseMove={handleMouseMove}
+      sx={{ 
+        minHeight: '100vh',
+        pt: 15,
+        pb: 8,
+        position: 'relative',
+        overflow: 'hidden',
+        maxWidth: '1400px',
+      }}
+    >
+      <ParticleEffect />
+      <BackgroundGradient mousePosition={mousePosition} />
+
+      {/* Animated Background Gradient */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
+        <Typography 
+          variant="h2" 
+          component="h1"
+          sx={{ 
+            mb: 4,
+            background: 'linear-gradient(45deg, #64ffda 30%, #7928ca 90%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            textAlign: 'center',
+            fontWeight: 'bold',
+            position: 'relative',
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              bottom: '-10px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '150px',
+              height: '4px',
+              background: 'linear-gradient(90deg, #64ffda, #7928ca)',
+              borderRadius: '2px',
+            }
+          }}
+        >
+          About My Journey
+        </Typography>
+      </motion.div>
+
+      {/* Interactive Cards Grid */}
+      <Grid container spacing={4} sx={{ mb: 8 }} ref={ref}>
+        {cards.map((card, index) => (
+          <Grid item xs={12} sm={6} md={3} key={card.id}>
             <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
+              initial={{ opacity: 0, y: 20 }}
+              animate={controls}
+              variants={{
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { delay: index * 0.2 }
+                }
+              }}
             >
-              <motion.div variants={itemVariants}>
-                <Typography variant="body1" paragraph>
-                  Hello! I'm SREE VARSHAN V, a multifaceted developer with expertise spanning AI, cybersecurity, 
-                  blockchain, and system development. My journey began with a passion for creating innovative 
-                  solutions that bridge the gap between cutting-edge technology and practical applications.
-                </Typography>
-              </motion.div>
-
-              <motion.div variants={itemVariants}>
-                <Typography variant="body1" paragraph>
-                  From developing AI models and secure systems to crafting decentralized applications and 
-                  custom operating systems, I thrive on challenges that push the boundaries of what's possible. 
-                  My experience includes successful hackathon projects, custom OS development (Iris OS), and 
-                  innovative solutions in AI and blockchain.
-                </Typography>
-              </motion.div>
-
-              <motion.div variants={itemVariants}>
-                <Typography variant="body1" paragraph sx={{ color: 'primary.main', mb: 4 }}>
-                  Here's a comprehensive overview of my technical expertise:
-                </Typography>
-              </motion.div>
-
-              <Grid container spacing={3}>
-                {skillCategories.map((category, index) => (
-                  <Grid item xs={12} sm={6} key={category.title}>
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                    >
-                      <Paper
-                        elevation={0}
-                        sx={{
-                          p: 2,
-                          height: '100%',
-                          backgroundColor: 'background.paper',
-                          border: '1px solid',
-                          borderColor: 'primary.main',
-                          transition: 'all 0.3s ease',
-                          '&:hover': {
-                            boxShadow: '0 0 20px rgba(100, 255, 218, 0.2)',
-                            transform: 'translateY(-5px)',
-                          }
-                        }}
-                      >
-                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 1 }}>
-                          <Box sx={{ color: 'primary.main' }}>{category.icon}</Box>
-                          <Typography variant="h6" sx={{ color: 'primary.main' }}>
-                            {category.title}
-                          </Typography>
-                        </Box>
-                        <Box component="ul" sx={{ m: 0, pl: 2 }}>
-                          {category.skills.map((skill) => (
-                            <Typography
-                              component="li"
-                              key={skill}
-                              variant="body2"
-                              sx={{ mb: 1, color: 'text.secondary' }}
-                            >
-                              {skill}
-                            </Typography>
-                          ))}
-                        </Box>
-                      </Paper>
-                    </motion.div>
-                  </Grid>
-                ))}
-              </Grid>
-            </motion.div>
-          </Grid>
-
-          <Grid item xs={12} md={5}>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, rotate: -5 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              whileHover={{ scale: 1.02, rotate: 2 }}
-            >
-              <Box
-                component="img"
-                src="[Your profile picture URL]"
-                alt="Profile"
+              <Paper
+                component={motion.div}
+                onMouseMove={(e) => handleCardMouseMove(e, card.id)}
+                onMouseLeave={handleCardMouseLeave}
+                onClick={() => setSelectedCard(selectedCard === card.id ? null : card.id)}
                 sx={{
-                  width: '100%',
-                  maxWidth: 400,
-                  height: 'auto',
-                  borderRadius: 2,
-                  filter: 'grayscale(20%)',
-                  transition: 'all 0.3s ease-in-out',
-                  boxShadow: '0 10px 30px -15px rgba(0, 0, 0, 0.5)',
-                  border: '2px solid',
-                  borderColor: 'primary.main',
-                  '&:hover': {
-                    filter: 'grayscale(0%)',
-                    boxShadow: '0 20px 30px -15px rgba(0, 0, 0, 0.7)',
-                    borderColor: 'secondary.main',
+                  p: 3,
+                  height: '100%',
+                  cursor: 'pointer',
+                  background: 'rgba(10, 25, 47, 0.7)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid',
+                  borderColor: selectedCard === card.id ? card.color : 'transparent',
+                  transition: 'all 0.3s ease',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  transformStyle: 'preserve-3d',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '2px',
+                    background: `linear-gradient(90deg, ${card.color}, transparent)`,
+                    transform: selectedCard === card.id ? 'scaleX(1)' : 'scaleX(0)',
+                    transition: 'transform 0.3s ease',
                   },
+                  '&::after': {
+                    content: '""',
+                    position: 'absolute',
+                    inset: 0,
+                    background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, 
+                      rgba(255, 255, 255, 0.1) 0%, 
+                      transparent 50%)`,
+                    opacity: selectedCard === card.id ? 1 : 0,
+                    transition: 'opacity 0.3s ease',
+                  }
                 }}
-              />
-              <Box sx={{ mt: 4 }}>
-                <Paper
-                  elevation={0}
-                  sx={{
-                    p: 2,
-                    backgroundColor: 'background.paper',
-                    border: '1px solid',
-                    borderColor: 'primary.main',
-                    borderRadius: 2,
+              >
+                <Box 
+                  sx={{ 
+                    textAlign: 'center', 
+                    mb: 2,
+                    transform: 'translateZ(20px)',
                   }}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, gap: 1 }}>
-                    <EmojiEventsIcon sx={{ color: 'primary.main' }} />
-                    <Typography variant="h6" sx={{ color: 'primary.main' }}>
-                      Hackathon Experience
-                    </Typography>
-                  </Box>
-                  <Typography variant="body2" paragraph>
-                    Active participant in 24-hour hackathons focusing on AI, Web3, and cybersecurity projects.
-                    Experienced in team collaboration and competitive coding challenges.
-                  </Typography>
-                </Paper>
-              </Box>
+                  <motion.div
+                    animate={{ 
+                      rotate: selectedCard === card.id ? [0, 360] : 0,
+                      scale: selectedCard === card.id ? [1, 1.2, 1] : 1,
+                    }}
+                    transition={{ duration: 0.5 }}
+                    style={{ color: card.color }}
+                  >
+                    {card.icon}
+                  </motion.div>
+                </Box>
+                <Typography 
+                  variant="h6" 
+                  sx={{ 
+                    mb: 2, 
+                    textAlign: 'center',
+                    transform: 'translateZ(20px)',
+                    color: card.color,
+                  }}
+                >
+                  {card.title}
+                </Typography>
+                <AnimatePresence>
+                  {selectedCard === card.id && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                      style={{ transform: 'translateZ(20px)' }}
+                    >
+                      {card.content.map((item, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ x: -20, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{ delay: i * 0.1 }}
+                        >
+                          <Typography 
+                            variant="body2" 
+                            sx={{ 
+                              py: 0.5,
+                              color: 'text.secondary',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 1,
+                              '&::before': {
+                                content: '"▹"',
+                                color: card.color,
+                                marginRight: '8px',
+                              },
+                              '&:hover': {
+                                color: card.color,
+                                transform: 'translateX(10px)',
+                                transition: 'all 0.3s ease',
+                              }
+                            }}
+                          >
+                            {item}
+                          </Typography>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </Paper>
             </motion.div>
           </Grid>
-        </Grid>
+        ))}
+      </Grid>
+
+      {/* Interactive Timeline */}
+      <Box
+        onMouseEnter={() => setIsHoveringTimeline(true)}
+        onMouseLeave={() => setIsHoveringTimeline(false)}
+        sx={{
+          position: 'relative',
+          py: 8,
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: '50%',
+            width: '2px',
+            height: '100%',
+            background: 'linear-gradient(180deg, #64ffda, #7928ca)',
+            transform: 'translateX(-50%)',
+          }
+        }}
+      >
+        {timelineEvents.map((event, index) => (
+          <motion.div
+            key={event.year}
+            initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+            whileInView={{ 
+              opacity: 1, 
+              x: 0,
+              transition: { delay: index * 0.2 }
+            }}
+            viewport={{ once: true }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: index % 2 === 0 ? 'flex-end' : 'flex-start',
+                position: 'relative',
+                mb: 4,
+              }}
+            >
+              <Paper
+                component={motion.div}
+                whileHover={{ 
+                  scale: 1.05,
+                  boxShadow: '0 4px 20px rgba(100, 255, 218, 0.2)',
+                }}
+                sx={{
+                  p: 3,
+                  width: '40%',
+                  position: 'relative',
+                  background: 'rgba(10, 25, 47, 0.7)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(100, 255, 218, 0.1)',
+                  [index % 2 === 0 ? 'mr' : 'ml']: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 2,
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: '50%',
+                    [index % 2 === 0 ? 'right' : 'left']: '-15px',
+                    width: '30px',
+                    height: '2px',
+                    background: '#64ffda',
+                    transform: 'translateY(-50%)',
+                  }
+                }}
+              >
+                <Typography 
+                  variant="h2" 
+                  sx={{ 
+                    fontSize: '2rem',
+                    filter: 'drop-shadow(0 0 8px rgba(100, 255, 218, 0.3))',
+                  }}
+                >
+                  {event.icon}
+                </Typography>
+                <Box>
+                  <Typography variant="h6" color="primary.main" sx={{ mb: 1 }}>
+                    {event.year}
+                  </Typography>
+                  <Typography variant="body1">
+                    {event.event}
+                  </Typography>
+                </Box>
+              </Paper>
+              <motion.div
+                animate={{
+                  scale: isHoveringTimeline ? 1.2 : 1,
+                  backgroundColor: isHoveringTimeline ? '#64ffda' : '#0a192f',
+                  boxShadow: isHoveringTimeline ? '0 0 20px rgba(100, 255, 218, 0.5)' : 'none',
+                }}
+                transition={{ duration: 0.3 }}
+                style={{
+                  position: 'absolute',
+                  left: '50%',
+                  top: '50%',
+                  width: '12px',
+                  height: '12px',
+                  borderRadius: '50%',
+                  border: '2px solid #64ffda',
+                  transform: 'translate(-50%, -50%)',
+                }}
+              />
+            </Box>
+          </motion.div>
+        ))}
       </Box>
     </Container>
   );
-}
+};
 
 export default About; 

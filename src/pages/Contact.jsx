@@ -60,7 +60,12 @@ function Contact() {
   ];
 
   return (
-    <Container>
+    <Container
+      sx={{
+        pt: { xs: 8, sm: 9 },
+        zIndex: 1,
+      }}
+    >
       <Box sx={{ py: 8 }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

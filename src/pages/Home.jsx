@@ -624,6 +624,276 @@ function Home() {
     );
   };
 
+  const TerminalSection = () => {
+    const [commands, setCommands] = useState([
+      { text: '$ neofetch', output: 'OS: Arch Linux x86_64\nKernel: 6.1.0-arch1\nShell: zsh 5.9\nWM: Hyprland\nTheme: Nord\nIcons: Papirus' },
+      { text: '$ ls projects/', output: 'genesis-ai/  iris-os/  mindmesh/  blockchain-apps/' },
+      { text: '$ cat skills.txt', output: 'AI/ML | Cybersecurity | Blockchain | System Development' },
+      { text: '$ whoami', output: 'SREE VARSHAN V - Full Stack Developer & AI Enthusiast' }
+    ]);
+    const [inputValue, setInputValue] = useState('');
+    const [commandHistory, setCommandHistory] = useState([]);
+    const [historyIndex, setHistoryIndex] = useState(-1);
+
+    const availableCommands = {
+      help: 'Available commands: help, clear, projects, skills, about, contact',
+      clear: 'Clearing terminal...',
+      projects: 'My Projects:\n• Genesis AI - Advanced AI Assistant\n• Iris OS - Custom Linux Distribution\n• MindMesh - Decentralized Knowledge Network\n• Cross-Chain Manager - Web3 Subscription System',
+      skills: 'Technical Skills:\n• Languages: Python, JavaScript, C++, Rust\n• AI/ML: TensorFlow, PyTorch, OpenCV\n• Web3: Solana, Ethereum, Smart Contracts\n• DevOps: Docker, AWS, CI/CD',
+      about: 'About Me:\nInnovative developer passionate about AI, cybersecurity, and blockchain.\nCreating solutions that push technological boundaries.',
+      contact: 'Contact Info:\nEmail: your.email@example.com\nGitHub: github.com/yourusername\nLinkedIn: linkedin.com/in/yourusername'
+    };
+
+    const handleCommand = (cmd) => {
+      const trimmedCmd = cmd.trim().toLowerCase();
+      let output = '';
+
+      if (trimmedCmd === 'clear') {
+        setCommands([]);
+        return;
+      }
+
+      if (availableCommands[trimmedCmd]) {
+        output = availableCommands[trimmedCmd];
+      } else if (trimmedCmd) {
+        output = `Command not found: ${trimmedCmd}\nType 'help' for available commands.`;
+      }
+
+      const newCommand = { text: `$ ${cmd}`, output };
+      setCommands(prev => [...prev, newCommand]);
+      setCommandHistory(prev => [...prev, cmd]);
+    };
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Enter') {
+        handleCommand(inputValue);
+        setInputValue('');
+        setHistoryIndex(-1);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (historyIndex < commandHistory.length - 1) {
+          const newIndex = historyIndex + 1;
+          setHistoryIndex(newIndex);
+          setInputValue(commandHistory[commandHistory.length - 1 - newIndex] || '');
+        }
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (historyIndex > -1) {
+          const newIndex = historyIndex - 1;
+          setHistoryIndex(newIndex);
+          setInputValue(newIndex === -1 ? '' : commandHistory[commandHistory.length - 1 - newIndex] || '');
+        }
+      }
+    };
+
+    return (
+      <Box
+        component={motion.div}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        sx={{
+          mt: 8,
+          p: 3,
+          borderRadius: 2,
+          backgroundColor: 'rgba(17, 34, 64, 0.8)',
+          backdropFilter: 'blur(8px)',
+          border: '1px solid',
+          borderColor: 'primary.main',
+          fontFamily: 'monospace',
+          maxWidth: '800px',
+          mx: 'auto',
+          position: 'relative',
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '24px',
+            background: 'linear-gradient(90deg, #ff5f56, #ffbd2e, #27c93f)',
+            backgroundSize: '100px 100%',
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: '10px center',
+            borderBottom: '1px solid rgba(100, 255, 218, 0.1)',
+          }
+        }}
+      >
+        <Box sx={{ mt: 3, maxHeight: '400px', overflowY: 'auto' }}>
+          {commands.map((cmd, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <Typography
+                variant="body2"
+                sx={{
+                  color: '#64ffda',
+                  mb: 1,
+                  mt: index === 0 ? 0 : 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                  '&::before': {
+                    content: '"→"',
+                    color: '#7928ca',
+                  }
+                }}
+              >
+                {cmd.text}
+              </Typography>
+              {cmd.output && (
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: 'text.secondary',
+                    whiteSpace: 'pre-line',
+                    pl: 3,
+                    fontFamily: 'monospace',
+                  }}
+                >
+                  {cmd.output}
+                </Typography>
+              )}
+            </motion.div>
+          ))}
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            mt: 2,
+            borderTop: '1px solid rgba(100, 255, 218, 0.1)',
+            pt: 2,
+          }}
+        >
+          <Typography
+            variant="body2"
+            sx={{
+              color: '#7928ca',
+            }}
+          >
+            →
+          </Typography>
+          <Box
+            component="input"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            sx={{
+              background: 'transparent',
+              border: 'none',
+              color: '#64ffda',
+              fontFamily: 'monospace',
+              fontSize: '14px',
+              width: '100%',
+              outline: 'none',
+              '&::placeholder': {
+                color: 'rgba(100, 255, 218, 0.5)',
+              }
+            }}
+            placeholder="Type 'help' for available commands..."
+          />
+        </Box>
+      </Box>
+    );
+  };
+
+  const TechCube = () => {
+    const faces = [
+      { bg: '#64ffda', content: 'React' },
+      { bg: '#7928ca', content: 'Node.js' },
+      { bg: '#ff64b4', content: 'Python' },
+      { bg: '#64ff8d', content: 'AI/ML' },
+      { bg: '#ff9664', content: 'Blockchain' },
+      { bg: '#64b4ff', content: 'DevOps' },
+    ];
+
+    return (
+      <Box
+        sx={{
+          perspective: '1000px',
+          width: '200px',
+          height: '200px',
+          position: 'relative',
+          mx: 'auto',
+          mt: 8,
+          transform: 'scale(0.8)',
+          '&:hover .cube': {
+            animation: 'none',
+            transform: 'rotateX(-25deg) rotateY(45deg)',
+          },
+        }}
+      >
+        <Box
+          className="cube"
+          sx={{
+            width: '100%',
+            height: '100%',
+            position: 'relative',
+            transformStyle: 'preserve-3d',
+            animation: 'rotate 20s infinite linear',
+            '@keyframes rotate': {
+              '0%': {
+                transform: 'rotateX(0deg) rotateY(0deg)',
+              },
+              '100%': {
+                transform: 'rotateX(360deg) rotateY(360deg)',
+              },
+            },
+          }}
+        >
+          {faces.map((face, index) => (
+            <Box
+              key={index}
+              sx={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: `${face.bg}22`,
+                border: `2px solid ${face.bg}`,
+                backdropFilter: 'blur(8px)',
+                fontSize: '1.5rem',
+                fontWeight: 'bold',
+                color: face.bg,
+                textShadow: `0 0 10px ${face.bg}66`,
+                transform: [
+                  'rotateX(0deg) translateZ(100px)',
+                  'rotateX(180deg) translateZ(100px)',
+                  'rotateY(90deg) translateZ(100px)',
+                  'rotateY(-90deg) translateZ(100px)',
+                  'rotateX(90deg) translateZ(100px)',
+                  'rotateX(-90deg) translateZ(100px)',
+                ][index],
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  background: `${face.bg}44`,
+                  transform: `${[
+                    'rotateX(0deg) translateZ(120px)',
+                    'rotateX(180deg) translateZ(120px)',
+                    'rotateY(90deg) translateZ(120px)',
+                    'rotateY(-90deg) translateZ(120px)',
+                    'rotateX(90deg) translateZ(120px)',
+                    'rotateX(-90deg) translateZ(120px)',
+                  ][index]}`,
+                },
+              }}
+            >
+              {face.content}
+            </Box>
+          ))}
+        </Box>
+      </Box>
+    );
+  };
+
   return (
     <Container 
       maxWidth={false} 
@@ -633,8 +903,10 @@ function Home() {
         maxWidth: '1200px',
         mx: 'auto',
         px: { xs: 2, sm: 3, md: 4 },
+        pt: { xs: 8, sm: 9 },
         overflowX: 'hidden',
         position: 'relative',
+        zIndex: 1,
       }}
     >
       {/* Background Pattern Container */}
@@ -646,7 +918,7 @@ function Home() {
           right: 0,
           bottom: 0,
           overflow: 'hidden',
-          zIndex: 0,
+          zIndex: -1,
           opacity: 0.8,
           perspective: 1000,
           transformStyle: 'preserve-3d',
@@ -1579,7 +1851,13 @@ function Home() {
           </motion.div>
         </Box>
 
-        {/* Skill Showcase */}
+        {/* Terminal Section */}
+        <TerminalSection />
+
+        {/* Tech Stack Cube */}
+        <TechCube />
+
+        {/* Skills Showcase */}
         <SkillShowcase />
 
         {/* Contact Section */}
