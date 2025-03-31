@@ -158,11 +158,67 @@ const itemVariants = {
   },
 };
 
-function ProjectCard({ project }) {
+const ProjectCard = ({ project }) => {
   const [expanded, setExpanded] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const ParticleEffect = () => {
+    return (
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          overflow: 'hidden',
+          zIndex: 0,
+          pointerEvents: 'none',
+          opacity: isHovered ? 1 : 0,
+          transition: 'opacity 0.3s ease-in-out',
+        }}
+      >
+        {[...Array(15)].map((_, i) => {
+          const size = Math.random() * 4 + 2;
+          const colors = ['#64ffda', '#7928ca', '#ff64b4', '#64ff8d'];
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          return (
+            <motion.div
+              key={i}
+              style={{
+                position: 'absolute',
+                width: size,
+                height: size,
+                borderRadius: '50%',
+                backgroundColor: color,
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                willChange: 'transform',
+                filter: 'blur(1px)',
+              }}
+              animate={{
+                y: [0, -20, 0],
+                x: [0, Math.random() * 20 - 10, 0],
+                opacity: [0, 0.6, 0],
+                scale: [1, 1.2, 1],
+              }}
+              transition={{
+                duration: Math.random() * 2 + 1.5,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                times: [0, 0.5, 1],
+              }}
+            />
+          );
+        })}
+      </Box>
+    );
+  };
 
   return (
     <Card
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       sx={{
         height: '100%',
         display: 'flex',
@@ -170,13 +226,14 @@ function ProjectCard({ project }) {
         backgroundColor: 'background.paper',
         position: 'relative',
         overflow: 'hidden',
-        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
         transform: 'translateY(0)',
         '&:hover': {
           transform: 'translateY(-8px)',
           boxShadow: '0 20px 40px -15px rgba(100, 255, 218, 0.2)',
           '& .MuiCardContent-root': {
             background: 'linear-gradient(180deg, rgba(17, 34, 64, 0.8) 0%, rgba(10, 25, 47, 1) 100%)',
+            transition: 'background 0.8s ease-in-out',
           },
         },
         '&::before': {
@@ -189,13 +246,14 @@ function ProjectCard({ project }) {
           background: 'linear-gradient(90deg, #64ffda, #7928ca)',
           transform: 'scaleX(0)',
           transformOrigin: 'left',
-          transition: 'transform 0.3s ease',
+          transition: 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
         },
         '&:hover::before': {
           transform: 'scaleX(1)',
         },
       }}
     >
+      <ParticleEffect />
       {project.image ? (
         <CardMedia
           component="img"
