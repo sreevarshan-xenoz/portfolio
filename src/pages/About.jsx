@@ -54,64 +54,64 @@ const About = () => {
   const cards = [
     {
       id: 'skills',
-      title: 'Technical Skills',
+      title: 'Technical Expertise',
       icon: <CodeIcon sx={{ fontSize: 40 }} />,
       content: [
-        'Web Development (React, Node.js)',
-        'Programming (Python, JavaScript)',
-        'Database Management',
-        'UI/UX Design',
-        'Version Control (Git)'
+        'Ethical Hacking & Cybersecurity',
+        'AI Development & Machine Learning',
+        'Advanced Python Programming',
+        'Operating System Architecture',
+        'Real-time AI Interaction Design'
       ],
       color: '#64ffda'
     },
     {
       id: 'education',
-      title: 'Academic Journey',
+      title: 'Current Focus',
       icon: <SchoolIcon sx={{ fontSize: 40 }} />,
       content: [
-        'Computer Science Student',
-        'Data Structures & Algorithms',
-        'Web Development Courses',
-        'Online Certifications',
-        'Academic Projects'
+        'Advanced Python Development',
+        'Operating System Architecture',
+        'AI Interaction Systems',
+        'Network Security',
+        'Immersive Tech Design'
       ],
       color: '#7928ca'
     },
     {
       id: 'projects',
-      title: 'Project Portfolio',
+      title: 'Areas of Interest',
       icon: <WorkIcon sx={{ fontSize: 40 }} />,
       content: [
-        'Personal Portfolio Website',
-        'E-commerce Platform',
-        'Social Media Dashboard',
-        'Weather App',
-        'Task Management System'
+        'AI-Powered Systems',
+        'Cybersecurity Tools',
+        'Futuristic UI/UX Design',
+        'Open Source Projects',
+        'Hacker Setup Optimization'
       ],
       color: '#ff64b4'
     },
     {
       id: 'interests',
-      title: 'Learning Goals',
+      title: 'Professional Goals',
       icon: <EmojiObjectsIcon sx={{ fontSize: 40 }} />,
       content: [
-        'Advanced Frontend Development',
-        'Backend Architecture',
-        'Cloud Computing',
-        'Mobile App Development',
-        'Open Source Contribution'
+        'Innovating in AI Development',
+        'Advancing Cybersecurity',
+        'Creating Immersive Experiences',
+        'Contributing to Open Source',
+        'Building Secure Systems'
       ],
       color: '#64ff8d'
     }
   ];
 
   const timelineEvents = [
-    { year: '2023', event: 'Started Learning Web Development', icon: '🚀', color: '#64ffda' },
-    { year: '2023', event: 'First React Project Completion', icon: '⚛️', color: '#7928ca' },
-    { year: '2024', event: 'Portfolio Website Launch', icon: '🎨', color: '#ff64b4' },
-    { year: '2024', event: 'Hackathon Participation', icon: '💻', color: '#64ff8d' },
-    { year: '2024', event: 'Learning Advanced Development', icon: '🎯', color: '#64ffda' },
+    { year: '2023', event: 'Started Advanced Python Development', icon: '🐍', color: '#64ffda' },
+    { year: '2023', event: 'Exploring OS Architecture', icon: '💻', color: '#7928ca' },
+    { year: '2024', event: 'AI Interaction Design Projects', icon: '🤖', color: '#ff64b4' },
+    { year: '2024', event: 'Ethical Hacking Initiatives', icon: '🔒', color: '#64ff8d' },
+    { year: '2024', event: 'Open Source Contributions', icon: '🌟', color: '#64ffda' },
   ];
 
   const timelineVariants = {

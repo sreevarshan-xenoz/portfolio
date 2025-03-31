@@ -27,7 +27,7 @@ const projects = [
 • Stunning UI: Futuristic design with neon animations and holographic effects
 • Personal database: Stores and recalls user interactions and preferences
 • Real-time processing: Handles complex queries and system controls efficiently`,
-    image: null,
+    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=Genesis+AI',
     technologies: ['Python', 'TensorFlow', 'OpenCV', 'React', 'SQLite', 'WebGL'],
     githubLink: '#',
     liveLink: '#',
@@ -42,7 +42,7 @@ const projects = [
 • Extensive UI/UX customization with Hyprland window manager
 • Voice-triggered system controls and automation
 • Seamless integration with Genesis AI assistant`,
-    image: null,
+    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=Iris+OS',
     technologies: ['Arch Linux', 'Python', 'C++', 'Shell', 'AI', 'Hyprland'],
     githubLink: '#',
     liveLink: '#',
@@ -57,7 +57,7 @@ const projects = [
 • Multi-domain skill training (coding, medicine, etc.)
 • Token-based incentive system
 • Cross-chain compatibility`,
-    image: null,
+    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=MindMesh',
     technologies: ['Solana', 'Rust', 'React', 'TensorFlow', 'Web3'],
     githubLink: '#',
     liveLink: '#',
@@ -72,7 +72,7 @@ const projects = [
 • Smart contract-based subscription logic
 • Cross-chain interoperability
 • User-friendly dashboard`,
-    image: null,
+    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=Cross+Chain',
     technologies: ['Solana', 'Agoric', 'Router Protocol', 'React', 'Web3.js'],
     githubLink: '#',
     liveLink: '#',
@@ -87,7 +87,7 @@ const projects = [
 • Machine learning model integration
 • Real-time contract execution
 • Advanced security features`,
-    image: null,
+    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=Agoric+AI',
     technologies: ['Agoric', 'JavaScript', 'AI', 'Smart Contracts'],
     githubLink: '#',
     liveLink: '#',
@@ -198,15 +198,12 @@ const ProjectCard = ({ project }) => {
               }}
               animate={{
                 y: [0, -20, 0],
-                x: [0, Math.random() * 20 - 10, 0],
-                opacity: [0, 0.6, 0],
-                scale: [1, 1.2, 1],
+                opacity: [0.8, 0.4, 0.8],
               }}
               transition={{
-                duration: Math.random() * 2 + 1.5,
+                duration: 2 + Math.random() * 2,
                 repeat: Infinity,
                 ease: 'easeInOut',
-                times: [0, 0.5, 1],
               }}
             />
           );
@@ -217,194 +214,99 @@ const ProjectCard = ({ project }) => {
 
   return (
     <Card
+      component={motion.div}
+      variants={itemVariants}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       sx={{
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: 'background.paper',
         position: 'relative',
         overflow: 'hidden',
-        transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-        transform: 'translateY(0)',
+        backgroundColor: 'background.paper',
         '&:hover': {
           transform: 'translateY(-8px)',
-          boxShadow: '0 20px 40px -15px rgba(100, 255, 218, 0.2)',
-          '& .MuiCardContent-root': {
-            background: 'linear-gradient(180deg, rgba(17, 34, 64, 0.8) 0%, rgba(10, 25, 47, 1) 100%)',
-            transition: 'background 0.8s ease-in-out',
-          },
-        },
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '2px',
-          background: 'linear-gradient(90deg, #64ffda, #7928ca)',
-          transform: 'scaleX(0)',
-          transformOrigin: 'left',
-          transition: 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
-        },
-        '&:hover::before': {
-          transform: 'scaleX(1)',
+          transition: 'transform 0.3s ease-in-out',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
         },
       }}
     >
       <ParticleEffect />
-      {project.image ? (
-        <CardMedia
-          component="img"
-          height="200"
-          image={project.image}
-          alt={project.title}
-          sx={{
-            objectFit: 'cover',
-            transition: 'transform 0.3s ease-in-out',
-            '&:hover': {
-              transform: 'scale(1.05)',
-            },
-          }}
-        />
-      ) : (
-        <Box
-          sx={{
-            height: 200,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: `linear-gradient(45deg, #0a192f, #112240)`,
-            position: 'relative',
-            overflow: 'hidden',
-            '&::before': {
-              content: '""',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: `linear-gradient(45deg, rgba(100, 255, 218, 0.1), rgba(121, 40, 202, 0.1))`,
-              animation: 'gradient 5s ease infinite',
-            },
-          }}
-        >
-          <Typography
-            variant="h4"
-            sx={{
-              color: 'primary.main',
-              opacity: 0.5,
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-              textAlign: 'center',
-              padding: 2,
-            }}
-          >
-            {project.title}
-          </Typography>
-        </Box>
-      )}
-      <CardContent sx={{
-        flexGrow: 1,
-        transition: 'background 0.3s ease-in-out',
-        background: 'transparent',
-      }}>
-        <Typography gutterBottom variant="h5" component="h3" sx={{ color: 'primary.main' }}>
+      <CardMedia
+        component="img"
+        height="200"
+        image={project.image || 'https://placehold.co/600x400/1a1a1a/64ffda?text=Project'}
+        alt={project.title}
+        sx={{
+          objectFit: 'cover',
+          filter: 'brightness(0.8)',
+          transition: 'filter 0.3s ease-in-out',
+          '&:hover': {
+            filter: 'brightness(1)',
+          },
+        }}
+      />
+      <CardContent sx={{ position: 'relative', zIndex: 1 }}>
+        <Typography variant="h5" component="h2" gutterBottom>
           {project.title}
-          {project.featured && (
-            <Chip
-              label="Featured"
-              size="small"
-              sx={{
-                ml: 1,
-                backgroundColor: 'primary.main',
-                color: 'background.default',
-                fontSize: '0.7rem',
-              }}
-            />
-          )}
         </Typography>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          paragraph
-        >
+        <Typography variant="body2" color="text.secondary" paragraph>
           {project.description}
         </Typography>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            paragraph
-            sx={{ whiteSpace: 'pre-line' }}
-          >
-            {project.longDescription}
-          </Typography>
-        </Collapse>
-        <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
           {project.technologies.map((tech) => (
             <Chip
               key={tech}
               label={tech}
               size="small"
               sx={{
-                backgroundColor: 'background.default',
+                backgroundColor: 'rgba(100, 255, 218, 0.1)',
                 color: 'primary.main',
-                borderColor: 'primary.main',
-                border: '1px solid',
-                transition: 'all 0.2s ease-in-out',
                 '&:hover': {
-                  backgroundColor: 'primary.main',
-                  color: 'background.default',
-                  transform: 'translateY(-2px)',
-                  boxShadow: '0 4px 8px rgba(100, 255, 218, 0.2)',
+                  backgroundColor: 'rgba(100, 255, 218, 0.2)',
                 },
               }}
             />
           ))}
         </Box>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ whiteSpace: 'pre-line', mb: 2 }}
+          >
+            {project.longDescription}
+          </Typography>
+        </Collapse>
       </CardContent>
-      <CardActions sx={{ justifyContent: 'space-between' }}>
+      <CardActions sx={{ justifyContent: 'space-between', px: 2, pb: 2 }}>
         <Box>
-          <Button
-            size="small"
-            startIcon={<GitHubIcon />}
+          <IconButton
             href={project.githubLink}
             target="_blank"
             rel="noopener noreferrer"
             sx={{
-              color: 'text.primary',
-              '&:hover': {
-                color: 'primary.main',
-              },
+              color: 'text.secondary',
+              '&:hover': { color: 'primary.main' },
             }}
           >
-            Code
-          </Button>
-          <Button
-            size="small"
-            startIcon={<LaunchIcon />}
+            <GitHubIcon />
+          </IconButton>
+          <IconButton
             href={project.liveLink}
             target="_blank"
             rel="noopener noreferrer"
             sx={{
-              color: 'text.primary',
-              '&:hover': {
-                color: 'primary.main',
-              },
+              color: 'text.secondary',
+              '&:hover': { color: 'primary.main' },
             }}
           >
-            Demo
-          </Button>
+            <LaunchIcon />
+          </IconButton>
         </Box>
         <IconButton
           onClick={() => setExpanded(!expanded)}
           sx={{
             transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
             transition: 'transform 0.3s',
-            color: 'primary.main',
           }}
         >
           <ExpandMoreIcon />
@@ -412,61 +314,38 @@ const ProjectCard = ({ project }) => {
       </CardActions>
     </Card>
   );
-}
+};
 
 function Projects() {
   return (
-    <Container
-      sx={{
-        pt: { xs: 8, sm: 9 },
-        zIndex: 1,
-      }}
-    >
-      <Box sx={{ py: 8 }}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+    <Container sx={{ py: { xs: 8, sm: 12 } }}>
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+      >
+        <Typography
+          variant="h4"
+          component="h1"
+          sx={{
+            mb: 6,
+            textAlign: 'center',
+            background: 'linear-gradient(45deg, #64ffda 30%, #7928ca 90%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
         >
-          <Typography
-            variant="h4"
-            component="h2"
-            sx={{ 
-              mb: 4, 
-              color: 'primary.main',
-              position: 'relative',
-              display: 'inline-block',
-              '&::after': {
-                content: '""',
-                position: 'absolute',
-                width: '100%',
-                height: '2px',
-                bottom: '-4px',
-                left: 0,
-                background: 'linear-gradient(90deg, #64ffda, transparent)',
-              },
-            }}
-          >
-            Featured Projects
-          </Typography>
-        </motion.div>
+          Featured Projects
+        </Typography>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <Grid container spacing={4}>
-            {projects.map((project, index) => (
-              <Grid item xs={12} md={6} key={project.title}>
-                <motion.div variants={itemVariants}>
-                  <ProjectCard project={project} />
-                </motion.div>
-              </Grid>
-            ))}
-          </Grid>
-        </motion.div>
-      </Box>
+        <Grid container spacing={4}>
+          {projects.map((project, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <ProjectCard project={project} />
+            </Grid>
+          ))}
+        </Grid>
+      </motion.div>
     </Container>
   );
 }

@@ -8,6 +8,8 @@ import {
   Grid,
   IconButton,
   Paper,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -21,6 +23,22 @@ function Contact() {
     email: '',
     message: '',
   });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = 'Name is required';
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email is invalid';
+    }
+    if (!formData.message.trim()) newErrors.message = 'Message is required';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,24 +46,41 @@ function Contact() {
       ...prev,
       [name]: value,
     }));
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: '',
+      }));
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your form submission logic here
-    console.log(formData);
+    if (!validateForm()) return;
+    
+    setIsSubmitting(true);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      setShowSuccess(true);
+      setFormData({ name: '', email: '', message: '' });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const socialLinks = [
     {
       name: 'GitHub',
       icon: <GitHubIcon />,
-      url: 'https://github.com/yourusername',
+      url: 'https://github.com/sreevarshan-xenoz',
     },
     {
       name: 'LinkedIn',
       icon: <LinkedInIcon />,
-      url: 'https://linkedin.com/in/yourusername',
+      url: 'https://www.linkedin.com/in/sree-varshan-v-91ab382a2/',
     },
     {
       name: 'Twitter',
@@ -106,6 +141,9 @@ function Contact() {
                       onChange={handleChange}
                       required
                       variant="outlined"
+                      error={!!errors.name}
+                      helperText={errors.name}
+                      disabled={isSubmitting}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -118,6 +156,9 @@ function Contact() {
                       onChange={handleChange}
                       required
                       variant="outlined"
+                      error={!!errors.email}
+                      helperText={errors.email}
+                      disabled={isSubmitting}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -131,6 +172,9 @@ function Contact() {
                       onChange={handleChange}
                       required
                       variant="outlined"
+                      error={!!errors.message}
+                      helperText={errors.message}
+                      disabled={isSubmitting}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -139,12 +183,18 @@ function Contact() {
                       variant="contained"
                       color="primary"
                       size="large"
+                      disabled={isSubmitting}
                       sx={{
                         mt: 2,
                         textTransform: 'none',
+                        position: 'relative',
+                        '&:hover': {
+                          transform: 'translateY(-2px)',
+                          transition: 'transform 0.2s',
+                        },
                       }}
                     >
-                      Send Message
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
                     </Button>
                   </Grid>
                 </Grid>
@@ -178,8 +228,14 @@ function Contact() {
                     rel="noopener noreferrer"
                     sx={{
                       color: 'primary.main',
+                      transition: 'all 0.3s ease',
                       '&:hover': {
-                        transform: 'translateY(-2px)',
+                        transform: 'translateY(-4px) scale(1.15)',
+                        color: link.name === 'GitHub' ? '#333' :
+                               link.name === 'LinkedIn' ? '#0077b5' :
+                               link.name === 'Twitter' ? '#1da1f2' :
+                               'primary.main',
+                        boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
                       },
                     }}
                   >
@@ -187,6 +243,20 @@ function Contact() {
                   </IconButton>
                 ))}
               </Box>
+              <Snackbar
+                open={showSuccess}
+                autoHideDuration={6000}
+                onClose={() => setShowSuccess(false)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              >
+                <Alert
+                  onClose={() => setShowSuccess(false)}
+                  severity="success"
+                  sx={{ width: '100%' }}
+                >
+                  Message sent successfully!
+                </Alert>
+              </Snackbar>
             </motion.div>
           </Grid>
         </Grid>
@@ -195,4 +265,4 @@ function Contact() {
   );
 }
 
-export default Contact; 
+export default Contact;
