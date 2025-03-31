@@ -107,14 +107,26 @@ const About = () => {
   ];
 
   const timelineEvents = [
-    { year: '2023', event: 'Started Learning Web Development', icon: '🚀' },
-    { year: '2023', event: 'First React Project Completion', icon: '⚛️' },
-    { year: '2024', event: 'Portfolio Website Launch', icon: '🎨' },
-    { year: '2024', event: 'Hackathon Participation', icon: '💻' },
-    { year: '2024', event: 'Learning Advanced Development', icon: '🎯' },
+    { year: '2023', event: 'Started Learning Web Development', icon: '🚀', color: '#64ffda' },
+    { year: '2023', event: 'First React Project Completion', icon: '⚛️', color: '#7928ca' },
+    { year: '2024', event: 'Portfolio Website Launch', icon: '🎨', color: '#ff64b4' },
+    { year: '2024', event: 'Hackathon Participation', icon: '💻', color: '#64ff8d' },
+    { year: '2024', event: 'Learning Advanced Development', icon: '🎯', color: '#64ffda' },
   ];
 
-  // Floating particles effect
+  const timelineVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1 },
+    hover: { scale: 1.05, transition: { duration: 0.3 } }
+  };
+
+  const timelineIconVariants = {
+    hidden: { scale: 0 },
+    visible: { scale: 1, transition: { type: "spring", stiffness: 500, damping: 30 } },
+    hover: { scale: 1.2, rotate: 360, transition: { duration: 0.5 } }
+  };
+
+  // Enhanced floating particles effect
   const ParticleEffect = () => {
     return (
       <Box
@@ -130,31 +142,43 @@ const About = () => {
           willChange: 'transform',
         }}
       >
-        {[...Array(15)].map((_, i) => (
-          <motion.div
-            key={i}
-            style={{
-              position: 'absolute',
-              width: Math.random() * 4 + 2,
-              height: Math.random() * 4 + 2,
-              borderRadius: '50%',
-              backgroundColor: 'rgba(100, 255, 218, 0.2)',
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              willChange: 'transform',
-            }}
-            animate={{
-              y: [0, -20, 0],
-              x: [0, Math.random() * 20 - 10, 0],
-              opacity: [0, 0.5, 0],
-            }}
-            transition={{
-              duration: Math.random() * 2 + 2,
-              repeat: Infinity,
-              ease: 'easeInOut',
-            }}
-          />
-        ))}
+        {[...Array(20)].map((_, i) => {
+          const size = Math.random() * 6 + 2;
+          const colors = ['#64ffda', '#7928ca', '#ff64b4', '#64ff8d'];
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          return (
+            <motion.div
+              key={i}
+              style={{
+                position: 'absolute',
+                width: size,
+                height: size,
+                borderRadius: '50%',
+                backgroundColor: color,
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                willChange: 'transform',
+                filter: 'blur(1px)',
+              }}
+              animate={{
+                y: [0, -30, 0],
+                x: [0, Math.random() * 30 - 15, 0],
+                opacity: [0, 0.6, 0],
+                scale: [1, 1.5, 1],
+              }}
+              transition={{
+                duration: Math.random() * 3 + 2,
+                repeat: Infinity,
+                ease: 'easeInOut',
+                times: [0, 0.5, 1],
+              }}
+              whileHover={{
+                scale: 2,
+                opacity: 0.8,
+              }}
+            />
+          );
+        })}
       </Box>
     );
   };
@@ -405,7 +429,7 @@ const About = () => {
                 component={motion.div}
                 whileHover={{ 
                   scale: 1.05,
-                  boxShadow: '0 4px 20px rgba(100, 255, 218, 0.2)',
+                  boxShadow: `0 4px 20px ${event.color}40`,
                 }}
                 sx={{
                   p: 3,
@@ -413,11 +437,16 @@ const About = () => {
                   position: 'relative',
                   background: 'rgba(10, 25, 47, 0.7)',
                   backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(100, 255, 218, 0.1)',
+                  border: `1px solid ${event.color}40`,
                   [index % 2 === 0 ? 'mr' : 'ml']: '50%',
                   display: 'flex',
                   alignItems: 'center',
                   gap: 2,
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    background: 'rgba(10, 25, 47, 0.9)',
+                    borderColor: event.color,
+                  },
                   '&::before': {
                     content: '""',
                     position: 'absolute',
@@ -425,20 +454,26 @@ const About = () => {
                     [index % 2 === 0 ? 'right' : 'left']: '-15px',
                     width: '30px',
                     height: '2px',
-                    background: '#64ffda',
+                    background: event.color,
                     transform: 'translateY(-50%)',
                   }
                 }}
               >
-                <Typography 
-                  variant="h2" 
-                  sx={{ 
-                    fontSize: '2rem',
-                    filter: 'drop-shadow(0 0 8px rgba(100, 255, 218, 0.3))',
-                  }}
+                <motion.div
+                  whileHover={{ scale: 1.2, rotate: 360 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 10 }}
                 >
-                  {event.icon}
-                </Typography>
+                  <Typography 
+                    variant="h2" 
+                    sx={{ 
+                      fontSize: '2rem',
+                      filter: `drop-shadow(0 0 8px ${event.color}80)`,
+                      color: event.color,
+                    }}
+                  >
+                    {event.icon}
+                  </Typography>
+                </motion.div>
                 <Box>
                   <Typography variant="h6" color="primary.main" sx={{ mb: 1 }}>
                     {event.year}
@@ -452,7 +487,7 @@ const About = () => {
                 animate={{
                   scale: isHoveringTimeline ? 1.2 : 1,
                   backgroundColor: isHoveringTimeline ? '#64ffda' : '#0a192f',
-                  boxShadow: isHoveringTimeline ? '0 0 20px rgba(100, 255, 218, 0.5)' : 'none',
+                  boxShadow: isHoveringTimeline ? `0 0 20px ${event.color}80` : 'none',
                 }}
                 transition={{ duration: 0.3 }}
                 style={{
@@ -462,7 +497,7 @@ const About = () => {
                   width: '12px',
                   height: '12px',
                   borderRadius: '50%',
-                  border: '2px solid #64ffda',
+                  border: `2px solid ${event.color}`,
                   transform: 'translate(-50%, -50%)',
                 }}
               />
@@ -474,4 +509,4 @@ const About = () => {
   );
 };
 
-export default About; 
+export default About;
