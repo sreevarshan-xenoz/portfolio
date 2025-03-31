@@ -1,12 +1,30 @@
 import { Box, Container, Typography, Button, useTheme, Grid, IconButton, Tooltip, Chip } from '@mui/material';
-import { motion, useAnimation, AnimatePresence } from 'framer-motion';
+import { motion, useAnimation, AnimatePresence, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5, ease: "easeOut" }
+  transition: { duration: 0.8, ease: "easeOut" }
+};
+
+const fadeInLeft = {
+  initial: { opacity: 0, x: -30 },
+  animate: { opacity: 1, x: 0 },
+  transition: { duration: 0.8, ease: "easeOut" }
+};
+
+const fadeInRight = {
+  initial: { opacity: 0, x: 30 },
+  animate: { opacity: 1, x: 0 },
+  transition: { duration: 0.8, ease: "easeOut" }
+};
+
+const scaleIn = {
+  initial: { opacity: 0, scale: 0.8 },
+  animate: { opacity: 1, scale: 1 },
+  transition: { duration: 0.8, ease: "easeOut" }
 };
 
 const staggerContainer = {
@@ -61,6 +79,18 @@ function Home() {
   const controls = useAnimation();
   const canvasRef = useRef(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  // Refs for scroll animations
+  const heroRef = useRef(null);
+  const aboutRef = useRef(null);
+  const projectsRef = useRef(null);
+  const skillsRef = useRef(null);
+
+  // InView states
+  const heroInView = useInView(heroRef, { once: true, margin: "-100px" });
+  const aboutInView = useInView(aboutRef, { once: true, margin: "-100px" });
+  const projectsInView = useInView(projectsRef, { once: true, margin: "-100px" });
+  const skillsInView = useInView(skillsRef, { once: true, margin: "-100px" });
 
   useEffect(() => {
     controls.start({
@@ -515,9 +545,15 @@ function Home() {
       <Box
         component={motion.section}
         initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
+        whileInView={{ 
+          opacity: 1, 
+          y: 0,
+          transition: {
+            duration: 0.8,
+            staggerChildren: 0.2
+          }
+        }}
+        viewport={{ once: true, margin: "-100px" }}
         sx={{
           minHeight: '70vh',
           py: 8,
@@ -553,10 +589,23 @@ function Home() {
           {skills.map((skill, index) => (
             <Grid item xs={12} sm={6} md={3} key={skill.name}>
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
+                initial={{ opacity: 0, scale: 0.8, y: 20 }}
+                whileInView={{ 
+                  opacity: 1, 
+                  scale: 1,
+                  y: 0,
+                  transition: {
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 10,
+                    delay: index * 0.15
+                  }
+                }}
+                viewport={{ once: true, margin: "-50px" }}
+                whileHover={{ 
+                  scale: 1.05,
+                  transition: { type: "spring", stiffness: 300 }
+                }}
               >
                 <Box
                   onMouseEnter={() => setActiveSkill(skill.name)}
@@ -1983,4 +2032,4 @@ function Home() {
   );
 }
 
-export default Home; 
+export default Home;

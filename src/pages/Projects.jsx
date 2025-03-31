@@ -170,6 +170,15 @@ function ProjectCard({ project }) {
         backgroundColor: 'background.paper',
         position: 'relative',
         overflow: 'hidden',
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        transform: 'translateY(0)',
+        '&:hover': {
+          transform: 'translateY(-8px)',
+          boxShadow: '0 20px 40px -15px rgba(100, 255, 218, 0.2)',
+          '& .MuiCardContent-root': {
+            background: 'linear-gradient(180deg, rgba(17, 34, 64, 0.8) 0%, rgba(10, 25, 47, 1) 100%)',
+          },
+        },
         '&::before': {
           content: '""',
           position: 'absolute',
@@ -239,7 +248,11 @@ function ProjectCard({ project }) {
           </Typography>
         </Box>
       )}
-      <CardContent sx={{ flexGrow: 1 }}>
+      <CardContent sx={{
+        flexGrow: 1,
+        transition: 'background 0.3s ease-in-out',
+        background: 'transparent',
+      }}>
         <Typography gutterBottom variant="h5" component="h3" sx={{ color: 'primary.main' }}>
           {project.title}
           {project.featured && (
@@ -283,9 +296,12 @@ function ProjectCard({ project }) {
                 color: 'primary.main',
                 borderColor: 'primary.main',
                 border: '1px solid',
+                transition: 'all 0.2s ease-in-out',
                 '&:hover': {
                   backgroundColor: 'primary.main',
                   color: 'background.default',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 4px 8px rgba(100, 255, 218, 0.2)',
                 },
               }}
             />
@@ -397,4 +413,4 @@ function Projects() {
   );
 }
 
-export default Projects; 
+export default Projects;
