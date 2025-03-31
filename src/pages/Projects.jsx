@@ -161,6 +161,27 @@ const itemVariants = {
 const ProjectCard = ({ project }) => {
   const [expanded, setExpanded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    const tiltX = (y - centerY) / 10;
+    const tiltY = (centerX - x) / 10;
+
+    setTilt({ x: tiltX, y: tiltY });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+  };
 
   const ParticleEffect = () => {
     return (
@@ -174,8 +195,9 @@ const ProjectCard = ({ project }) => {
           overflow: 'hidden',
           zIndex: 0,
           pointerEvents: 'none',
-          opacity: isHovered ? 1 : 0,
-          transition: 'opacity 0.3s ease-in-out',
+          opacity: isHovered ? 0.8 : 0,
+          transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+          transform: isHovered ? 'scale(1.1)' : 'scale(0.95)',
         }}
       >
         {[...Array(15)].map((_, i) => {
@@ -217,16 +239,29 @@ const ProjectCard = ({ project }) => {
       component={motion.div}
       variants={itemVariants}
       onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseLeave={(e) => {
+        setIsHovered(false);
+        handleMouseLeave();
+      }}
+      onMouseMove={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        setMousePosition({
+          x: ((e.clientX - rect.left) / rect.width) * 100,
+          y: ((e.clientY - rect.top) / rect.height) * 100,
+        });
+        handleMouseMove(e);
+      }}
       sx={{
         position: 'relative',
         overflow: 'hidden',
         backgroundColor: 'background.paper',
-        '&:hover': {
-          transform: 'translateY(-8px)',
-          transition: 'transform 0.3s ease-in-out',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
-        },
+        background: isHovered
+          ? `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(100, 255, 218, 0.15), transparent 50%)`
+          : 'background.paper',
+        transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${isHovered ? 1.02 : 1})`,
+        transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+        boxShadow: isHovered ? '0 20px 30px -10px rgba(0,0,0,0.3)' : 'none',
+        transformStyle: 'preserve-3d',
       }}
     >
       <ParticleEffect />
