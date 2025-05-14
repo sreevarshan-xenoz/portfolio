@@ -444,8 +444,8 @@ const ProjectCard = ({ project }) => {
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
     
-    const tiltX = (y - centerY) / 15; // Reduced intensity
-    const tiltY = (centerX - x) / 15; // Reduced intensity
+    const tiltX = (y - centerY) / 15;
+    const tiltY = (centerX - x) / 15;
 
     setTilt({ x: tiltX, y: tiltY });
   };
@@ -453,36 +453,6 @@ const ProjectCard = ({ project }) => {
   const handleMouseLeave = () => {
     setTilt({ x: 0, y: 0 });
   };
-
-  // Parallax effect for background elements
-  useEffect(() => {
-    if (!cardRef.current || !isHovered) return;
-    
-    const handleParallax = (e) => {
-      const card = cardRef.current;
-      if (!card) return;
-      
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      const moveX = (x - rect.width / 2) / 25;
-      const moveY = (y - rect.height / 2) / 25;
-      
-      const techElements = card.querySelectorAll('.tech-chip');
-      techElements.forEach((el, i) => {
-        const factor = 1 + (i * 0.1);
-        el.style.transform = `translate(${moveX * factor}px, ${moveY * factor}px)`;
-      });
-    };
-    
-    cardRef.current.addEventListener('mousemove', handleParallax);
-    return () => {
-      if (cardRef.current) {
-        cardRef.current.removeEventListener('mousemove', handleParallax);
-      }
-    };
-  }, [isHovered]);
 
   const ParticleEffect = () => {
     return (
@@ -498,7 +468,6 @@ const ProjectCard = ({ project }) => {
           pointerEvents: 'none',
           opacity: isHovered ? 0.8 : 0,
           transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-          transform: isHovered ? 'scale(1.1)' : 'scale(0.95)',
         }}
       >
         {[...Array(15)].map((_, i) => {
@@ -539,8 +508,6 @@ const ProjectCard = ({ project }) => {
     <Card
       ref={cardRef}
       component={motion.div}
-      layout
-      layoutId={`project-${project.title}`}
       variants={itemVariants}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={(e) => {
@@ -578,8 +545,13 @@ const ProjectCard = ({ project }) => {
     >
       <ParticleEffect />
       
-      {/* Project image with badges */}
-      <Box sx={{ position: 'relative', minHeight: '200px', overflow: 'hidden' }}>
+      {/* Top Image Section */}
+      <Box 
+        sx={{ 
+          position: 'relative',
+          height: '200px',
+        }}
+      >
         {/* Status badge */}
         <Chip
           label={project.status}
@@ -589,7 +561,7 @@ const ProjectCard = ({ project }) => {
             top: 16,
             right: 16,
             zIndex: 10,
-            backgroundColor: alpha(project.color, 0.2),
+            backgroundColor: alpha(project.color, 0.3),
             color: project.color,
             border: `1px solid ${project.color}`,
             backdropFilter: 'blur(5px)',
@@ -662,9 +634,19 @@ const ProjectCard = ({ project }) => {
             filter: 'brightness(0.8) grayscale(30%)',
             transition: 'all 0.5s ease-in-out',
             transform: isHovered ? 'scale(1.05)' : 'scale(1)',
-            '&:hover': {
-              filter: 'brightness(1) grayscale(0%)',
-            },
+          }}
+        />
+        
+        {/* Overlay Gradient */}
+        <Box 
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: `linear-gradient(to bottom, transparent 50%, ${alpha(theme.palette.background.paper, 0.8)} 100%)`,
+            pointerEvents: 'none',
           }}
         />
         
@@ -687,39 +669,24 @@ const ProjectCard = ({ project }) => {
         </Box>
       </Box>
       
-      {/* Card Content - Two States */}
+      {/* Content Section (Grows to fill space) */}
       <Box sx={{ 
-        position: 'relative', 
-        flexGrow: 1, 
-        display: 'flex', 
+        flexGrow: 1,
+        display: 'flex',
         flexDirection: 'column',
+        position: 'relative',
         overflow: 'hidden',
-        height: '230px', // Fixed height to ensure consistent card sizes
+        backgroundColor: theme.palette.background.paper,
       }}>
-        {/* Normal state content */}
-        <Box
-          sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            p: 3,
-            transform: isHovered ? 'translateY(-100%)' : 'translateY(0)',
-            opacity: isHovered ? 0 : 1,
-            transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-            zIndex: 1,
-            display: 'flex',
-            flexDirection: 'column',
-          }}
-        >
+        {/* Static Content (Always visible) */}
+        <Box sx={{ p: 3, opacity: isHovered ? 0 : 1, transition: 'opacity 0.3s ease' }}>
           <Typography 
             variant="h5" 
             component="h2" 
-            gutterBottom
             sx={{
               fontWeight: 'bold',
               color: project.color,
+              mb: 1,
             }}
           >
             {project.title}
@@ -728,13 +695,11 @@ const ProjectCard = ({ project }) => {
           <Typography 
             variant="body2" 
             color="text.secondary" 
-            paragraph
             sx={{
               display: '-webkit-box',
               WebkitLineClamp: 3,
               WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
-              textOverflow: 'ellipsis',
               mb: 2,
             }}
           >
@@ -744,8 +709,7 @@ const ProjectCard = ({ project }) => {
           <Box sx={{ 
             display: 'flex', 
             flexWrap: 'wrap', 
-            gap: 1, 
-            mb: 2,
+            gap: 1,
             mt: 'auto',
           }}>
             {project.technologies.slice(0, 3).map((tech, idx) => (
@@ -784,36 +748,32 @@ const ProjectCard = ({ project }) => {
           </Box>
         </Box>
         
-        {/* Hover state content */}
+        {/* Hover Content (Appears on hover, fully covers static content) */}
         <Box
           sx={{
             position: 'absolute',
             top: 0,
             left: 0,
-            right: 0,
-            bottom: 0,
-            p: 3,
-            backgroundColor: alpha(theme.palette.background.paper, 0.95),
-            backdropFilter: 'blur(8px)',
+            width: '100%',
+            height: '100%',
+            backgroundColor: theme.palette.background.paper,
             transform: isHovered ? 'translateY(0)' : 'translateY(100%)',
             opacity: isHovered ? 1 : 0,
-            transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-            zIndex: 2,
+            transition: 'transform 0.4s ease, opacity 0.3s ease',
             display: 'flex',
             flexDirection: 'column',
+            p: 3,
           }}
         >
           <Typography 
             variant="h5"
             component="h2"
-            gutterBottom
             sx={{
               fontWeight: 'bold',
               background: `linear-gradient(45deg, ${project.color}, white)`,
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              display: 'inline-block',
-              mb: 1,
+              mb: 2,
             }}
           >
             {project.title}
@@ -821,9 +781,10 @@ const ProjectCard = ({ project }) => {
           
           <Box
             sx={{
-              flex: 1,
+              flexGrow: 1,
               overflowY: 'auto',
-              pr: 1,
+              mb: 2,
+              px: 0.5,
               '&::-webkit-scrollbar': {
                 width: '4px',
               },
@@ -852,7 +813,6 @@ const ProjectCard = ({ project }) => {
                 display: 'flex', 
                 flexWrap: 'wrap', 
                 gap: 0.5, 
-                mb: 1.5,
               }}
             >
               {project.technologies.map((tech) => (
@@ -866,90 +826,77 @@ const ProjectCard = ({ project }) => {
                     border: `1px solid ${alpha(project.color, 0.3)}`,
                     fontSize: '0.65rem',
                     height: '20px',
+                    mb: 0.5,
                   }}
                 />
               ))}
             </Box>
           </Box>
-        </Box>
-      </Box>
-      
-      {/* Actions - always visible at bottom */}
-      <CardActions sx={{ 
-        justifyContent: 'space-between', 
-        px: 2, 
-        py: 1,
-        borderTop: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
-        backgroundColor: alpha(theme.palette.background.paper, 0.7),
-        position: 'relative',
-        zIndex: 10,
-      }}>
-        <Box sx={{ display: 'flex', gap: 0.5 }}>
-          <Tooltip title="GitHub Repository">
-            <IconButton
+          
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              mt: 'auto',
+              pt: 1,
+              borderTop: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+            }}
+          >
+            <Button
+              variant="outlined"
               size="small"
               href={project.githubLink}
               target="_blank"
               rel="noopener noreferrer"
-              component={motion.button}
-              whileHover={{ y: -3 }}
-              whileTap={{ scale: 0.9 }}
+              startIcon={<GitHubIcon fontSize="small" />}
               sx={{
-                color: 'text.secondary',
-                '&:hover': { 
-                  color: project.color,
+                borderColor: project.color,
+                color: project.color,
+                '&:hover': {
+                  borderColor: project.color,
                   backgroundColor: alpha(project.color, 0.1),
-                },
+                }
               }}
             >
-              <GitHubIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          
-          <Tooltip title="Live Demo">
-            <IconButton
+              View Code
+            </Button>
+            
+            <Button
+              variant="contained"
               size="small"
               href={project.liveLink}
               target="_blank"
               rel="noopener noreferrer"
-              component={motion.button}
-              whileHover={{ y: -3 }}
-              whileTap={{ scale: 0.9 }}
               sx={{
-                color: 'text.secondary',
-                '&:hover': { 
-                  color: project.color,
-                  backgroundColor: alpha(project.color, 0.1),
-                },
+                backgroundColor: project.color,
+                color: theme.palette.getContrastText(project.color),
+                '&:hover': {
+                  backgroundColor: alpha(project.color, 0.9),
+                }
               }}
             >
-              <LaunchIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          
-          <Tooltip title="View Code">
-            <IconButton
-              size="small"
-              component={motion.button}
-              whileHover={{ y: -3 }}
-              whileTap={{ scale: 0.9 }}
-              sx={{
-                color: 'text.secondary',
-                '&:hover': { 
-                  color: project.color,
-                  backgroundColor: alpha(project.color, 0.1),
-                },
-              }}
-            >
-              <CodeIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
+              Live Demo
+            </Button>
+          </Box>
         </Box>
-        
+      </Box>
+      
+      {/* Footer - Category and year */}
+      <Box sx={{ 
+        py: 1.5,
+        px: 2,
+        borderTop: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: theme.palette.background.paper,
+        position: 'relative',
+        zIndex: 5,
+      }}>
         <Typography
           variant="caption"
           sx={{
-            px: 1,
+            px: 1.5,
             py: 0.5,
             borderRadius: '4px',
             backgroundColor: alpha(project.color, 0.1),
@@ -959,7 +906,29 @@ const ProjectCard = ({ project }) => {
         >
           {project.category}
         </Typography>
-      </CardActions>
+        
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <IconButton
+            size="small"
+            component={motion.button}
+            whileHover={{ y: -2 }}
+            whileTap={{ scale: 0.9 }}
+            sx={{
+              color: theme.palette.text.secondary,
+              '&:hover': { color: project.color },
+            }}
+            onClick={() => setExpanded(!expanded)}
+          >
+            <ExpandMoreIcon 
+              fontSize="small" 
+              sx={{ 
+                transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: 'transform 0.3s'
+              }}
+            />
+          </IconButton>
+        </Box>
+      </Box>
     </Card>
   );
 };

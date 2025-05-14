@@ -7,6 +7,7 @@ import TerminalEasterEggs from '../components/TerminalEasterEggs';
 import ResumeDownload from '../components/ResumeDownload';
 import SocialLinks from '../components/SocialLinks';
 import useReducedMotion from '../hooks/useReducedMotion';
+import { alpha } from '@mui/material/styles';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -1780,10 +1781,12 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
                       },
                       '&:hover .project-content': {
                         transform: 'translateY(-60px)',
+                        opacity: 0,
                       },
                       '&:hover .project-details': {
                         opacity: 1,
                         visibility: 'visible',
+                        transform: 'translateY(0)',
                       }
                     }}
                   >
@@ -1868,8 +1871,9 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
                       className="project-content"
                       sx={{ 
                         p: 3, 
-                        transition: 'transform 0.5s ease',
+                        transition: 'all 0.5s ease',
                         transform: 'translateY(0)',
+                        opacity: 1,
                         height: '180px',
                         position: 'relative',
                         zIndex: 1
@@ -1949,18 +1953,19 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
                         left: 0,
                         right: 0,
                         p: 3,
-                        backgroundColor: 'rgba(10, 25, 47, 0.95)',
+                        backgroundColor: theme.palette.background.paper,
                         borderTop: `1px solid ${project.color}66`,
                         opacity: 0,
                         visibility: 'hidden',
                         transition: 'all 0.4s ease',
-                        transform: 'translateY(0)',
+                        transform: 'translateY(50px)',
                         height: '180px',
                         overflow: 'hidden',
                         backdropFilter: 'blur(8px)',
                         display: 'flex',
                         flexDirection: 'column',
-                        justifyContent: 'space-between'
+                        justifyContent: 'space-between',
+                        zIndex: 5
                       }}
                     >
                       <Typography
@@ -2002,9 +2007,13 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
                             borderColor: project.color,
                             color: project.color,
                             borderRadius: '8px',
+                            backgroundColor: theme.palette.background.paper,
+                            fontWeight: 'medium',
+                            backdropFilter: 'none',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                             '&:hover': {
                               borderColor: project.color,
-                              backgroundColor: `${project.color}22`,
+                              backgroundColor: alpha(project.color, 0.1),
                             }
                           }}
                         >
