@@ -1,14 +1,14 @@
-import { ThemeProvider, CssBaseline } from '@mui/material';
+import { CssBaseline } from '@mui/material';
 import { BrowserRouter as Router } from 'react-router-dom';
-import theme from './theme';
 import Routes from './Routes';
 import Navbar from './components/Navbar';
 import GlobalStyles from './styles/GlobalStyles';
 import { Box } from '@mui/material';
+import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider>
       <CssBaseline />
       <GlobalStyles />
       <Router>

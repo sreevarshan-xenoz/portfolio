@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useThemeContext } from '../context/ThemeContext';
 
 const navItems = [
   { name: 'Home', path: '/' },
@@ -37,6 +38,7 @@ function Navbar() {
     disableHysteresis: true,
     threshold: 100,
   });
+  const { isDarkMode } = useThemeContext();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -249,35 +251,35 @@ function Navbar() {
                       clipPath: 'inset(23% 0 20% 0)',
                     },
                     '60%': {
-                      clipPath: 'inset(40% 0 3% 0)',
+                      clipPath: 'inset(5% 0 35% 0)',
                     },
                     '80%': {
-                      clipPath: 'inset(15% 0 30% 0)',
+                      clipPath: 'inset(15% 0 10% 0)',
                     },
                     '100%': {
-                      clipPath: 'inset(10% 0 35% 0)',
-                    }
+                      clipPath: 'inset(25% 0 15% 0)',
+                    },
                   },
                   '@keyframes glitch-anim2': {
                     '0%': {
-                      clipPath: 'inset(15% 0 30% 0)',
+                      clipPath: 'inset(15% 0 10% 0)',
                     },
                     '20%': {
-                      clipPath: 'inset(40% 0 3% 0)',
+                      clipPath: 'inset(5% 0 35% 0)',
                     },
                     '40%': {
-                      clipPath: 'inset(23% 0 20% 0)',
+                      clipPath: 'inset(25% 0 15% 0)',
                     },
                     '60%': {
-                      clipPath: 'inset(35% 0 5% 0)',
-                    },
-                    '80%': {
                       clipPath: 'inset(10% 0 15% 0)',
                     },
+                    '80%': {
+                      clipPath: 'inset(35% 0 5% 0)',
+                    },
                     '100%': {
-                      clipPath: 'inset(10% 0 35% 0)',
-                    }
-                  }
+                      clipPath: 'inset(23% 0 20% 0)',
+                    },
+                  },
                 }}
               >
                 Portfolio
@@ -285,167 +287,87 @@ function Navbar() {
             </motion.div>
 
             {isMobile ? (
-              <MotionIconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleDrawerToggle}
-                whileHover={{ 
-                  scale: 1.1,
-                  rotate: 180,
-                  transition: {
-                    type: "spring",
-                    stiffness: 300,
-                    damping: 15
-                  }
-                }}
-                whileTap={{ 
-                  scale: 0.9,
-                  rotate: 0
-                }}
-                sx={{
-                  '&:hover': {
-                    background: 'rgba(100, 255, 218, 0.1)',
-                  }
-                }}
-              >
-                <MenuIcon />
-              </MotionIconButton>
+              <>
+                <MotionIconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="menu"
+                  onClick={handleDrawerToggle}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  sx={{
+                    color: 'primary.main',
+                  }}
+                >
+                  <MenuIcon />
+                </MotionIconButton>
+                <Drawer
+                  anchor="right"
+                  open={mobileOpen}
+                  onClose={handleDrawerToggle}
+                  sx={{
+                    '& .MuiDrawer-paper': {
+                      width: '60%',
+                      maxWidth: '300px',
+                      backgroundColor: 'background.paper',
+                      backdropFilter: 'blur(10px)',
+                      boxShadow: '0 10px 30px -15px rgba(0, 0, 0, 0.3)',
+                      padding: theme.spacing(3),
+                    },
+                  }}
+                >
+                  {drawer}
+                </Drawer>
+              </>
             ) : (
-              <Box sx={{ display: 'flex', gap: 2 }}>
+              <Box display="flex" alignItems="center">
                 {navItems.map((item, index) => (
-                  <MotionButton
+                  <motion.div
                     key={item.name}
-                    component={RouterLink}
-                    to={item.path}
-                    variants={itemVariants}
                     custom={index}
-                    initial="hidden"
-                    animate="visible"
+                    variants={itemVariants}
                     whileHover="hover"
                     whileTap="tap"
-                    sx={{
-                      color: location.pathname === item.path ? 'primary.main' : 'text.primary',
-                      position: 'relative',
-                      padding: '6px 12px',
-                      '&:hover': {
-                        color: 'primary.main',
-                        background: 'transparent',
-                      },
-                      '&::before': {
-                        content: '""',
-                        position: 'absolute',
-                        width: '100%',
-                        height: '2px',
-                        bottom: 0,
-                        left: 0,
-                        background: 'linear-gradient(90deg, #64ffda, #7928ca)',
-                        transform: location.pathname === item.path ? 'scaleX(1)' : 'scaleX(0)',
-                        transformOrigin: 'left',
-                        transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                      },
-                      '&:hover::before': {
-                        transform: 'scaleX(1)',
-                        animation: 'gradient 3s linear infinite',
-                      },
-                      '@keyframes gradient': {
-                        '0%': {
-                          backgroundPosition: '0% 50%',
-                        },
-                        '50%': {
-                          backgroundPosition: '100% 50%',
-                        },
-                        '100%': {
-                          backgroundPosition: '0% 50%',
-                        },
-                      },
-                      '&::after': {
-                        content: '""',
-                        position: 'absolute',
-                        width: '120%',
-                        height: '120%',
-                        top: '-10%',
-                        left: '-10%',
-                        background: 'radial-gradient(circle, rgba(100, 255, 218, 0.1) 0%, rgba(121, 40, 202, 0.1) 100%)',
-                        borderRadius: '8px',
-                        opacity: 0,
-                        transform: 'scale(0.8)',
-                        transition: 'all 0.4s ease',
-                      },
-                      '&:hover::after': {
-                        opacity: 1,
-                        transform: 'scale(1)',
-                      },
-                    }}
                   >
-                    <Box
-                      component={motion.div}
-                      initial={{ y: 0 }}
-                      whileHover={{ 
-                        y: [-2, 1, -1, 0],
-                        transition: { 
-                          duration: 0.6,
-                          times: [0, 0.4, 0.7, 1],
-                          ease: "easeOut"
-                        }
-                      }}
-                      sx={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: 0.5,
-                        zIndex: 1,
+                    <MotionButton
+                      component={RouterLink}
+                      to={item.path}
+                      sx={{
+                        color: location.pathname === item.path ? 'primary.main' : 'text.primary',
+                        textTransform: 'none',
+                        fontWeight: 'medium',
+                        mx: 1,
+                        display: 'block',
+                        position: 'relative',
+                        transition: 'color 0.3s ease',
+                        '&::after': {
+                          content: '""',
+                          position: 'absolute',
+                          width: '0%',
+                          height: '2px',
+                          bottom: '0',
+                          left: '50%',
+                          transform: 'translateX(-50%)',
+                          backgroundColor: 'primary.main',
+                          transition: 'width 0.3s ease',
+                          borderRadius: '2px',
+                        },
+                        '&:hover': {
+                          backgroundColor: 'transparent',
+                          '&::after': {
+                            width: location.pathname === item.path ? '100%' : '50%',
+                          }
+                        },
                       }}
                     >
                       {item.name}
-                      {location.pathname === item.path && (
-                        <motion.span
-                          initial={{ scale: 0, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          transition={{ 
-                            duration: 0.3,
-                            type: "spring",
-                            stiffness: 300,
-                            damping: 20
-                          }}
-                          style={{ 
-                            color: '#64ffda', 
-                            fontSize: '0.5rem', 
-                            marginLeft: '2px',
-                            filter: 'drop-shadow(0 0 2px #64ffda)'
-                          }}
-                        >
-                          ●
-                        </motion.span>
-                      )}
-                    </Box>
-                  </MotionButton>
+                    </MotionButton>
+                  </motion.div>
                 ))}
               </Box>
             )}
           </Toolbar>
         </AppBar>
-
-        <Drawer
-          variant="temporary"
-          anchor="right"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: 240,
-              backgroundColor: 'background.paper',
-              backdropFilter: 'blur(10px)',
-              zIndex: 2100,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
       </motion.div>
     </AnimatePresence>
   );

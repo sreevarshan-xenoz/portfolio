@@ -2,6 +2,11 @@ import { Box, Container, Typography, Button, useTheme, Grid, IconButton, Tooltip
 import { motion, useAnimation, AnimatePresence, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
+import GitHubIntegration from '../components/GitHubIntegration';
+import TerminalEasterEggs from '../components/TerminalEasterEggs';
+import ResumeDownload from '../components/ResumeDownload';
+import SocialLinks from '../components/SocialLinks';
+import useReducedMotion from '../hooks/useReducedMotion';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -79,6 +84,7 @@ function Home() {
   const controls = useAnimation();
   const canvasRef = useRef(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const { prefersReducedMotion, animate } = useReducedMotion();
 
   // Refs for scroll animations
   const heroRef = useRef(null);
@@ -421,18 +427,18 @@ function Home() {
   // Update the generateCommands function
   const generateCommands = () => {
     const commands = [
-      'pacman -Syu',
-      'systemctl start',
-      'yay -S',
-      'sudo nano',
       'neofetch',
-      'cd ~/.config',
+      'sudo pacman -Syu',
+      'yay -S iris-os',
+      'python genesis-ai.py',
+      'cd ~/projects/iris',
       'ls -la',
       'git push',
-      'vim .bashrc',
-      'makepkg -si',
-      'journalctl -xe',
-      'arch-chroot',
+      'vim .zshrc',
+      'sree varshan',
+      'systemctl start ai-service',
+      'chmod +x hackthis.sh',
+      'hyprctl monitors',
     ];
 
     return commands.map((command, index) => {
@@ -452,7 +458,7 @@ function Home() {
             duration: Math.random() * 2 + 3,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: index * 0.3,
+            delay: index * 0.4,
           }}
           sx={{
             position: 'absolute',
@@ -516,27 +522,27 @@ function Home() {
     const [activeSkill, setActiveSkill] = useState(null);
     const skills = [
       {
-        name: 'Frontend Development',
-        icon: '🎨',
-        details: ['React', 'Next.js', 'Vue.js', 'CSS/SASS', 'Responsive Design'],
+        name: 'Programming',
+        icon: '💻',
+        details: ['Python', 'C', 'Rust', 'Kotlin'],
         color: '#64ffda'
       },
       {
-        name: 'Backend Development',
-        icon: '⚙️',
-        details: ['Node.js', 'Express', 'Python', 'RESTful APIs', 'GraphQL'],
+        name: 'AI/ML Development',
+        icon: '🧠',
+        details: ['LLMs', 'Qwen integration', 'GPT APIs', 'Custom AI agents'],
         color: '#7928ca'
       },
       {
-        name: 'Database Management',
-        icon: '🗄️',
-        details: ['MongoDB', 'PostgreSQL', 'Redis', 'Firebase', 'AWS'],
+        name: 'Cybersecurity',
+        icon: '🔒',
+        details: ['Ethical hacking', 'Network forensics', 'Wi-Fi spoofing', 'DNS attacks'],
         color: '#ff64b4'
       },
       {
-        name: 'DevOps & Tools',
-        icon: '🛠️',
-        details: ['Git', 'Docker', 'CI/CD', 'AWS', 'Linux'],
+        name: 'DevOps & OS',
+        icon: '⚙️',
+        details: ['Arch Linux', 'Hyprland WM', 'Zsh wizardry', 'Custom Linux builds'],
         color: '#64ff8d'
       }
     ];
@@ -555,8 +561,8 @@ function Home() {
         }}
         viewport={{ once: true, margin: "-100px" }}
         sx={{
-          minHeight: '70vh',
-          py: 8,
+          minHeight: '50vh',
+          py: 4,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -676,9 +682,9 @@ function Home() {
   const TerminalSection = () => {
     const [commands, setCommands] = useState([
       { text: '$ neofetch', output: 'OS: Arch Linux x86_64\nKernel: 6.1.0-arch1\nShell: zsh 5.9\nWM: Hyprland\nTheme: Nord\nIcons: Papirus' },
-      { text: '$ ls projects/', output: 'genesis-ai/  iris-os/  mindmesh/  blockchain-apps/' },
-      { text: '$ cat skills.txt', output: 'AI/ML | Cybersecurity | Blockchain | System Development' },
-      { text: '$ whoami', output: 'SREE VARSHAN V - Full Stack Developer & AI Enthusiast' }
+      { text: '$ ls projects/', output: 'iris-os/  genesis-ai/  echolink/  smart-gym-glasses/  humanoid-robot/' },
+      { text: '$ cat skills.txt', output: 'Python | C | Rust | Ethical Hacking | AI/ML | Robotics' },
+      { text: '$ whoami', output: 'sreevarshan - Student | Ethical Hacker | AI Dev | Fantasy World Architect' }
     ]);
     const [inputValue, setInputValue] = useState('');
     const [commandHistory, setCommandHistory] = useState([]);
@@ -687,10 +693,11 @@ function Home() {
     const availableCommands = {
       help: 'Available commands: help, clear, projects, skills, about, contact',
       clear: 'Clearing terminal...',
-      projects: 'My Projects:\n• Genesis AI - Advanced AI Assistant\n• Iris OS - Custom Linux Distribution\n• MindMesh - Decentralized Knowledge Network\n• Cross-Chain Manager - Web3 Subscription System',
-      skills: 'Technical Skills:\n• Languages: Python, JavaScript, C++, Rust\n• AI/ML: TensorFlow, PyTorch, OpenCV\n• Web3: Solana, Ethereum, Smart Contracts\n• DevOps: Docker, AWS, CI/CD',
-      about: 'About Me:\nInnovative developer passionate about AI, cybersecurity, and blockchain.\nCreating solutions that push technological boundaries.',
-      contact: 'Contact Info:\nEmail: your.email@example.com\nGitHub: github.com/yourusername\nLinkedIn: linkedin.com/in/yourusername'
+      projects: 'My Projects:\n• IRIS OS – Custom Linux OS with built-in AI voice assistant\n• Genisis AI – Your all-in-one modular AI system\n• EchoLink – Offline-first mobile comms app\n• Smart Gym Glasses – Wearables that recognize food & show real-time calorie data\n• Semi-Humanoid Robot – AI brain + custom tracked base',
+      skills: 'Technical Skills:\n• Programming: Python, C, Rust, Kotlin\n• AI/ML: LLMs, Qwen integration, GPT APIs, custom AI agents\n• Cybersecurity: Ethical hacking, network forensics, Wi-Fi spoofing\n• DevOps: Arch Linux, Hyprland WM, Zsh, Custom OS development',
+      about: `About Me:
+Future-focused tech nerd building bleeding-edge AI systems, operating systems, and semi-humanoid robots. I thrive in hackathons, chaos, and caffeine. Currently building "Iris" — a custom Arch Linux-based OS with integrated offline/online AI. I bend systems to my will, and I don't believe in limits.`,
+      contact: 'Contact Info:\nGitHub: github.com/sreevarshan-xenoz\nLocation: Chennai, Tamil Nadu, India'
     };
 
     const handleCommand = (cmd) => {
@@ -953,6 +960,7 @@ function Home() {
         mx: 'auto',
         px: { xs: 2, sm: 3, md: 4 },
         pt: { xs: 8, sm: 9 },
+        pb: { xs: 2, sm: 3 },
         overflowX: 'hidden',
         position: 'relative',
         zIndex: 1,
@@ -1018,7 +1026,7 @@ function Home() {
       >
         <Box
           sx={{
-            minHeight: '100vh',
+            minHeight: '80vh',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
@@ -1026,6 +1034,7 @@ function Home() {
             gap: 4,
             position: 'relative',
             overflow: 'hidden',
+            mb: 0,
           }}
         >
           <motion.div
@@ -1131,7 +1140,7 @@ function Home() {
                 },
               }}
             >
-              SREE VARSHAN V
+              SREEVARSHAN
             </Typography>
             <motion.div
               animate={floatingAnimation}
@@ -1144,7 +1153,7 @@ function Home() {
                 opacity: 0.5,
               }}
             >
-              ✨
+              ⚡
             </motion.div>
             <motion.div
               animate={floatingAnimation}
@@ -1158,7 +1167,7 @@ function Home() {
                 opacity: 0.5,
               }}
             >
-              ⚡
+              💀
             </motion.div>
           </motion.div>
 
@@ -1185,7 +1194,7 @@ function Home() {
                 },
               }}
             >
-              I build things for the web.
+              Student | Ethical Hacker | AI Dev | Fantasy World Architect
             </Typography>
           </motion.div>
 
@@ -1219,8 +1228,7 @@ function Home() {
                 },
               }}
             >
-              I'm a software developer specializing in building exceptional digital experiences.
-              Currently, I'm focused on building accessible, human-centered products.
+              "Code is my spellbook. Coffee is my mana. And sleep? Optional."
             </Typography>
           </motion.div>
 
@@ -1275,26 +1283,34 @@ function Home() {
           </motion.div>
         </Box>
 
+        {/* Add a section separator with less spacing */}
+        <Box sx={{ height: '2vh' }} />
+
         {/* About Section */}
         <Box
           component={motion.section}
           initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
+          whileInView={{ 
+            opacity: 1, 
+            y: 0,
+            transition: {
+              duration: 0.8,
+            }
+          }}
+          viewport={{ once: true }}
           sx={{
-            minHeight: '100vh',
-            py: 8,
+            width: '100%',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: 4,
+            mb: 6, // Add margin bottom for spacing
+            mt: 0, // Ensure no extra top margin
           }}
         >
-          <Typography
-            variant="h4"
+          <Typography 
+            variant="h4" 
             component="h2"
-            sx={{
+            sx={{ 
               mb: 4,
               position: 'relative',
               '&::after': {
@@ -1336,9 +1352,9 @@ function Home() {
                     }
                   }}
                 >
-                  Hello! I'm a passionate software developer with a keen interest in building exceptional digital experiences. 
-                  My journey in web development started with a curiosity about how things work on the internet, 
-                  and that curiosity has driven me to continuously learn and grow in this ever-evolving field.
+                  Future-focused tech nerd building bleeding-edge AI systems, operating systems, and semi-humanoid robots.
+                  I thrive in hackathons, chaos, and caffeine. Currently building "Iris" — a custom Arch Linux-based OS 
+                  with integrated offline/online AI. I bend systems to my will, and I don't believe in limits.
                 </Typography>
                 <Typography
                   variant="body1"
@@ -1354,9 +1370,8 @@ function Home() {
                     }
                   }}
                 >
-                  I specialize in building modern web applications using cutting-edge technologies. 
-                  My focus is on creating responsive, accessible, and user-friendly interfaces 
-                  that provide exceptional user experiences.
+                  If it's not free, hackable, or DIY, I probably don't want it. I'm passionate about pushing the limits 
+                  of technology, designing hacker-themed Linux setups, and making my devices talk to each other like Iron Man's lab.
                 </Typography>
               </motion.div>
             </Grid>
@@ -1439,26 +1454,29 @@ function Home() {
           </Grid>
         </Box>
 
-        {/* Skills Progress Section */}
+        {/* Section separator */}
+        <Box sx={{ height: '4vh' }} />
+
+        {/* Technical Proficiency Section */}
         <Box
-          component={motion.section}
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          component={motion.div}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ 
+            opacity: 1, 
+            y: 0,
+            transition: { duration: 0.8 }
+          }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
           sx={{
-            py: 8,
             width: '100%',
-            maxWidth: '1000px',
-            mx: 'auto',
+            my: 5, // Add margin top and bottom
           }}
         >
-          <Typography
-            variant="h4"
+          <Typography 
+            variant="h4" 
             component="h2"
-            sx={{
+            sx={{ 
               mb: 6,
-              textAlign: 'center',
               position: 'relative',
               '&::after': {
                 content: '""',
@@ -1619,8 +1637,8 @@ function Home() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8 }}
           sx={{
-            minHeight: '100vh',
-            py: 8,
+            minHeight: '60vh',
+            py: 4,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -1649,133 +1667,174 @@ function Home() {
             Featured Projects
           </Typography>
 
-          <Grid container spacing={4}>
+          {/* Project Filter */}
+          <Box sx={{ mb: 4, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 2 }}>
+            {['All', 'AI/ML', 'Operating Systems', 'Hardware', 'Web Apps'].map((filter) => (
+              <Chip
+                key={filter}
+                label={filter}
+                component={motion.div}
+                whileHover={{ y: -5, boxShadow: '0 5px 15px rgba(100, 255, 218, 0.2)' }}
+                whileTap={{ scale: 0.95 }}
+                sx={{
+                  px: 2,
+                  py: 2.5,
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  backgroundColor: filter === 'All' ? 'rgba(100, 255, 218, 0.2)' : 'rgba(10, 25, 47, 0.4)',
+                  color: filter === 'All' ? 'primary.main' : 'text.secondary',
+                  border: '1px solid',
+                  borderColor: filter === 'All' ? 'primary.main' : 'transparent',
+                  transition: 'all 0.3s ease',
+                  fontWeight: filter === 'All' ? 'bold' : 'normal',
+                  '&:hover': {
+                    backgroundColor: 'rgba(100, 255, 218, 0.1)',
+                    borderColor: 'primary.main',
+                  }
+                }}
+              />
+            ))}
+          </Box>
+
+          {/* Project Grid with 3D Cards */}
+          <Grid container spacing={4} sx={{ perspective: '1000px' }}>
             {[
               {
-                title: "Agoric AI",
-                description: "An innovative hackathon project combining AI with Agoric's secure smart contract framework to enable trustless AI-based decision-making in Web3 applications.",
-                tech: ["React", "Node.js", "Agoric SDK", "AI/ML"],
-                image: "agoric-ai.png",
-                color: '#64ffda'
+                title: "IRIS OS",
+                description: "Custom Linux OS with built-in AI voice assistant (offline + online). Based on Arch Linux with custom AI integration.",
+                longDescription: "IRIS OS is a personal project aimed at creating a fully customized Linux distribution with integrated AI capabilities. It features a voice-activated assistant that works both online and offline, custom UI elements based on Hyprland window manager, and deep system integration for controlling various aspects of the computer through voice commands.",
+                tech: ["Python", "Arch Linux", "LLMs", "Hyprland"],
+                image: "https://via.placeholder.com/600x400?text=IRIS+OS",
+                color: '#64ffda',
+                category: "Operating Systems",
+                status: "In Progress",
+                github: "https://github.com/sreevarshan-xenoz/iris-os",
+                featured: true
               },
               {
-                title: "Portfolio Website",
-                description: "A modern, responsive portfolio website built with React and Material-UI, featuring smooth animations and interactive elements.",
-                tech: ["React", "Material-UI", "Framer Motion", "Vite"],
-                image: "portfolio.png",
-                color: '#7928ca'
-              }
+                title: "Genesis AI",
+                description: "Your all-in-one modular AI system. A comprehensive AI platform designed to be integrated with various applications and devices.",
+                longDescription: "Genesis AI is a modular artificial intelligence system designed to be easily integrated into various applications. It features custom language models, vision processing capabilities, and a flexible API for developers. The system can be deployed locally or in the cloud and supports training on custom datasets.",
+                tech: ["Python", "FastAPI", "GPT APIs", "Custom AI Agents"],
+                image: "https://via.placeholder.com/600x400?text=Genesis+AI",
+                color: '#7928ca',
+                category: "AI/ML",
+                status: "Active",
+                github: "https://github.com/sreevarshan-xenoz/genesis-ai",
+                featured: true
+              },
+              {
+                title: "Smart Gym Glasses",
+                description: "Wearables that recognize food & show real-time calorie data. Uses computer vision and real-time processing for nutritional insights.",
+                longDescription: "These custom-built smart glasses use a tiny camera and display to identify food items in your field of view and provide real-time nutritional information. The system runs a compact computer vision model locally on a small microcontroller, with no need for internet connectivity. It includes a custom database of common foods and their nutritional profiles.",
+                tech: ["OpenCV", "Python", "3D Printing", "AI/ML"],
+                image: "https://via.placeholder.com/600x400?text=Smart+Gym+Glasses",
+                color: '#ff64b4',
+                category: "Hardware",
+                status: "Prototype",
+                github: "https://github.com/sreevarshan-xenoz/smart-gym-glasses",
+                featured: true
+              },
+              {
+                title: "EchoLink",
+                description: "Offline-first mobile communication app with mesh networking capabilities, designed for use in areas with limited connectivity.",
+                longDescription: "EchoLink is a mobile application that enables communication without requiring constant internet access. It uses mesh networking to create ad-hoc networks between devices, allowing messages to hop between phones until they reach their destination. The app includes end-to-end encryption and can synchronize with cloud servers when internet becomes available.",
+                tech: ["Kotlin", "Bluetooth LE", "P2P", "Cryptography"],
+                image: "https://via.placeholder.com/600x400?text=EchoLink",
+                color: '#64ff8d',
+                category: "Web Apps",
+                status: "Beta",
+                github: "https://github.com/sreevarshan-xenoz/echolink",
+                featured: false
+              },
             ].map((project, index) => (
-              <Grid item xs={12} key={index}>
+              <Grid item xs={12} md={6} key={index}>
                 <motion.div
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6 }}
+                  initial={{ opacity: 0, rotateY: -10, z: -100 }}
+                  whileInView={{ opacity: 1, rotateY: 0, z: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.6, delay: index * 0.2 }}
+                  whileHover={{ 
+                    z: 50, 
+                    rotateY: 5,
+                    boxShadow: `0 20px 30px -10px ${project.color}33`,
+                  }}
                 >
                   <Box
                     sx={{
-                      p: 4,
-                      borderRadius: '12px',
+                      height: '100%',
+                      p: 0,
+                      borderRadius: '16px',
+                      overflow: 'hidden',
                       backdropFilter: 'blur(10px)',
-                      backgroundColor: 'rgba(10, 25, 47, 0.2)',
+                      backgroundColor: 'rgba(10, 25, 47, 0.3)',
                       border: '1px solid',
                       borderColor: 'transparent',
-                      transition: 'all 0.3s ease',
-                      display: 'flex',
-                      flexDirection: { xs: 'column', md: 'row' },
-                      gap: 3,
+                      transition: 'all 0.4s ease',
+                      transformStyle: 'preserve-3d',
                       position: 'relative',
-                      overflow: 'hidden',
                       '&:hover': {
-                        backgroundColor: 'rgba(10, 25, 47, 0.4)',
+                        backgroundColor: 'rgba(10, 25, 47, 0.5)',
                         borderColor: project.color,
-                        transform: 'translateY(-5px)',
-                        boxShadow: `0 10px 30px -15px ${project.color}33`,
-                        '& .project-overlay': {
-                          opacity: 1,
-                        }
+                        transform: 'translateY(-10px)',
+                      },
+                      '&:hover .project-content': {
+                        transform: 'translateY(-60px)',
+                      },
+                      '&:hover .project-details': {
+                        opacity: 1,
+                        visibility: 'visible',
                       }
                     }}
                   >
-                    {/* Add interactive overlay */}
-                    <motion.div
-                      className="project-overlay"
-                      initial={{ opacity: 0 }}
-                      whileHover={{ opacity: 1 }}
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        background: `linear-gradient(45deg, ${project.color}22, transparent)`,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: 2,
-                        zIndex: 2,
-                      }}
-                    >
-                      <Tooltip title="View Demo">
-                        <IconButton
-                          component={motion.button}
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          sx={{
-                            color: project.color,
-                            border: `2px solid ${project.color}`,
-                            backdropFilter: 'blur(5px)',
-                            '&:hover': {
-                              background: `${project.color}22`,
-                            }
-                          }}
-                        >
-                          🔗
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="View Code">
-                        <IconButton
-                          component={motion.button}
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          sx={{
-                            color: project.color,
-                            border: `2px solid ${project.color}`,
-                            backdropFilter: 'blur(5px)',
-                            '&:hover': {
-                              background: `${project.color}22`,
-                            }
-                          }}
-                        >
-                          <span style={{ fontSize: '1.2rem' }}>{'</>'}</span>
-                        </IconButton>
-                      </Tooltip>
-                    </motion.div>
-                    <Box
+                    {/* Status Badge */}
+                    <Chip
+                      label={project.status}
+                      size="small"
                       sx={{
-                        flex: 1,
-                        borderRadius: '8px',
-                        overflow: 'hidden',
-                        border: '1px solid',
-                        borderColor: 'rgba(100, 255, 218, 0.1)',
-                        position: 'relative',
-                        '&::before': {
-                          content: '""',
-                          position: 'absolute',
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          background: `linear-gradient(45deg, ${project.color}33, transparent)`,
-                          opacity: 0,
-                          transition: 'opacity 0.3s ease',
-                        },
-                        '&:hover::before': {
-                          opacity: 1,
-                        }
+                        position: 'absolute',
+                        top: 16,
+                        right: 16,
+                        zIndex: 10,
+                        backgroundColor: project.color + '22',
+                        color: project.color,
+                        border: `1px solid ${project.color}`,
+                        backdropFilter: 'blur(5px)',
+                        fontWeight: 'bold',
+                        fontSize: '0.7rem',
+                        px: 1
                       }}
-                    >
+                    />
+                    
+                    {/* Featured Badge */}
+                    {project.featured && (
+                      <Box
+                        component={motion.div}
+                        animate={{
+                          rotate: [0, 5, 0],
+                          scale: [1, 1.05, 1]
+                        }}
+                        transition={{
+                          duration: 2,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                        sx={{
+                          position: 'absolute',
+                          top: 16,
+                          left: 16,
+                          zIndex: 10,
+                          color: '#FFD700',
+                          fontSize: '24px',
+                          filter: 'drop-shadow(0 0 3px rgba(255, 215, 0, 0.7))',
+                        }}
+                      >
+                        ⭐
+                      </Box>
+                    )}
+                    
+                    {/* Project Image with Overlay */}
+                    <Box sx={{ position: 'relative', height: '200px', overflow: 'hidden' }}>
                       <Box
                         component="img"
                         src={project.image}
@@ -1784,53 +1843,91 @@ function Home() {
                           width: '100%',
                           height: '100%',
                           objectFit: 'cover',
-                          filter: 'grayscale(100%)',
-                          transition: 'all 0.3s ease',
+                          transition: 'all 0.6s ease',
+                          filter: 'grayscale(30%)',
                           '&:hover': {
                             filter: 'grayscale(0%)',
-                            transform: 'scale(1.05)',
+                            transform: 'scale(1.1)',
                           }
                         }}
                       />
+                      <Box 
+                        sx={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: '100%',
+                          height: '100%',
+                          background: `linear-gradient(to bottom, transparent 50%, ${project.color}22 100%, rgba(10, 25, 47, 0.9) 100%)`,
+                        }}
+                      />
                     </Box>
-                    <Box sx={{ flex: 1, textAlign: 'left' }}>
+                    
+                    {/* Project Content */}
+                    <Box 
+                      className="project-content"
+                      sx={{ 
+                        p: 3, 
+                        transition: 'transform 0.5s ease',
+                        transform: 'translateY(0)',
+                        height: '180px',
+                        position: 'relative',
+                        zIndex: 1
+                      }}
+                    >
                       <Typography
                         variant="h5"
                         sx={{
-                          mb: 2,
-                          color: project.color,
                           fontWeight: 'bold',
+                          mb: 1.5,
+                          background: `linear-gradient(45deg, ${project.color}, white)`,
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                          display: 'inline-block'
                         }}
                       >
                         {project.title}
                       </Typography>
+                      
                       <Typography
-                        variant="body1"
+                        variant="body2"
                         color="text.secondary"
-                        sx={{ mb: 3 }}
+                        sx={{ 
+                          mb: 2,
+                          display: '-webkit-box',
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          lineHeight: 1.5
+                        }}
                       >
                         {project.description}
                       </Typography>
+                      
                       <Box
                         sx={{
                           display: 'flex',
                           flexWrap: 'wrap',
                           gap: 1,
-                          mb: 3,
+                          mt: 'auto'
                         }}
                       >
                         {project.tech.map((tech, i) => (
-                          <Typography
+                          <Box
                             key={i}
-                            variant="caption"
+                            component={motion.div}
+                            whileHover={{ y: -5, x: 0 }}
+                            transition={{ type: "spring", stiffness: 300 }}
                             sx={{
-                              px: 1.5,
+                              px: 1,
                               py: 0.5,
                               borderRadius: '4px',
                               border: '1px solid',
                               borderColor: project.color,
                               color: project.color,
-                              fontSize: '0.75rem',
+                              fontSize: '0.7rem',
+                              fontFamily: 'monospace',
                               transition: 'all 0.3s ease',
                               '&:hover': {
                                 backgroundColor: `${project.color}22`,
@@ -1838,8 +1935,101 @@ function Home() {
                             }}
                           >
                             {tech}
-                          </Typography>
+                          </Box>
                         ))}
+                      </Box>
+                    </Box>
+                    
+                    {/* Extended Project Details on Hover */}
+                    <Box 
+                      className="project-details"
+                      sx={{ 
+                        position: 'absolute',
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        p: 3,
+                        backgroundColor: 'rgba(10, 25, 47, 0.95)',
+                        borderTop: `1px solid ${project.color}66`,
+                        opacity: 0,
+                        visibility: 'hidden',
+                        transition: 'all 0.4s ease',
+                        transform: 'translateY(0)',
+                        height: '180px',
+                        overflow: 'hidden',
+                        backdropFilter: 'blur(8px)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between'
+                      }}
+                    >
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{ 
+                          mb: 2,
+                          overflowY: 'auto',
+                          height: '100px',
+                          scrollbarWidth: 'thin',
+                          '&::-webkit-scrollbar': {
+                            width: '4px',
+                          },
+                          '&::-webkit-scrollbar-track': {
+                            background: 'rgba(10, 25, 47, 0.1)',
+                          },
+                          '&::-webkit-scrollbar-thumb': {
+                            background: project.color,
+                            borderRadius: '4px',
+                          },
+                        }}
+                      >
+                        {project.longDescription}
+                      </Typography>
+                      
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          mt: 2
+                        }}
+                      >
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          href={project.github}
+                          target="_blank"
+                          sx={{
+                            borderColor: project.color,
+                            color: project.color,
+                            borderRadius: '8px',
+                            '&:hover': {
+                              borderColor: project.color,
+                              backgroundColor: `${project.color}22`,
+                            }
+                          }}
+                        >
+                          View Code
+                        </Button>
+                        
+                        <Button
+                          variant="contained"
+                          size="small"
+                          component={motion.button}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          sx={{
+                            backgroundColor: project.color,
+                            color: '#0a192f',
+                            fontWeight: 'bold',
+                            borderRadius: '8px',
+                            '&:hover': {
+                              backgroundColor: project.color,
+                              filter: 'brightness(1.1)',
+                            }
+                          }}
+                        >
+                          Live Demo
+                        </Button>
                       </Box>
                     </Box>
                   </Box>
@@ -1848,12 +2038,13 @@ function Home() {
             ))}
           </Grid>
 
+          {/* View More Button - Enhanced */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            style={{ marginTop: '2rem' }}
+            style={{ marginTop: '3rem' }}
           >
             <Button
               component={Link}
@@ -1861,9 +2052,8 @@ function Home() {
               variant="outlined"
               color="primary"
               size="large"
-              endIcon={<motion.span whileHover={{ x: 5 }}>→</motion.span>}
               sx={{
-                borderRadius: '8px',
+                borderRadius: '12px',
                 textTransform: 'none',
                 fontSize: '1.1rem',
                 py: 1.5,
@@ -1895,26 +2085,46 @@ function Home() {
                 },
               }}
             >
-              View More Projects
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <span>Explore All Projects</span>
+                <motion.span 
+                  animate={{ 
+                    x: [0, 5, 0],
+                  }}
+                  transition={{ 
+                    duration: 1.5, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                  }}
+                >
+                  →
+                </motion.span>
+              </Box>
             </Button>
           </motion.div>
         </Box>
 
-        {/* Terminal Section */}
-        <TerminalSection />
+        {/* GitHub Integration Section */}
+        <GitHubIntegration />
 
-        {/* Tech Stack Cube */}
+        {/* Terminal Section with Easter Eggs */}
+        <TerminalEasterEggs />
+
+        {/* Tech Cube */}
         <TechCube />
 
         {/* Skills Showcase */}
         <SkillShowcase />
 
+        {/* Resume Download */}
+        <ResumeDownload />
+
         {/* Contact Section */}
         <Box
           component="section"
           sx={{
-            minHeight: '60vh',
-            py: 12,
+            minHeight: '40vh',
+            py: 4,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -1978,12 +2188,18 @@ function Home() {
               I'll try my best to get back to you!
             </Typography>
 
+            {/* Social Links */}
+            <SocialLinks />
+
             {/* Contact Button */}
             <Button
               variant="contained"
               size="large"
-              href="mailto:your.email@example.com"
+              href="https://github.com/sreevarshan-xenoz"
+              target="_blank"
+              rel="noopener noreferrer"
               sx={{
+                mt: 4,
                 borderRadius: '12px',
                 textTransform: 'none',
                 fontSize: '1.2rem',
@@ -2020,9 +2236,9 @@ function Home() {
                     },
                   }}
                 >
-                  👋
+                  💻
                 </Box>
-                <span>Say Hello</span>
+                <span>Check My GitHub</span>
               </Box>
             </Button>
           </Box>
