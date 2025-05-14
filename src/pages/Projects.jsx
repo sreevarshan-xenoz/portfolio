@@ -40,7 +40,7 @@ const projects = [
 • Multi-mode operation: Desktop, headless, and remote access via API
 • Personalized responses: Adapts to user preferences and interaction history
 • Cross-platform compatibility: Core functionality works on Linux, macOS, and Windows`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=Iris+AI',
+    image: '/project images/iris.png',
     technologies: ['Python', 'TensorFlow', 'OpenCV', 'NLP', 'WebRTC', 'FastAPI'],
     githubLink: 'https://github.com/sreevarshan-xenoz/iris-1-ai',
     liveLink: '#',
@@ -52,6 +52,112 @@ const projects = [
     videoDemo: true
   },
   {
+    title: 'AURA Smart Home',
+    description: 'Modern smart home control system with voice and gesture recognition. Seamlessly integrates with various smart devices.',
+    longDescription: `• Comprehensive smart home system with voice and gesture control
+• Sleek dashboard for monitoring and controlling connected devices
+• Automated routines based on time, location, and user behavior
+• Integration with popular smart home standards and devices
+• Energy efficiency optimization through machine learning
+• Mobile app for remote access and control
+• Multi-user support with personalized preferences`,
+    image: '/project images/aura.png',
+    technologies: ['IoT', 'React', 'Node.js', 'Machine Learning', 'WebSockets', 'MQTT'],
+    githubLink: 'https://github.com/sreevarshan-xenoz/aura-smart-home',
+    liveLink: '#',
+    featured: true,
+    color: '#7928ca',
+    category: 'IoT',
+    status: 'Active',
+    year: 2023,
+    videoDemo: true
+  },
+  {
+    title: 'DocApp',
+    description: 'Telehealth platform with AI-assisted diagnostics. Connects patients with healthcare providers for virtual consultations.',
+    longDescription: `• Telehealth platform for virtual medical consultations
+• AI-assisted pre-screening and symptom checking
+• Secure video conferencing with end-to-end encryption
+• Digital prescription management and pharmacy integration
+• Medical record access and management for patients
+• Insurance verification and billing integration
+• Personalized health recommendations and follow-ups`,
+    image: '/project images/doc app.png',
+    technologies: ['React Native', 'Firebase', 'TensorFlow', 'WebRTC', 'HIPAA Compliance', 'Redux'],
+    githubLink: 'https://github.com/sreevarshan-xenoz/docapp',
+    liveLink: '#',
+    featured: true,
+    color: '#ff64b4',
+    category: 'Web Apps',
+    status: 'Completed',
+    year: 2022,
+    videoDemo: true
+  },
+  {
+    title: 'ECHOLINK - Real-Time Chat',
+    description: 'A peer-to-peer encrypted chat system built using Socket.IO with room support, live status indicators, and end-to-end encryption.',
+    longDescription: `• Real-time messaging with Socket.IO backend
+• End-to-end encryption for secure communications
+• Room-based chat system with private/public options
+• Live status indicators and typing notifications
+• Message history with local encryption
+• File sharing capabilities with progress tracking
+• Responsive design works on desktop and mobile devices
+• Offline capability with message queuing`,
+    image: '/project images/echolink.png',
+    technologies: ['Node.js', 'Socket.IO', 'React', 'Encryption', 'MongoDB', 'Express'],
+    githubLink: 'https://github.com/sreevarshan-xenoz/echolink',
+    liveLink: '#',
+    featured: true,
+    color: '#64b4ff',
+    category: 'Web Apps',
+    status: 'Completed',
+    year: 2022,
+    videoDemo: false
+  },
+  {
+    title: 'SwiftPick',
+    description: 'An e-commerce product recommendation system that uses machine learning to suggest personalized items based on user preferences.',
+    longDescription: `• Advanced product recommendation engine for e-commerce
+• Collaborative filtering algorithm for personalized suggestions
+• Content-based recommendation for similar product discovery
+• User preference analysis and behavior tracking
+• A/B testing framework for recommendation optimization
+• Easy integration with popular e-commerce platforms
+• Analytics dashboard for conversion tracking
+• Mobile-optimized interface for on-the-go shopping`,
+    image: '/project images/swiftpick.png',
+    technologies: ['Python', 'React', 'TensorFlow', 'AWS', 'Redis', 'GraphQL'],
+    githubLink: 'https://github.com/sreevarshan-xenoz/swiftpick',
+    liveLink: '#',
+    color: '#FFB400',
+    category: 'AI/ML',
+    status: 'Active',
+    year: 2021,
+    videoDemo: false
+  },
+  {
+    title: 'Student Job Finder',
+    description: 'A platform connecting students with part-time job opportunities, internships, and campus work-study positions.',
+    longDescription: `• Specialized job platform for college and university students
+• Location-based job searches for campus and nearby opportunities
+• Skill matching algorithm to connect students with relevant positions
+• Schedule compatibility features for balancing work and classes
+• Application tracking and status updates
+• Employer profiles and reviews from past student employees
+• Resume builder with academic achievement integration
+• Mobile app for on-the-go job searching and applications`,
+    image: '/project images/student job finder.png',
+    technologies: ['React', 'Node.js', 'MongoDB', 'Express', 'Google Maps API', 'Redux'],
+    githubLink: 'https://github.com/sreevarshan-xenoz/student-job-finder',
+    liveLink: '#',
+    color: '#4BC0C0',
+    category: 'Web Apps',
+    status: 'Completed',
+    year: 2021,
+    videoDemo: false
+  },
+  {
     title: 'NixOS-Hyprland',
     description: 'Personalized Linux setup with Hyprland window manager and comprehensive dotfiles, optimized for developer productivity and aesthetics.',
     longDescription: `• Custom NixOS configuration with declarative package management
@@ -61,7 +167,7 @@ const projects = [
 • Beautiful UI with custom animations and transparency effects
 • Extensive keyboard shortcuts for mouseless operation
 • Modular configuration system for easy component swapping`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=NixOS+Hyprland',
+    image: '/project images/template.png',
     technologies: ['NixOS', 'Hyprland', 'Lua', 'Shell', 'Nix', 'Linux'],
     githubLink: 'https://github.com/sreevarshan-xenoz/nixos-hyprland',
     liveLink: '#',
@@ -82,7 +188,7 @@ const projects = [
 • Secure wallet integration with multiple authentication options
 • Transaction history and analytics for subscribers and providers
 • Low-fee structure compared to traditional payment processors`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=Cross+Chain',
+    image: '/project images/template.png',
     technologies: ['Solana', 'Router Protocol', 'React', 'Web3.js', 'Rust', 'TypeScript'],
     githubLink: 'https://github.com/sreevarshan-xenoz/cross-chain-subscription',
     liveLink: '#',
@@ -94,28 +200,6 @@ const projects = [
     videoDemo: true
   },
   {
-    title: 'ECHOLINK - Real-Time Chat',
-    description: 'A peer-to-peer encrypted chat system built using Socket.IO with room support, live status indicators, and end-to-end encryption.',
-    longDescription: `• Real-time messaging with Socket.IO backend
-• End-to-end encryption for secure communications
-• Room-based chat system with private/public options
-• Live status indicators and typing notifications
-• Message history with local encryption
-• File sharing capabilities with progress tracking
-• Responsive design works on desktop and mobile devices
-• Offline capability with message queuing`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=ECHOLINK',
-    technologies: ['Node.js', 'Socket.IO', 'React', 'Encryption', 'MongoDB', 'Express'],
-    githubLink: 'https://github.com/sreevarshan-xenoz/echolink',
-    liveLink: '#',
-    featured: true,
-    color: '#64b4ff',
-    category: 'Web Apps',
-    status: 'Completed',
-    year: 2022,
-    videoDemo: false
-  },
-  {
     title: 'A-U-R-A 2.0',
     description: 'An emotional AI framework focused on sentiment-aware human interaction, capable of recognizing and responding to emotional cues.',
     longDescription: `• Sentiment analysis using advanced NLP techniques
@@ -125,7 +209,7 @@ const projects = [
 • Integration capabilities with other AI assistants
 • Conversation memory with emotional context preservation
 • Privacy-focused design with local processing options`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=AURA+2.0',
+    image: '/project images/template.png',
     technologies: ['Python', 'PyTorch', 'NLTK', 'Emotion Recognition', 'FastAPI', 'React'],
     githubLink: 'https://github.com/sreevarshan-xenoz/aura-2',
     liveLink: '#',
@@ -146,7 +230,7 @@ const projects = [
 • Custom keyboard shortcuts for efficient navigation
 • Theme system with light/dark mode and accent colors
 • Optimized startup time with lazy plugin loading`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=Avante+Nvim',
+    image: '/project images/template.png',
     technologies: ['Lua', 'Neovim', 'LSP', 'Python', 'JavaScript', 'Rust'],
     githubLink: 'https://github.com/sreevarshan-xenoz/avante.nvim',
     liveLink: '#',
@@ -167,7 +251,7 @@ const projects = [
 • Multi-campaign management for large organizations
 • Compliance-focused reporting for security audits
 • Educational resources for targeted employees`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=Gophish',
+    image: '/project images/template.png',
     technologies: ['Go', 'JavaScript', 'HTML/CSS', 'PostgreSQL', 'RESTful APIs', 'Docker'],
     githubLink: 'https://github.com/sreevarshan-xenoz/gophish-remastered',
     liveLink: '#',
@@ -188,7 +272,7 @@ const projects = [
 • Supports multiple output formats (OBJ, STL, GLTF)
 • API for integration with design applications
 • Progressive generation showing the creation process`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=Text-to-3D',
+    image: '/project images/template.png',
     technologies: ['Python', 'PyTorch3D', 'CLIP', 'WebGL', 'Three.js', 'CUDA'],
     githubLink: 'https://github.com/sreevarshan-xenoz/text-to-3d',
     liveLink: '#',
@@ -209,7 +293,7 @@ const projects = [
 • Export options for financial reporting
 • Multi-device sync via cloud storage
 • Secure encryption for sensitive financial data`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=Finance+Tracker',
+    image: '/project images/template.png',
     technologies: ['React', 'Firebase', 'D3.js', 'Material-UI', 'Progressive Web App', 'IndexedDB'],
     githubLink: 'https://github.com/sreevarshan-xenoz/finance-tracker',
     liveLink: '#',
@@ -230,7 +314,7 @@ const projects = [
 • CI/CD pipeline configuration
 • Containerized deployment setup
 • Comprehensive documentation for developers`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=Quicknet',
+    image: '/project images/template.png',
     technologies: ['Next.js', 'Prisma', 'PostgreSQL', 'Authentication', 'Docker', 'TypeScript'],
     githubLink: 'https://github.com/sreevarshan-xenoz/quicknet-1',
     liveLink: '#',
@@ -248,18 +332,18 @@ const projects = [
 • Optimized for development workflows
 • Advanced security features and hardening
 • Package management system with AI suggestions
-• Voice-controlled system management
-• Low resource requirements with high performance
-• Rolling release with stability features`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=Void+Linux',
-    technologies: ['Linux', 'C', 'Shell', 'Python', 'XBPS', 'System Integration'],
-    githubLink: 'https://github.com/sreevarshan-xenoz/void',
+• Custom desktop environment with minimalist design
+• Automated system maintenance and updates
+• Integration with developer tools and workflows`,
+    image: '/project images/template.png',
+    technologies: ['Linux', 'Shell', 'Python', 'C', 'AI Integration', 'System Design'],
+    githubLink: 'https://github.com/sreevarshan-xenoz/void-linux-overlay',
     liveLink: '#',
-    color: '#9c64ff',
+    color: '#19c37d',
     category: 'Operating Systems',
     status: 'Experimental',
     year: 2023,
-    videoDemo: true
+    videoDemo: false
   },
   {
     title: 'Doc App',
