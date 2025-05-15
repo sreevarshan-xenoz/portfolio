@@ -40,7 +40,7 @@ const projects = [
 • Multi-mode operation: Desktop, headless, and remote access via API
 • Personalized responses: Adapts to user preferences and interaction history
 • Cross-platform compatibility: Core functionality works on Linux, macOS, and Windows`,
-    image: './project images/iris.png',
+    image: '/project images/iris.png',
     technologies: ['Python', 'TensorFlow', 'OpenCV', 'NLP', 'WebRTC', 'FastAPI'],
     githubLink: 'https://github.com/sreevarshan-xenoz/iris-1-ai',
     liveLink: '#',
@@ -61,7 +61,7 @@ const projects = [
 • Energy efficiency optimization through machine learning
 • Mobile app for remote access and control
 • Multi-user support with personalized preferences`,
-    image: './project images/aura.png',
+    image: '/project images/aura.png',
     technologies: ['IoT', 'React', 'Node.js', 'Machine Learning', 'WebSockets', 'MQTT'],
     githubLink: 'https://github.com/sreevarshan-xenoz/aura-smart-home',
     liveLink: '#',
@@ -82,7 +82,7 @@ const projects = [
 • Medical record access and management for patients
 • Insurance verification and billing integration
 • Personalized health recommendations and follow-ups`,
-    image: './project images/doc app.png',
+    image: '/project images/doc app.png',
     technologies: ['React Native', 'Firebase', 'TensorFlow', 'WebRTC', 'HIPAA Compliance', 'Redux'],
     githubLink: 'https://github.com/sreevarshan-xenoz/docapp',
     liveLink: '#',
@@ -104,7 +104,7 @@ const projects = [
 • File sharing capabilities with progress tracking
 • Responsive design works on desktop and mobile devices
 • Offline capability with message queuing`,
-    image: './project images/echolink.png',
+    image: '/project images/echolink.png',
     technologies: ['Node.js', 'Socket.IO', 'React', 'Encryption', 'MongoDB', 'Express'],
     githubLink: 'https://github.com/sreevarshan-xenoz/echolink',
     liveLink: '#',
@@ -126,7 +126,7 @@ const projects = [
 • Easy integration with popular e-commerce platforms
 • Analytics dashboard for conversion tracking
 • Mobile-optimized interface for on-the-go shopping`,
-    image: './project images/swiftpick.png',
+    image: '/project images/swiftpick.png',
     technologies: ['Python', 'React', 'TensorFlow', 'AWS', 'Redis', 'GraphQL'],
     githubLink: 'https://github.com/sreevarshan-xenoz/swiftpick',
     liveLink: '#',
@@ -147,7 +147,7 @@ const projects = [
 • Employer profiles and reviews from past student employees
 • Resume builder with academic achievement integration
 • Mobile app for on-the-go job searching and applications`,
-    image: './project images/student job finder.png',
+    image: '/project images/student job finder.png',
     technologies: ['React', 'Node.js', 'MongoDB', 'Express', 'Google Maps API', 'Redux'],
     githubLink: 'https://github.com/sreevarshan-xenoz/student-job-finder',
     liveLink: '#',
@@ -167,7 +167,7 @@ const projects = [
 • Beautiful UI with custom animations and transparency effects
 • Extensive keyboard shortcuts for mouseless operation
 • Modular configuration system for easy component swapping`,
-    image: './project images/template.png',
+    image: '/project images/template.png',
     technologies: ['NixOS', 'Hyprland', 'Lua', 'Shell', 'Nix', 'Linux'],
     githubLink: 'https://github.com/sreevarshan-xenoz/nixos-hyprland',
     liveLink: '#',
@@ -188,7 +188,7 @@ const projects = [
 • Secure wallet integration with multiple authentication options
 • Transaction history and analytics for subscribers and providers
 • Low-fee structure compared to traditional payment processors`,
-    image: './project images/template.png',
+    image: '/project images/template.png',
     technologies: ['Solana', 'Router Protocol', 'React', 'Web3.js', 'Rust', 'TypeScript'],
     githubLink: 'https://github.com/sreevarshan-xenoz/cross-chain-subscription',
     liveLink: '#',
@@ -209,7 +209,7 @@ const projects = [
 • Integration capabilities with other AI assistants
 • Conversation memory with emotional context preservation
 • Privacy-focused design with local processing options`,
-    image: './project images/template.png',
+    image: '/project images/template.png',
     technologies: ['Python', 'PyTorch', 'NLTK', 'Emotion Recognition', 'FastAPI', 'React'],
     githubLink: 'https://github.com/sreevarshan-xenoz/aura-2',
     liveLink: '#',
@@ -230,7 +230,7 @@ const projects = [
 • Custom keyboard shortcuts for efficient navigation
 • Theme system with light/dark mode and accent colors
 • Optimized startup time with lazy plugin loading`,
-    image: './project images/template.png',
+    image: '/project images/template.png',
     technologies: ['Lua', 'Neovim', 'LSP', 'Python', 'JavaScript', 'Rust'],
     githubLink: 'https://github.com/sreevarshan-xenoz/avante.nvim',
     liveLink: '#',
@@ -251,7 +251,7 @@ const projects = [
 • Multi-campaign management for large organizations
 • Compliance-focused reporting for security audits
 • Educational resources for targeted employees`,
-    image: './project images/template.png',
+    image: '/project images/template.png',
     technologies: ['Go', 'JavaScript', 'HTML/CSS', 'PostgreSQL', 'RESTful APIs', 'Docker'],
     githubLink: 'https://github.com/sreevarshan-xenoz/gophish-remastered',
     liveLink: '#',
@@ -272,7 +272,7 @@ const projects = [
 • Supports multiple output formats (OBJ, STL, GLTF)
 • API for integration with design applications
 • Progressive generation showing the creation process`,
-    image: './project images/template.png',
+    image: '/project images/template.png',
     technologies: ['Python', 'PyTorch3D', 'CLIP', 'WebGL', 'Three.js', 'CUDA'],
     githubLink: 'https://github.com/sreevarshan-xenoz/text-to-3d',
     liveLink: '#',
@@ -293,7 +293,7 @@ const projects = [
 • Export options for financial reporting
 • Multi-device sync via cloud storage
 • Secure encryption for sensitive financial data`,
-    image: './project images/template.png',
+    image: '/project images/template.png',
     technologies: ['React', 'Firebase', 'D3.js', 'Material-UI', 'Progressive Web App', 'IndexedDB'],
     githubLink: 'https://github.com/sreevarshan-xenoz/finance-tracker',
     liveLink: '#',
@@ -314,7 +314,7 @@ const projects = [
 • CI/CD pipeline configuration
 • Containerized deployment setup
 • Comprehensive documentation for developers`,
-    image: './project images/template.png',
+    image: '/project images/template.png',
     technologies: ['Next.js', 'Prisma', 'PostgreSQL', 'Authentication', 'Docker', 'TypeScript'],
     githubLink: 'https://github.com/sreevarshan-xenoz/quicknet-1',
     liveLink: '#',
@@ -335,7 +335,7 @@ const projects = [
 • Custom desktop environment with minimalist design
 • Automated system maintenance and updates
 • Integration with developer tools and workflows`,
-    image: './project images/template.png',
+    image: '/project images/template.png',
     technologies: ['Linux', 'Shell', 'Python', 'C', 'AI Integration', 'System Design'],
     githubLink: 'https://github.com/sreevarshan-xenoz/void-linux-overlay',
     liveLink: '#',
@@ -356,7 +356,7 @@ const projects = [
 • Notification system for appointments and medications
 • Payment processing for consultations
 • HIPAA-compliant security measures`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=Doc+App',
+    image: '/project images/template.png',
     technologies: ['React Native', 'Firebase', 'WebRTC', 'Express', 'MongoDB', 'Stripe'],
     githubLink: 'https://github.com/sreevarshan-xenoz/doc-app',
     liveLink: '#',
@@ -377,7 +377,7 @@ const projects = [
 • Model-specific optimization techniques
 • Community contributions and peer review
 • Regular updates with new prompt engineering research`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=System+Prompts',
+    image: '/project images/template.png',
     technologies: ['Markdown', 'GPT', 'Claude', 'LLaMA', 'Jupyter Notebook', 'Python'],
     githubLink: 'https://github.com/sreevarshan-xenoz/system-prompts',
     liveLink: '#',
@@ -398,7 +398,7 @@ const projects = [
 • Capacity management and peak time predictions
 • Integration with campus events calendar
 • Energy usage and sustainability metrics`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=SwiftPick',
+    image: '/project images/template.png',
     technologies: ['Flutter', 'Google Maps API', 'Firebase', 'Node.js', 'Machine Learning', 'MongoDB'],
     githubLink: 'https://github.com/sreevarshan-xenoz/swiftpick',
     liveLink: '#',
@@ -419,7 +419,7 @@ const projects = [
 • Physics simulation capabilities
 • Customizable lighting and environmental effects
 • Screen layout management for complex setups`,
-    image: 'https://placehold.co/600x400/1a1a1a/64ffda?text=3D+Scene',
+    image: '/project images/template.png',
     technologies: ['WebGL', 'Three.js', 'JavaScript', 'HTML5', 'CSS3', 'Socket.IO'],
     githubLink: 'https://github.com/sreevarshan-xenoz/multi-window-3d',
     liveLink: '#',
