@@ -1142,7 +1142,7 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
                 },
               }}
             >
-              SREEVARSHAN
+              SREE VARSHAN V
             </Typography>
             <motion.div
               animate={floatingAnimation}
@@ -1169,7 +1169,7 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
                 opacity: 0.5,
               }}
             >
-              💀
+              
             </motion.div>
           </motion.div>
 
