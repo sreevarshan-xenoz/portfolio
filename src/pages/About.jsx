@@ -45,8 +45,8 @@ const About = () => {
         this.x = x;
         this.y = y;
         this.size = Math.random() * 2 + 1;
-        this.speedX = Math.random() * 2 - 1;
-        this.speedY = Math.random() * 2 - 1;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.speedY = Math.random() * 1 - 0.5;
         this.color = '#64ffda';
       }
 
@@ -56,8 +56,6 @@ const About = () => {
 
         if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
         if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
-
-        // Removing mouse attraction behavior
       }
 
       draw() {
@@ -70,7 +68,7 @@ const About = () => {
 
     const init = () => {
       particles = [];
-      for (let i = 0; i < 50; i++) {
+      for (let i = 0; i < 80; i++) {
         const x = Math.random() * canvas.width;
         const y = Math.random() * canvas.height;
         particles.push(new Particle(x, y));
@@ -93,7 +91,7 @@ const About = () => {
           if (distance < 100) {
             ctx.beginPath();
             ctx.strokeStyle = `rgba(100, 255, 218, ${1 - distance/100})`;
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 0.8;
             ctx.moveTo(particle.x, particle.y);
             ctx.lineTo(otherParticle.x, otherParticle.y);
             ctx.stroke();
@@ -117,11 +115,7 @@ const About = () => {
   }, []);
 
   const handleMouseMove = (e) => {
-    // Simplified - no longer needed for particle effect
-    setMousePosition({
-      x: e.clientX,
-      y: e.clientY
-    });
+    // Empty function - no longer tracking mouse position
   };
 
   // 3D Card Effect
@@ -231,7 +225,8 @@ const About = () => {
           width: '100%',
           height: '100%',
           pointerEvents: 'none',
-          zIndex: -1,
+          zIndex: 0,
+          opacity: 0.6,
         }}
       />
     );
@@ -247,11 +242,10 @@ const About = () => {
         right: 0,
         bottom: 0,
         background: `radial-gradient(
-          circle at ${mousePosition.x}px ${mousePosition.y}px,
-          rgba(100, 255, 218, 0.1) 0%,
-          rgba(10, 25, 47, 0.9) 70%
+          circle at 50% 50%,
+          rgba(10, 25, 47, 0.8) 0%,
+          rgba(10, 25, 47, 0.95) 100%
         )`,
-        transition: 'background 0.8s ease', // Slower transition
         zIndex: -1,
         willChange: 'background',
       }}
