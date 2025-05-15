@@ -197,7 +197,7 @@ function Navbar() {
                   '&:hover': {
                     animation: 'glitch 2s infinite',
                     '&::before, &::after': {
-                      content: '"Portfolio"',
+                      content: '"SREEVARSHAN"',
                       position: 'absolute',
                       top: 0,
                       left: 0,
@@ -282,7 +282,7 @@ function Navbar() {
                   },
                 }}
               >
-                Portfolio
+                SREEVARSHAN
               </Typography>
             </motion.div>
 
