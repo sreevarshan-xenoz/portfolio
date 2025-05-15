@@ -18,6 +18,7 @@ import {
   Divider,
   useTheme,
   alpha,
+  useMediaQuery,
 } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -518,8 +519,20 @@ const ProjectCard = ({ project }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const cardRef = useRef(null);
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  // Function to handle both hover and touch for mobile
+  const handleInteraction = (entering) => {
+    // On mobile, only respond to touch, not hover
+    if (!isMobile || entering) {
+      setIsHovered(entering);
+    }
+  };
 
   const handleMouseMove = (e) => {
+    // Skip tilt effect on mobile devices
+    if (isMobile) return;
+
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -535,7 +548,9 @@ const ProjectCard = ({ project }) => {
   };
 
   const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0 });
+    if (!isMobile) {
+      setTilt({ x: 0, y: 0 });
+    }
   };
 
   const ParticleEffect = () => {
@@ -593,11 +608,13 @@ const ProjectCard = ({ project }) => {
       ref={cardRef}
       component={motion.div}
       variants={itemVariants}
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={() => handleInteraction(true)}
       onMouseLeave={(e) => {
-        setIsHovered(false);
+        handleInteraction(false);
         handleMouseLeave();
       }}
+      onTouchStart={() => handleInteraction(true)}
+      onTouchEnd={() => setTimeout(() => handleInteraction(false), 1000)}
       onMouseMove={(e) => {
         const rect = e.currentTarget.getBoundingClientRect();
         setMousePosition({
@@ -613,18 +630,21 @@ const ProjectCard = ({ project }) => {
         background: isHovered
           ? `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, ${alpha(project.color, 0.2)}, transparent 70%)`
           : theme.palette.background.paper,
-        transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${isHovered ? 1.02 : 1})`,
+        transform: isMobile 
+          ? 'none' // No transform on mobile
+          : `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${isHovered ? 1.02 : 1})`,
         transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
         boxShadow: isHovered 
           ? `0 20px 30px -10px ${alpha(project.color, 0.3)}`
           : '0 10px 30px -15px rgba(0,0,0,0.2)',
-        transformStyle: 'preserve-3d',
+        transformStyle: isMobile ? 'flat' : 'preserve-3d',
         borderRadius: '16px',
         border: '1px solid',
         borderColor: isHovered ? project.color : 'transparent',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
+        willChange: isMobile ? 'auto' : 'transform',
       }}
     >
       <ParticleEffect />
@@ -711,6 +731,7 @@ const ProjectCard = ({ project }) => {
         <CardMedia
           component="img"
           height="200"
+          loading="lazy"
           image={project.image || 'https://placehold.co/600x400/1a1a1a/64ffda?text=Project'}
           alt={project.title}
           sx={{

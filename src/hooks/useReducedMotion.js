@@ -8,7 +8,14 @@ const useReducedMotion = () => {
     
     // Check for the media query support
     const query = window.matchMedia('(prefers-reduced-motion: reduce)');
-    return query.matches;
+    
+    // Also check if it's a mobile device with potentially limited performance
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      window.navigator.userAgent
+    );
+    
+    // Enable reduced motion for both explicit user preference and mobile devices
+    return query.matches || isMobileDevice;
   });
 
   useEffect(() => {
@@ -17,9 +24,14 @@ const useReducedMotion = () => {
     
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     
+    // Check if it's a mobile device with potentially limited performance
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      window.navigator.userAgent
+    );
+    
     // Update state based on the current preference
     const handleChange = (event) => {
-      setPrefersReducedMotion(event.matches);
+      setPrefersReducedMotion(event.matches || isMobileDevice);
     };
     
     // Listen for changes
@@ -43,7 +55,7 @@ const useReducedMotion = () => {
       transition: { duration: 0.6 }
     };
     
-    // Reduced animation settings
+    // Reduced animation settings for better performance
     const reduced = {
       animate: false,
       transition: { duration: 0.1 }

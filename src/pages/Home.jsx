@@ -1779,6 +1779,10 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
                   whileInView={{ opacity: 1, rotateY: 0, z: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.6, delay: index * 0.2 }}
+                  whileTap={{ 
+                    scale: 0.98, 
+                    transition: { duration: 0.2 } 
+                  }}
                   whileHover={{ 
                     z: 50, 
                     rotateY: 5,
@@ -1811,6 +1815,18 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
                         opacity: 1,
                         visibility: 'visible',
                         transform: 'translateY(0)',
+                      },
+                      // Touch device styles
+                      '@media (hover: none)': {
+                        '&:active .project-content': {
+                          transform: 'translateY(-60px)',
+                          opacity: 0,
+                        },
+                        '&:active .project-details': {
+                          opacity: 1,
+                          visibility: 'visible',
+                          transform: 'translateY(0)',
+                        }
                       }
                     }}
                   >
@@ -1866,6 +1882,7 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
                         component="img"
                         src={project.image}
                         alt={project.title}
+                        loading="lazy"
                         sx={{
                           width: '100%',
                           height: '100%',
