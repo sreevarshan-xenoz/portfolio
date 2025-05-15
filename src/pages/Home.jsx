@@ -8,6 +8,7 @@ import ResumeDownload from '../components/ResumeDownload';
 import SocialLinks from '../components/SocialLinks';
 import useReducedMotion from '../hooks/useReducedMotion';
 import { alpha } from '@mui/material/styles';
+import InteractiveElements from '../components/InteractiveElements';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 30 },
@@ -1308,10 +1309,10 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
             mt: 0, // Ensure no extra top margin
           }}
         >
-          <Typography 
-            variant="h4" 
+          <Typography
+            variant="h4"
             component="h2"
-            sx={{ 
+            sx={{
               mb: 4,
               position: 'relative',
               '&::after': {
@@ -1473,10 +1474,10 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
             my: 5, // Add margin top and bottom
           }}
         >
-          <Typography 
-            variant="h4" 
+          <Typography
+            variant="h4"
             component="h2"
-            sx={{ 
+            sx={{
               mb: 6,
               position: 'relative',
               '&::after': {
@@ -1629,6 +1630,9 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
             </Box>
           </Box>
         </Box>
+
+        {/* Interactive Elements Section */}
+        <InteractiveElements />
 
         {/* Replace Experience Section with Featured Projects */}
         <Box
@@ -1812,7 +1816,7 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
                         opacity: 0,
                       },
                       '&:hover .project-details': {
-                        opacity: 1,
+                          opacity: 1,
                         visibility: 'visible',
                         transform: 'translateY(0)',
                       },
@@ -1834,15 +1838,15 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
                     <Chip
                       label={project.status}
                       size="small"
-                      sx={{
+                          sx={{
                         position: 'absolute',
                         top: 16,
                         right: 16,
                         zIndex: 10,
                         backgroundColor: project.color + '22',
-                        color: project.color,
+                            color: project.color,
                         border: `1px solid ${project.color}`,
-                        backdropFilter: 'blur(5px)',
+                            backdropFilter: 'blur(5px)',
                         fontWeight: 'bold',
                         fontSize: '0.7rem',
                         px: 1
@@ -1862,7 +1866,7 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
                           repeat: Infinity,
                           ease: "easeInOut"
                         }}
-                        sx={{
+                      sx={{
                           position: 'absolute',
                           top: 16,
                           left: 16,
