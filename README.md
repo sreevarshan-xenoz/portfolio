@@ -1,87 +1,108 @@
-# The Stickman's Quest: Interactive Portfolio Game
+# Portfolio Website
 
-An interactive portfolio game where visitors can navigate through a platformer as a customizable stickman character, unlocking projects and skills as they progress.
-
-## Overview
-
-"The Stickman's Quest" is an innovative way to showcase your portfolio through an interactive game experience. Visitors can click the "My World" button to enter a platformer game where they control a stickman character. By overcoming obstacles and completing challenges, they unlock your projects, case studies, and skill demonstrations.
+A modern, interactive portfolio website built with React and Vite, featuring dynamic animations, interactive elements, and a responsive design.
 
 ## Features
 
-- **Interactive Platformer**: Navigate through different zones representing various skills and projects
-- **Dynamic Obstacles**: Each obstacle presents a challenge related to real-world problems
-- **Stickman Customization**: Collect and equip accessories to customize your character
-- **Project Unlocking**: Complete challenges to unlock and view portfolio projects
-- **Responsive Design**: Works on both desktop and mobile devices
-- **Immersive UI**: Game-like interface with quest log, inventory, and map
+- **Modern UI Components** - Built with Material-UI (MUI) for a polished, professional look
+- **Dynamic Animations** - Implemented using Framer Motion and React Spring for engaging user interactions
+- **Interactive Elements** - Feature-rich components including:
+  - 3D Flip Cards
+  - Interactive Skill Radar Charts
+  - Particle Text Animations
+  - Code Typewriter Effects
+  - Terminal-style Easter Eggs
+  - Interactive Timeline
+- **Theme Switching** - Toggle between dark and light themes
+- **Responsive Design** - Fully responsive layout that works seamlessly across all devices
+- **Fast Performance** - Optimized build with Vite for quick loading and smooth navigation
+- **Component-Based Architecture** - Organized and maintainable React component structure
+- **Route Management** - Clean URL routing with React Router
+- **Intersection Observer** - Smart loading and animations triggered by scroll position
+- **Accessibility** - Support for reduced motion preferences
 
-## Game Zones
+## Tech Stack
 
-1. **UX Forest**: Showcases UI/UX design skills and projects
-2. **Code Mountains**: Features programming and development projects
-3. **Writing River**: Displays content creation and writing skills
-4. **Masterpiece Citadel**: Highlights major portfolio pieces and achievements
-
-## Technologies Used
-
-- React
-- Material-UI
-- Framer Motion for animations
-- React Router for navigation
-- Custom game physics and collision detection
+- **Frontend Framework**: React 18
+- **Build Tool**: Vite
+- **UI Library**: Material-UI v5
+- **Animation Libraries**:
+  - Framer Motion
+  - React Spring
+- **Routing**: React Router DOM v6
+- **Data Visualization**: Chart.js with React-ChartJS-2
+- **Intersection Detection**: React Intersection Observer
+- **Icons**: MUI Icons
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
-- npm or yarn
+- Node.js (latest LTS version recommended)
+- npm or yarn package manager
 
 ### Installation
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/yourusername/stickman-quest.git
-   cd stickman-quest
-   ```
-
+1. Clone the repository
 2. Install dependencies:
-   ```
+   ```bash
    npm install
    ```
 
-3. Start the development server:
-   ```
-   npm run dev
-   ```
+### Development
 
-4. Open your browser and navigate to `http://localhost:5173`
+Run the development server:
+```bash
+npm run dev
+```
 
-## How to Play
+The site will be available at `http://localhost:5173`
 
-1. Click the "My World" button in the navigation bar
-2. Use arrow keys to move your stickman character:
-   - Left/Right arrows to move horizontally
-   - Up arrow to jump
-3. Click on obstacles to start challenges
-4. Complete challenges to progress through zones
-5. Unlock projects and accessories as you advance
-6. Use the UI buttons to access the Quest Log, Inventory, and Map
+### Building for Production
 
-## Customization
+Create a production build:
+```bash
+npm run build
+```
 
-You can customize the game by modifying the following files:
+Preview the production build:
+```bash
+npm run preview
+```
 
-- `src/data/gameData.js`: Edit game zones, obstacles, projects, and accessories
-- `src/components/game/`: Modify game components to change visuals and mechanics
-- `src/pages/StickmanQuest.jsx`: Adjust game logic and physics
+## Project Structure
 
-## License
+- `/src` - Source code
+  - `/pages` - Main page components (Home, About, Projects, Contact)
+  - `/components` - Reusable UI components
+    - Interactive elements (FlipCard3D, CodeTypeWriter, ParticleText, etc.)
+    - Navigation and layout components
+  - `/hooks` - Custom React hooks
+  - `/context` - React context providers for state management
+  - `/styles` - Global styles and theme configuration
+  - `/assets` - Static assets (images, icons, etc.)
+- `/public` - Static files served directly
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## Development Features
 
-## Acknowledgments
+- Hot Module Replacement (HMR)
+- ESLint configuration for code quality
+- Source maps for debugging
+- Optimized production builds with code splitting
+- PWA support via Vite PWA plugin
 
-- Inspired by classic platformer games
-- Built with React and Material-UI
-- Animations powered by Framer Motion
+## Key Components
+
+- **Interactive Skill Chart** - Radar chart visualization of technical skills
+- **3D Flip Cards** - Interactive cards with front/back views and 3D rotation
+- **Particle Text Animation** - Dynamic text with particle effects
+- **Code Typewriter** - Animated code typing effect
+- **Terminal Easter Eggs** - Command-line style interactive features
+- **Interactive Timeline** - Visual representation of experience and milestones
+
+## Browser Support
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
