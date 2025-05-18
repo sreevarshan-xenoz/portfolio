@@ -213,6 +213,66 @@ function getCardHoverEffect(exp) {
       className: 'burnout-hover',
     };
   }
+  if (key.includes('self-modifying')) {
+    return {
+      motion: { scale: 1.04 },
+      className: 'self-modifying-hover',
+    };
+  }
+  if (key.includes('ai-collaborator')) {
+    return {
+      motion: { scale: 1.04 },
+      className: 'ai-collaborator-hover',
+    };
+  }
+  if (key.includes('data-driven')) {
+    return {
+      motion: { scale: 1.04 },
+      className: 'data-driven-hover',
+    };
+  }
+  if (key.includes('choose-career')) {
+    return {
+      motion: { scale: 1.04 },
+      className: 'choose-career-hover',
+    };
+  }
+  if (key.includes('data-vortex')) {
+    return {
+      motion: { scale: 1.04 },
+      className: 'data-vortex-hover',
+    };
+  }
+  if (key.includes('living-archive')) {
+    return {
+      motion: { scale: 1.04 },
+      className: 'living-archive-hover',
+    };
+  }
+  if (key.includes('infinite-scroll')) {
+    return {
+      motion: { scale: 1.04 },
+      className: 'infinite-scroll-hover',
+    };
+  }
+  if (key.includes('social-mirror')) {
+    return {
+      motion: { scale: 1.04 },
+      className: 'social-mirror-hover',
+    };
+  }
+  if (key.includes('sentient-404')) {
+    return {
+      motion: { scale: 1.04 },
+      className: 'sentient-404-hover',
+    };
+  }
+  if (key.includes('zero-trust')) {
+    return {
+      motion: { scale: 1.04 },
+      className: 'zero-trust-hover',
+    };
+  }
   return { motion: cardThemeStyles[exp.key]?.hover || { scale: 1.03 }, className: '' };
 }
 

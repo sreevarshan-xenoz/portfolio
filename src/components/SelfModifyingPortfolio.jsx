@@ -69,7 +69,6 @@ const SelfModifyingPortfolio = () => {
   const [lastInteraction, setLastInteraction] = useState(Date.now());
   const containerRef = useRef(null);
   const theme = useTheme();
-  const [mutationLog, setMutationLog] = useState([]);
   const [showConfetti, setShowConfetti] = useState(false);
   const [matrixRain, setMatrixRain] = useState(false);
   const [glitchText, setGlitchText] = useState('');
@@ -79,7 +78,6 @@ const SelfModifyingPortfolio = () => {
   const applyFramework = (index) => {
     setIsGlitching(true);
     setShowConfetti(true);
-    logMutation(frameworks[index].name);
     
     // Apply glitch effect
     gsap.to(containerRef.current, {
@@ -174,14 +172,6 @@ const SelfModifyingPortfolio = () => {
     glitch();
     return () => { active = false; };
   }, [currentFramework]);
-  
-  // Mutation log update
-  const logMutation = (themeName) => {
-    setMutationLog(logs => [
-      { theme: themeName, time: new Date().toLocaleTimeString(), msg: `Switched to ${themeName}` },
-      ...logs.slice(0, 7)
-    ]);
-  };
   
   // Chaos mode overlays
   const chaosOverlays = chaosMode ? (
@@ -315,16 +305,6 @@ const SelfModifyingPortfolio = () => {
       >
         Hover count: {hoverCount} | Last interaction: {Math.floor((Date.now() - lastInteraction) / 1000)}s ago
       </Typography>
-      
-      {/* Mutation log */}
-      <Box sx={{ mt: 3, width: '100%', maxWidth: 400, alignSelf: 'flex-end', background: 'rgba(0,0,0,0.2)', borderRadius: 2, p: 2, fontSize: '0.95rem', color: '#fff', fontFamily: 'monospace', boxShadow: '0 2px 8px #0002' }}>
-        <Typography variant="subtitle2" sx={{ color: currentTheme.secondary, mb: 1 }}>Mutation Log</Typography>
-        <ul style={{ margin: 0, padding: 0, listStyle: 'none' }}>
-          {mutationLog.map((log, i) => (
-            <li key={i} style={{ marginBottom: 2 }}>{log.time} — {log.msg}</li>
-          ))}
-        </ul>
-      </Box>
     </Box>
   );
 };
