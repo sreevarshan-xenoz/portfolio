@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Box, Button, Typography, Paper, useTheme } from '@mui/material';
+import { Box, Button, Typography, Paper, useTheme, useMediaQuery } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 import '../styles/SelfModifyingPortfolio.css';
+import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import FullscreenExitIcon from '@mui/icons-material/FullscreenExit';
 
 // CSS frameworks to switch between
 const frameworks = [
@@ -75,6 +77,37 @@ const frameworkLayout = {
   'cyberpunk-theme':{ direction: 'row', align: 'center', gap: 3, fontSize: 20, fontWeight: 700, justify: 'space-between' },
   'matrix-theme':   { direction: 'column', align: 'flex-start', gap: 1, fontSize: 16, fontWeight: 400, justify: 'flex-start' },
   'spacepunk-theme':{ direction: 'row', align: 'center', gap: 4, fontSize: 19, fontWeight: 600, justify: 'space-between' },
+};
+
+// Section layout and hover effect config per framework
+const sectionLayout = {
+  'mui-theme':      { arrangement: 'column', about: {}, projects: {}, skills: {}, contact: {} },
+  'tailwind-theme': { arrangement: 'responsive-row', about: {}, projects: {}, skills: {}, contact: {} },
+  'bootstrap-theme':{ arrangement: '2col', about: { gridArea: 'about' }, projects: { gridArea: 'projects' }, skills: { gridArea: 'skills' }, contact: { gridArea: 'contact' } },
+  'chakra-theme':   { arrangement: 'column', about: {}, projects: {}, skills: {}, contact: {} },
+  'ant-theme':      { arrangement: 'row', about: {}, projects: {}, skills: {}, contact: {} },
+  'bulma-theme':    { arrangement: 'responsive-row', about: {}, projects: {}, skills: {}, contact: {} },
+  'neumorph-theme': { arrangement: 'centered', about: {}, projects: {}, skills: {}, contact: {} },
+  'glass-theme':    { arrangement: 'column', about: {}, projects: {}, skills: {}, contact: {} },
+  'retro-theme':    { arrangement: 'centered', about: {}, projects: {}, skills: {}, contact: {} },
+  'cyberpunk-theme':{ arrangement: 'row', about: {}, projects: {}, skills: {}, contact: {} },
+  'matrix-theme':   { arrangement: 'column', about: {}, projects: {}, skills: {}, contact: {} },
+  'spacepunk-theme':{ arrangement: 'row', about: {}, projects: {}, skills: {}, contact: {} },
+};
+
+const sectionHover = {
+  'mui-theme':      { class: 'mui-section-hover', motion: { scale: 1.03 } },
+  'tailwind-theme': { class: 'tailwind-section-hover', motion: { scale: 1.04, y: -4 } },
+  'bootstrap-theme':{ class: 'bootstrap-section-hover', motion: { scale: 1.05, boxShadow: '0 8px 32px #0d6efd33' } },
+  'chakra-theme':   { class: 'chakra-section-hover', motion: { scale: 1.04, rotate: 1 } },
+  'ant-theme':      { class: 'ant-section-hover', motion: { scale: 1.04, borderColor: '#1890ff' } },
+  'bulma-theme':    { class: 'bulma-section-hover', motion: { scale: 1.04, y: -2 } },
+  'neumorph-theme': { class: 'neumorph-section-hover', motion: { scale: 0.98, boxShadow: 'inset 8px 8px 16px #bebebe, inset -8px -8px 16px #ffffff' } },
+  'glass-theme':    { class: 'glass-section-hover', motion: { scale: 1.03, filter: 'blur(1.5px)' } },
+  'retro-theme':    { class: 'retro-section-hover', motion: { scale: 1.01, filter: 'contrast(1.2)' } },
+  'cyberpunk-theme':{ class: 'cyberpunk-section-hover', motion: { scale: 1.05, boxShadow: '0 0 24px #ff00c8, 0 0 48px #00fff7' } },
+  'matrix-theme':   { class: 'matrix-section-hover', motion: { scale: 1.02, filter: 'drop-shadow(0 0 8px #39ff14)' } },
+  'spacepunk-theme':{ class: 'spacepunk-section-hover', motion: { scale: 1.04, rotate: 2 } },
 };
 
 // About Section
@@ -196,6 +229,11 @@ const SelfModifyingPortfolio = () => {
   const [matrixRain, setMatrixRain] = useState(false);
   const [glitchText, setGlitchText] = useState('');
   const [manualTheme, setManualTheme] = useState(null);
+  const currentFrameworkObj = frameworks[currentFramework];
+  const layout = frameworkLayout[frameworks[currentFramework].className] || frameworkLayout['mui-theme'];
+  const sectionCfg = sectionLayout[frameworks[currentFramework].className] || sectionLayout['mui-theme'];
+  const isMobile = useMediaQuery('(max-width: 900px)');
+  const [isFullscreen, setIsFullscreen] = useState(false);
   
   // Function to apply a new framework theme
   const applyFramework = (index) => {
@@ -270,11 +308,6 @@ const SelfModifyingPortfolio = () => {
     return () => clearInterval(inactivityCheck);
   }, [lastInteraction, currentFramework, chaosMode]);
   
-  // Get current theme colors
-  const currentTheme = themeVariations[frameworks[currentFramework].className];
-  const currentFrameworkObj = frameworks[currentFramework];
-  const layout = frameworkLayout[frameworks[currentFramework].className] || frameworkLayout['mui-theme'];
-  
   // Glitch text effect for framework name
   useEffect(() => {
     let active = true;
@@ -320,6 +353,78 @@ const SelfModifyingPortfolio = () => {
     setManualTheme(e.target.value);
   };
   
+  // Fullscreen logic
+  const handleFullscreen = () => {
+    const el = containerRef.current;
+    if (!isFullscreen) {
+      if (el.requestFullscreen) el.requestFullscreen();
+      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      else if (el.mozRequestFullScreen) el.mozRequestFullScreen();
+      else if (el.msRequestFullscreen) el.msRequestFullscreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+      else if (document.msExitFullscreen) document.msExitFullscreen();
+    }
+  };
+  useEffect(() => {
+    function onFullscreenChange() {
+      setIsFullscreen(!!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement));
+    }
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+    document.addEventListener('mozfullscreenchange', onFullscreenChange);
+    document.addEventListener('MSFullscreenChange', onFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', onFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', onFullscreenChange);
+      document.removeEventListener('mozfullscreenchange', onFullscreenChange);
+      document.removeEventListener('MSFullscreenChange', onFullscreenChange);
+    };
+  }, []);
+  
+  // Section arrangement logic
+  let sections;
+  if (sectionCfg.arrangement === '2col' && !isMobile) {
+    sections = (
+      <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridTemplateRows: 'auto auto', gap: 3, gridTemplateAreas: `"about projects" "skills contact"` }}>
+        <Box sx={{ gridArea: 'about' }}><SectionWrapper theme={theme} framework={currentFrameworkObj} hover={sectionHover[currentFrameworkObj.className]}><AboutSection theme={theme} framework={currentFrameworkObj} layout={layout} /></SectionWrapper></Box>
+        <Box sx={{ gridArea: 'projects' }}><SectionWrapper theme={theme} framework={currentFrameworkObj} hover={sectionHover[currentFrameworkObj.className]}><ProjectsSection theme={theme} framework={currentFrameworkObj} layout={layout} /></SectionWrapper></Box>
+        <Box sx={{ gridArea: 'skills' }}><SectionWrapper theme={theme} framework={currentFrameworkObj} hover={sectionHover[currentFrameworkObj.className]}><SkillsSection theme={theme} framework={currentFrameworkObj} layout={layout} /></SectionWrapper></Box>
+        <Box sx={{ gridArea: 'contact' }}><SectionWrapper theme={theme} framework={currentFrameworkObj} hover={sectionHover[currentFrameworkObj.className]}><ContactSection theme={theme} framework={currentFrameworkObj} layout={layout} /></SectionWrapper></Box>
+      </Box>
+    );
+  } else if (sectionCfg.arrangement === 'responsive-row' && !isMobile) {
+    sections = (
+      <Box sx={{ display: 'flex', flexDirection: 'row', gap: 3, width: '100%' }}>
+        <SectionWrapper theme={theme} framework={currentFrameworkObj} hover={sectionHover[currentFrameworkObj.className]}><AboutSection theme={theme} framework={currentFrameworkObj} layout={layout} /></SectionWrapper>
+        <SectionWrapper theme={theme} framework={currentFrameworkObj} hover={sectionHover[currentFrameworkObj.className]}><ProjectsSection theme={theme} framework={currentFrameworkObj} layout={layout} /></SectionWrapper>
+        <SectionWrapper theme={theme} framework={currentFrameworkObj} hover={sectionHover[currentFrameworkObj.className]}><SkillsSection theme={theme} framework={currentFrameworkObj} layout={layout} /></SectionWrapper>
+        <SectionWrapper theme={theme} framework={currentFrameworkObj} hover={sectionHover[currentFrameworkObj.className]}><ContactSection theme={theme} framework={currentFrameworkObj} layout={layout} /></SectionWrapper>
+      </Box>
+    );
+  } else if (sectionCfg.arrangement === 'centered') {
+    sections = (
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, width: '100%' }}>
+        <SectionWrapper theme={theme} framework={currentFrameworkObj} hover={sectionHover[currentFrameworkObj.className]}><AboutSection theme={theme} framework={currentFrameworkObj} layout={layout} /></SectionWrapper>
+        <SectionWrapper theme={theme} framework={currentFrameworkObj} hover={sectionHover[currentFrameworkObj.className]}><ProjectsSection theme={theme} framework={currentFrameworkObj} layout={layout} /></SectionWrapper>
+        <SectionWrapper theme={theme} framework={currentFrameworkObj} hover={sectionHover[currentFrameworkObj.className]}><SkillsSection theme={theme} framework={currentFrameworkObj} layout={layout} /></SectionWrapper>
+        <SectionWrapper theme={theme} framework={currentFrameworkObj} hover={sectionHover[currentFrameworkObj.className]}><ContactSection theme={theme} framework={currentFrameworkObj} layout={layout} /></SectionWrapper>
+      </Box>
+    );
+  } else {
+    // Default: stacked column
+    sections = (
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, width: '100%' }}>
+        <SectionWrapper theme={theme} framework={currentFrameworkObj} hover={sectionHover[currentFrameworkObj.className]}><AboutSection theme={theme} framework={currentFrameworkObj} layout={layout} /></SectionWrapper>
+        <SectionWrapper theme={theme} framework={currentFrameworkObj} hover={sectionHover[currentFrameworkObj.className]}><ProjectsSection theme={theme} framework={currentFrameworkObj} layout={layout} /></SectionWrapper>
+        <SectionWrapper theme={theme} framework={currentFrameworkObj} hover={sectionHover[currentFrameworkObj.className]}><SkillsSection theme={theme} framework={currentFrameworkObj} layout={layout} /></SectionWrapper>
+        <SectionWrapper theme={theme} framework={currentFrameworkObj} hover={sectionHover[currentFrameworkObj.className]}><ContactSection theme={theme} framework={currentFrameworkObj} layout={layout} /></SectionWrapper>
+      </Box>
+    );
+  }
+  
   return (
     <Box
       ref={containerRef}
@@ -335,29 +440,40 @@ const SelfModifyingPortfolio = () => {
         gap: layout.gap,
         padding: 4,
         transition: 'all 0.3s cubic-bezier(.4,2,.6,1)',
-        background: currentTheme.background,
-        color: currentTheme.text,
+        background: theme.background,
+        color: theme.text,
         borderRadius: 2,
         overflow: 'hidden',
         fontFamily: currentFrameworkObj.font,
         fontSize: layout.fontSize,
         fontWeight: layout.fontWeight,
-        boxShadow: currentTheme.shadow,
-        backdropFilter: currentTheme.blur ? `blur(${currentTheme.blur})` : undefined,
+        boxShadow: theme.shadow,
+        backdropFilter: theme.blur ? `blur(${theme.blur})` : undefined,
         ...(chaosMode && { animation: 'chaosShake 0.2s infinite alternate' }),
       }}
       onMouseEnter={handleHover}
     >
+      {/* Top controls bar: fullscreen left, theme switcher right */}
+      <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2, zIndex: 10 }}>
+        <Button
+          onClick={handleFullscreen}
+          variant="outlined"
+          size="small"
+          sx={{ minWidth: 36, borderRadius: 2, p: 1, color: theme.primary, borderColor: theme.primary, background: 'rgba(0,0,0,0.15)' }}
+        >
+          {isFullscreen ? <FullscreenExitIcon fontSize="small" /> : <FullscreenIcon fontSize="small" />}
+          <span style={{ marginLeft: 6, fontSize: 14 }}>{isFullscreen ? 'Exit Full Screen' : 'View Full Screen'}</span>
+        </Button>
+        <Box>
+          <select value={manualTheme || frameworks[currentFramework].name} onChange={handleManualTheme} style={{ fontSize: layout.fontSize, borderRadius: 6, padding: '0.3rem 1rem', fontFamily: currentFrameworkObj.font }}>
+            {frameworks.map(f => <option key={f.name} value={f.name}>{f.name}</option>)}
+          </select>
+        </Box>
+      </Box>
       {/* Overlays for chaos/glitch/matrix */}
       {chaosOverlays}
       {/* Confetti/particle burst placeholder */}
       {showConfetti && <div className="confetti-burst-placeholder" />}
-      {/* Theme switcher dropdown */}
-      <Box sx={{ mb: 2, alignSelf: 'flex-end' }}>
-        <select value={manualTheme || frameworks[currentFramework].name} onChange={handleManualTheme} style={{ fontSize: layout.fontSize, borderRadius: 6, padding: '0.3rem 1rem', fontFamily: currentFrameworkObj.font }}>
-          {frameworks.map(f => <option key={f.name} value={f.name}>{f.name}</option>)}
-        </select>
-      </Box>
       {/* Animated framework name with glitch effect */}
       <motion.div
         key={glitchText}
@@ -372,9 +488,9 @@ const SelfModifyingPortfolio = () => {
           sx={{
             mb: 3,
             fontWeight: layout.fontWeight,
-            color: currentTheme.primary,
+            color: theme.primary,
             textAlign: layout.align === 'center' ? 'center' : 'left',
-            textShadow: currentTheme.glow,
+            textShadow: theme.glow,
             fontFamily: currentFrameworkObj.font,
             letterSpacing: chaosMode ? '2px' : 'normal',
             fontSize: layout.fontSize + 8,
@@ -385,10 +501,7 @@ const SelfModifyingPortfolio = () => {
         </Typography>
       </motion.div>
       {/* --- Full Portfolio Sections --- */}
-      <AboutSection theme={currentTheme} framework={currentFrameworkObj} layout={layout} />
-      <ProjectsSection theme={currentTheme} framework={currentFrameworkObj} layout={layout} />
-      <SkillsSection theme={currentTheme} framework={currentFrameworkObj} layout={layout} />
-      <ContactSection theme={currentTheme} framework={currentFrameworkObj} layout={layout} />
+      {sections}
       
       <Paper
         elevation={3}
@@ -396,8 +509,8 @@ const SelfModifyingPortfolio = () => {
         sx={{
           p: 3,
           mb: 3,
-          backgroundColor: currentTheme.paper,
-          color: currentTheme.text,
+          backgroundColor: theme.paper,
+          color: theme.text,
           maxWidth: '600px',
           width: '100%',
         }}
@@ -417,11 +530,11 @@ const SelfModifyingPortfolio = () => {
         onClick={toggleChaosMode}
         className={currentFrameworkObj.buttonClass}
         sx={{
-          backgroundColor: chaosMode ? currentTheme.secondary : currentTheme.primary,
+          backgroundColor: chaosMode ? theme.secondary : theme.primary,
           color: '#000',
           fontWeight: 'bold',
           '&:hover': {
-            backgroundColor: chaosMode ? currentTheme.primary : currentTheme.secondary,
+            backgroundColor: chaosMode ? theme.primary : theme.secondary,
           },
         }}
       >
@@ -432,7 +545,7 @@ const SelfModifyingPortfolio = () => {
         variant="body2" 
         sx={{ 
           mt: 2, 
-          color: currentTheme.text,
+          color: theme.text,
           opacity: 0.7,
         }}
       >
@@ -441,5 +554,19 @@ const SelfModifyingPortfolio = () => {
     </Box>
   );
 };
+
+// SectionWrapper: applies hover animation and class
+function SectionWrapper({ children, theme, framework, hover }) {
+  return (
+    <motion.div
+      whileHover={hover.motion}
+      className={hover.class}
+      style={{ width: '100%' }}
+      transition={{ type: 'spring', stiffness: 200, damping: 18 }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 export default SelfModifyingPortfolio; 
