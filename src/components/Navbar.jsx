@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import {
   AppBar,
@@ -18,12 +18,14 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useThemeContext } from '../context/ThemeContext';
+import CodeIcon from '@mui/icons-material/Code';
 
 const navItems = [
   { name: 'Home', path: '/' },
   { name: 'About', path: '/about' },
   { name: 'Projects', path: '/projects' },
   { name: 'Contact', path: '/contact' },
+  { name: 'Experimental', path: '/experimental' },
 ];
 
 const MotionButton = motion(Button);
@@ -31,6 +33,7 @@ const MotionIconButton = motion(IconButton);
 
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const location = useLocation();
@@ -43,6 +46,19 @@ function Navbar() {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navVariants = {
     hidden: { 
@@ -166,9 +182,9 @@ function Navbar() {
         <AppBar 
           position="fixed" 
           sx={{ 
-            backgroundColor: trigger ? 'rgba(10, 25, 47, 0.85)' : 'transparent',
-            boxShadow: trigger ? '0 10px 30px -10px rgba(0, 0, 0, 0.3)' : 'none',
-            backdropFilter: trigger ? 'blur(10px)' : 'none',
+            backgroundColor: scrolled ? 'rgba(10, 25, 47, 0.85)' : 'transparent',
+            boxShadow: scrolled ? '0 10px 30px -10px rgba(0, 0, 0, 0.3)' : 'none',
+            backdropFilter: scrolled ? 'blur(10px)' : 'none',
             transition: 'all 0.4s ease',
             zIndex: 2000,
             position: 'relative',
@@ -321,6 +337,7 @@ function Navbar() {
               </>
             ) : (
               <Box display="flex" alignItems="center">
+                <CodeIcon sx={{ mr: 1, color: theme.palette.primary.main }} />
                 {navItems.map((item, index) => (
                   <motion.div
                     key={item.name}

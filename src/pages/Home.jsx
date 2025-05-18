@@ -1283,6 +1283,57 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
               Check out my work
             </Button>
           </motion.div>
+          {/* New Check Experiments button below */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            style={{ marginTop: '1rem' }}
+          >
+            <Button
+              component={Link}
+              to="/experimental"
+              variant="outlined"
+              color="secondary"
+              size="large"
+              sx={{
+                borderRadius: '8px',
+                textTransform: 'none',
+                fontSize: '1.1rem',
+                py: 1.5,
+                px: 4,
+                position: 'relative',
+                overflow: 'hidden',
+                border: '2px solid',
+                transition: 'all 0.3s ease',
+                background: 'rgba(121, 40, 202, 0.05)',
+                backdropFilter: 'blur(5px)',
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(45deg, #7928ca1a, #64ffda1a)',
+                  transform: 'translateX(-100%)',
+                  transition: 'transform 0.4s ease',
+                },
+                '&:hover': {
+                  borderColor: 'primary.main',
+                  boxShadow: '0 0 20px rgba(121, 40, 202, 0.2)',
+                  letterSpacing: '1px',
+                },
+                '&:hover::before': {
+                  transform: 'translateX(0)',
+                },
+              }}
+            >
+              Check Experiments
+            </Button>
+          </motion.div>
         </Box>
 
         {/* Add a section separator with less spacing */}
