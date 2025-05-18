@@ -7,10 +7,18 @@ import '../styles/SelfModifyingPortfolio.css';
 
 // CSS frameworks to switch between
 const frameworks = [
-  { name: 'Material UI', className: 'mui-theme', buttonClass: 'mui-button', paperClass: 'mui-paper' },
-  { name: 'Tailwind', className: 'tailwind-theme', buttonClass: 'tailwind-button', paperClass: 'tailwind-paper' },
-  { name: 'Bootstrap', className: 'bootstrap-theme', buttonClass: 'bootstrap-button', paperClass: 'bootstrap-paper' },
-  { name: 'Chakra UI', className: 'chakra-theme', buttonClass: 'chakra-button', paperClass: 'chakra-paper' },
+  { name: 'Material UI', className: 'mui-theme', buttonClass: 'mui-button', paperClass: 'mui-paper', font: 'Inter, Roboto, Helvetica, Arial, sans-serif' },
+  { name: 'Tailwind', className: 'tailwind-theme', buttonClass: 'tailwind-button', paperClass: 'tailwind-paper', font: 'Inter, system-ui, sans-serif' },
+  { name: 'Bootstrap', className: 'bootstrap-theme', buttonClass: 'bootstrap-button', paperClass: 'bootstrap-paper', font: 'Segoe UI, Arial, sans-serif' },
+  { name: 'Chakra UI', className: 'chakra-theme', buttonClass: 'chakra-button', paperClass: 'chakra-paper', font: 'Inter, sans-serif' },
+  { name: 'Ant Design', className: 'ant-theme', buttonClass: 'ant-button', paperClass: 'ant-paper', font: 'Alibaba PuHuiTi, Arial, sans-serif' },
+  { name: 'Bulma', className: 'bulma-theme', buttonClass: 'bulma-button', paperClass: 'bulma-paper', font: 'Nunito, Arial, sans-serif' },
+  { name: 'Neumorphism', className: 'neumorph-theme', buttonClass: 'neumorph-button', paperClass: 'neumorph-paper', font: 'Quicksand, Arial, sans-serif' },
+  { name: 'Glassmorphism', className: 'glass-theme', buttonClass: 'glass-button', paperClass: 'glass-paper', font: 'Montserrat, Arial, sans-serif' },
+  { name: 'Retro', className: 'retro-theme', buttonClass: 'retro-button', paperClass: 'retro-paper', font: 'Press Start 2P, monospace' },
+  { name: 'Cyberpunk', className: 'cyberpunk-theme', buttonClass: 'cyberpunk-button', paperClass: 'cyberpunk-paper', font: 'Orbitron, Arial, sans-serif' },
+  { name: 'Matrix', className: 'matrix-theme', buttonClass: 'matrix-button', paperClass: 'matrix-paper', font: 'Share Tech Mono, monospace' },
+  { name: 'SpacePunk', className: 'spacepunk-theme', buttonClass: 'spacepunk-button', paperClass: 'spacepunk-paper', font: 'Audiowide, Arial, sans-serif' },
 ];
 
 // Theme variations
@@ -43,6 +51,14 @@ const themeVariations = {
     paper: '#2d3748',
     text: '#f7fafc',
   },
+  'ant-theme': { primary: '#1890ff', secondary: '#f5222d', background: '#f0f2f5', paper: '#fff', text: '#001529' },
+  'bulma-theme': { primary: '#00d1b2', secondary: '#ff3860', background: '#f5f5f5', paper: '#fff', text: '#363636' },
+  'neumorph-theme': { primary: '#e0e0e0', secondary: '#bdbdbd', background: '#e0e0e0', paper: '#f5f5f5', text: '#333', shadow: '8px 8px 16px #bebebe, -8px -8px 16px #ffffff' },
+  'glass-theme': { primary: '#a18cd1', secondary: '#fbc2eb', background: 'rgba(255,255,255,0.1)', paper: 'rgba(255,255,255,0.3)', text: '#222', blur: '8px' },
+  'retro-theme': { primary: '#ffec00', secondary: '#ff206e', background: '#22223b', paper: '#2a2a40', text: '#ffec00', font: 'Press Start 2P, monospace' },
+  'cyberpunk-theme': { primary: '#ff00c8', secondary: '#00fff7', background: '#0f1021', paper: '#1a1b2f', text: '#ff00c8', glow: '0 0 8px #ff00c8, 0 0 16px #00fff7' },
+  'matrix-theme': { primary: '#39ff14', secondary: '#0ff', background: '#0d0208', paper: '#1a1a1a', text: '#39ff14', font: 'Share Tech Mono, monospace' },
+  'spacepunk-theme': { primary: '#f72585', secondary: '#7209b7', background: 'linear-gradient(135deg, #240046 0%, #3a0ca3 100%)', paper: 'rgba(58,12,163,0.7)', text: '#f72585', stars: true },
 };
 
 const SelfModifyingPortfolio = () => {
@@ -53,10 +69,17 @@ const SelfModifyingPortfolio = () => {
   const [lastInteraction, setLastInteraction] = useState(Date.now());
   const containerRef = useRef(null);
   const theme = useTheme();
+  const [mutationLog, setMutationLog] = useState([]);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [matrixRain, setMatrixRain] = useState(false);
+  const [glitchText, setGlitchText] = useState('');
+  const [manualTheme, setManualTheme] = useState(null);
   
   // Function to apply a new framework theme
   const applyFramework = (index) => {
     setIsGlitching(true);
+    setShowConfetti(true);
+    logMutation(frameworks[index].name);
     
     // Apply glitch effect
     gsap.to(containerRef.current, {
@@ -77,6 +100,7 @@ const SelfModifyingPortfolio = () => {
         });
       }
     });
+    setTimeout(() => setShowConfetti(false), 1200);
   };
   
   // Handle hover events to trigger framework changes
@@ -129,6 +153,59 @@ const SelfModifyingPortfolio = () => {
   const currentTheme = themeVariations[frameworks[currentFramework].className];
   const currentFrameworkObj = frameworks[currentFramework];
   
+  // Glitch text effect for framework name
+  useEffect(() => {
+    let active = true;
+    const original = frameworks[currentFramework].name;
+    let frame = 0;
+    function glitch() {
+      if (!active) return;
+      let glitched = original.split('').map((char, i) => {
+        if (Math.random() < 0.2) {
+          return String.fromCharCode(33 + Math.floor(Math.random() * 94));
+        }
+        return char;
+      }).join('');
+      setGlitchText(glitched);
+      frame++;
+      if (frame < 8) setTimeout(glitch, 40);
+      else setGlitchText(original);
+    }
+    glitch();
+    return () => { active = false; };
+  }, [currentFramework]);
+  
+  // Mutation log update
+  const logMutation = (themeName) => {
+    setMutationLog(logs => [
+      { theme: themeName, time: new Date().toLocaleTimeString(), msg: `Switched to ${themeName}` },
+      ...logs.slice(0, 7)
+    ]);
+  };
+  
+  // Chaos mode overlays
+  const chaosOverlays = chaosMode ? (
+    <>
+      {/* Matrix rain overlay */}
+      {frameworks[currentFramework].className === 'matrix-theme' && (
+        <div className="matrix-rain-overlay" />
+      )}
+      {/* Scanlines */}
+      <div className="scanlines-overlay" />
+      {/* RGB split */}
+      <div className="rgb-split-overlay" />
+      {/* Static noise */}
+      <div className="static-noise-overlay" />
+    </>
+  ) : null;
+  
+  // Theme switcher dropdown
+  const handleManualTheme = (e) => {
+    const idx = frameworks.findIndex(f => f.name === e.target.value);
+    if (idx !== -1) applyFramework(idx);
+    setManualTheme(e.target.value);
+  };
+  
   return (
     <Box
       ref={containerRef}
@@ -143,45 +220,52 @@ const SelfModifyingPortfolio = () => {
         justifyContent: 'center',
         padding: 4,
         transition: 'all 0.3s ease',
-        backgroundColor: currentTheme.background,
+        background: currentTheme.background,
         color: currentTheme.text,
         borderRadius: 2,
         overflow: 'hidden',
+        fontFamily: currentFrameworkObj.font,
+        boxShadow: currentTheme.shadow,
+        backdropFilter: currentTheme.blur ? `blur(${currentTheme.blur})` : undefined,
+        ...(chaosMode && { animation: 'chaosShake 0.2s infinite alternate' }),
       }}
       onMouseEnter={handleHover}
     >
-      <AnimatePresence>
-        {isGlitching && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.8 }}
-            exit={{ opacity: 0 }}
-            style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              background: 'linear-gradient(45deg, #ff0000, #00ff00, #0000ff)',
-              mixBlendMode: 'overlay',
-              zIndex: 1,
-            }}
-          />
-        )}
-      </AnimatePresence>
-      
-      <Typography 
-        variant="h3" 
-        component="h2" 
-        sx={{ 
-          mb: 3, 
-          fontWeight: 'bold',
-          color: currentTheme.primary,
-          textAlign: 'center',
-        }}
+      {/* Overlays for chaos/glitch/matrix */}
+      {chaosOverlays}
+      {/* Confetti/particle burst placeholder */}
+      {showConfetti && <div className="confetti-burst-placeholder" />}
+      {/* Theme switcher dropdown */}
+      <Box sx={{ mb: 2, alignSelf: 'flex-end' }}>
+        <select value={manualTheme || frameworks[currentFramework].name} onChange={handleManualTheme} style={{ fontSize: '1rem', borderRadius: 6, padding: '0.3rem 1rem' }}>
+          {frameworks.map(f => <option key={f.name} value={f.name}>{f.name}</option>)}
+        </select>
+      </Box>
+      {/* Animated framework name with glitch effect */}
+      <motion.div
+        key={glitchText}
+        initial={{ scale: 0.8, rotate: -5, opacity: 0 }}
+        animate={{ scale: 1, rotate: 0, opacity: 1 }}
+        transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+        style={{ filter: chaosMode ? 'url(#glitch)' : undefined }}
       >
-        {currentFrameworkObj.name} Framework
-      </Typography>
+        <Typography
+          variant="h3"
+          component="h2"
+          sx={{
+            mb: 3,
+            fontWeight: 'bold',
+            color: currentTheme.primary,
+            textAlign: 'center',
+            textShadow: currentTheme.glow,
+            fontFamily: currentFrameworkObj.font,
+            letterSpacing: chaosMode ? '2px' : 'normal',
+          }}
+          className={chaosMode ? 'glitch-text' : ''}
+        >
+          {glitchText}
+        </Typography>
+      </motion.div>
       
       <Paper
         elevation={3}
@@ -231,6 +315,16 @@ const SelfModifyingPortfolio = () => {
       >
         Hover count: {hoverCount} | Last interaction: {Math.floor((Date.now() - lastInteraction) / 1000)}s ago
       </Typography>
+      
+      {/* Mutation log */}
+      <Box sx={{ mt: 3, width: '100%', maxWidth: 400, alignSelf: 'flex-end', background: 'rgba(0,0,0,0.2)', borderRadius: 2, p: 2, fontSize: '0.95rem', color: '#fff', fontFamily: 'monospace', boxShadow: '0 2px 8px #0002' }}>
+        <Typography variant="subtitle2" sx={{ color: currentTheme.secondary, mb: 1 }}>Mutation Log</Typography>
+        <ul style={{ margin: 0, padding: 0, listStyle: 'none' }}>
+          {mutationLog.map((log, i) => (
+            <li key={i} style={{ marginBottom: 2 }}>{log.time} — {log.msg}</li>
+          ))}
+        </ul>
+      </Box>
     </Box>
   );
 };

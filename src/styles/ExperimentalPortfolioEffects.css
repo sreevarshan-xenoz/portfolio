@@ -1,0 +1,85 @@
+/* Glitch hover effect */
+.glitch-hover {
+  animation: glitch-border 0.3s infinite alternate;
+  position: relative;
+}
+.glitch-hover .MuiTypography-subtitle1 {
+  animation: glitch-text 0.4s infinite alternate;
+  text-shadow: 2px 0 #ff00c8, -2px 0 #00fff7, 0 2px #fff, 0 -2px #ff206e;
+}
+@keyframes glitch-border {
+  0% { border-color: #ff00c8; }
+  25% { border-color: #00fff7; }
+  50% { border-color: #ff206e; }
+  75% { border-color: #fff; }
+  100% { border-color: #ff00c8; }
+}
+@keyframes glitch-text {
+  0% { transform: translate(0,0); }
+  20% { transform: translate(-1px,1px); }
+  40% { transform: translate(1px,-1px); }
+  60% { transform: translate(-2px,2px); }
+  80% { transform: translate(2px,-2px); }
+  100% { transform: translate(0,0); }
+}
+
+/* Matrix hover effect */
+.matrix-hover {
+  position: relative;
+  overflow: hidden;
+}
+.matrix-hover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(57,255,20,0.08) 0px,
+    rgba(57,255,20,0.08) 2px,
+    transparent 2px,
+    transparent 6px
+  );
+  z-index: 2;
+  animation: matrix-scan 1.2s linear infinite;
+}
+@keyframes matrix-scan {
+  0% { background-position-y: 0; }
+  100% { background-position-y: 8px; }
+}
+
+/* Retro hover effect */
+.retro-hover {
+  font-family: 'Press Start 2P', monospace !important;
+  position: relative;
+  overflow: hidden;
+}
+.retro-hover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.04) 0px,
+    rgba(255,255,255,0.04) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  z-index: 2;
+}
+
+/* Rogue hover effect */
+.rogue-hover {
+  animation: rogue-shake 0.5s infinite alternate;
+}
+@keyframes rogue-shake {
+  0% { transform: rotate(-2deg) scale(1.04); }
+  100% { transform: rotate(2deg) scale(1.04); }
+}
+
+/* Burnout hover effect */
+.burnout-hover {
+  box-shadow: 0 0 16px 2px #f72585cc !important;
+  filter: brightness(1.05) contrast(1.1);
+} 
