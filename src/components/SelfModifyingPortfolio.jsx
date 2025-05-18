@@ -61,6 +61,129 @@ const themeVariations = {
   'spacepunk-theme': { primary: '#f72585', secondary: '#7209b7', background: 'linear-gradient(135deg, #240046 0%, #3a0ca3 100%)', paper: 'rgba(58,12,163,0.7)', text: '#f72585', stars: true },
 };
 
+// Layout and typography config per framework
+const frameworkLayout = {
+  'mui-theme':      { direction: 'column', align: 'center', gap: 3, fontSize: 18, fontWeight: 400, justify: 'center' },
+  'tailwind-theme': { direction: 'row', align: 'flex-start', gap: 4, fontSize: 17, fontWeight: 500, justify: 'space-between' },
+  'bootstrap-theme':{ direction: 'row', align: 'flex-start', gap: 2, fontSize: 16, fontWeight: 400, justify: 'flex-start' },
+  'chakra-theme':   { direction: 'column', align: 'center', gap: 3, fontSize: 18, fontWeight: 500, justify: 'center' },
+  'ant-theme':      { direction: 'row', align: 'flex-start', gap: 3, fontSize: 17, fontWeight: 500, justify: 'space-between' },
+  'bulma-theme':    { direction: 'row', align: 'center', gap: 3, fontSize: 18, fontWeight: 600, justify: 'center' },
+  'neumorph-theme': { direction: 'column', align: 'center', gap: 4, fontSize: 19, fontWeight: 400, justify: 'center' },
+  'glass-theme':    { direction: 'column', align: 'center', gap: 4, fontSize: 18, fontWeight: 400, justify: 'center' },
+  'retro-theme':    { direction: 'column', align: 'center', gap: 5, fontSize: 15, fontWeight: 700, justify: 'center' },
+  'cyberpunk-theme':{ direction: 'row', align: 'center', gap: 3, fontSize: 20, fontWeight: 700, justify: 'space-between' },
+  'matrix-theme':   { direction: 'column', align: 'flex-start', gap: 1, fontSize: 16, fontWeight: 400, justify: 'flex-start' },
+  'spacepunk-theme':{ direction: 'row', align: 'center', gap: 4, fontSize: 19, fontWeight: 600, justify: 'space-between' },
+};
+
+// About Section
+function AboutSection({ theme, framework, layout }) {
+  return (
+    <Paper elevation={2} className={framework.paperClass} sx={{ mb: 3, p: 2, backgroundColor: theme.paper, color: theme.text, borderRadius: 2 }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box sx={{ width: 64, height: 64, borderRadius: '50%', background: theme.primary, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36, color: theme.background, fontWeight: 'bold' }}>
+          S
+        </Box>
+        <Box>
+          <Typography variant="h5" sx={{ fontWeight: 'bold', color: theme.primary, fontFamily: framework.font }}>Sreevarshan</Typography>
+          <Typography variant="body2" sx={{ color: theme.text, opacity: 0.8 }}>
+            Futuristic developer, AI/OS hacker, and creative technologist. I build wild, adaptive, and sentient web experiences.
+          </Typography>
+        </Box>
+      </Box>
+    </Paper>
+  );
+}
+
+// Projects Section
+const demoProjects = [
+  {
+    title: 'IRIS OS',
+    desc: 'Custom Linux OS with built-in AI voice assistant. Arch-based, hackable, and beautiful.',
+    tech: ['Python', 'Arch Linux', 'LLMs', 'Hyprland'],
+    github: 'https://github.com/sreevarshan-xenoz/iris-os',
+    live: '#',
+  },
+  {
+    title: 'AURA',
+    desc: 'Smart home system with voice/gesture control and AI routines.',
+    tech: ['IoT', 'React', 'Node.js', 'ML'],
+    github: 'https://github.com/sreevarshan-xenoz/aura',
+    live: '#',
+  },
+  {
+    title: 'Student Job Finder',
+    desc: 'Platform connecting students with jobs and internships. Skill-matching and campus focus.',
+    tech: ['React', 'Node.js', 'MongoDB'],
+    github: 'https://github.com/sreevarshan-xenoz/student-job-finder',
+    live: '#',
+  },
+];
+function ProjectsSection({ theme, framework, layout }) {
+  return (
+    <Paper elevation={2} className={framework.paperClass} sx={{ mb: 3, p: 2, backgroundColor: theme.paper, color: theme.text, borderRadius: 2 }}>
+      <Typography variant="h6" sx={{ color: theme.secondary, fontWeight: 'bold', mb: 2, fontFamily: framework.font }}>Projects</Typography>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+        {demoProjects.map((proj, i) => (
+          <Box key={proj.title} sx={{ flex: '1 1 220px', minWidth: 200, maxWidth: 260, p: 2, borderRadius: 2, background: theme.background, color: theme.text, boxShadow: theme.shadow, mb: 1, fontFamily: framework.font }}>
+            <Typography variant="subtitle1" sx={{ color: theme.primary, fontWeight: 'bold', mb: 1 }}>{proj.title}</Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>{proj.desc}</Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1 }}>
+              {proj.tech.map(t => <Box key={t} sx={{ px: 1, py: 0.2, borderRadius: 1, background: theme.secondary, color: theme.background, fontSize: 12 }}>{t}</Box>)}
+            </Box>
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              <Button size="small" href={proj.github} target="_blank" sx={{ color: theme.primary, fontWeight: 'bold', textTransform: 'none' }}>Code</Button>
+              <Button size="small" href={proj.live} target="_blank" sx={{ color: theme.secondary, fontWeight: 'bold', textTransform: 'none' }}>Live</Button>
+            </Box>
+          </Box>
+        ))}
+      </Box>
+    </Paper>
+  );
+}
+
+// Skills Section
+const demoSkills = [
+  { name: 'JavaScript', color: '#f7df1e', level: 90 },
+  { name: 'React', color: '#61dafb', level: 85 },
+  { name: 'Python', color: '#3776ab', level: 80 },
+  { name: 'AI/ML', color: '#7928ca', level: 75 },
+  { name: 'Linux', color: '#64ffda', level: 80 },
+];
+function SkillsSection({ theme, framework, layout }) {
+  return (
+    <Paper elevation={2} className={framework.paperClass} sx={{ mb: 3, p: 2, backgroundColor: theme.paper, color: theme.text, borderRadius: 2 }}>
+      <Typography variant="h6" sx={{ color: theme.secondary, fontWeight: 'bold', mb: 2, fontFamily: framework.font }}>Skills</Typography>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+        {demoSkills.map(skill => (
+          <Box key={skill.name} sx={{ minWidth: 120, flex: '1 1 120px' }}>
+            <Typography variant="body2" sx={{ color: skill.color, fontWeight: 'bold', fontFamily: framework.font }}>{skill.name}</Typography>
+            <Box sx={{ height: 8, borderRadius: 4, background: theme.background, boxShadow: theme.shadow, overflow: 'hidden', mb: 1 }}>
+              <motion.div initial={{ width: 0 }} animate={{ width: skill.level + '%' }} transition={{ duration: 1.2 }} style={{ height: '100%', background: skill.color }} />
+            </Box>
+          </Box>
+        ))}
+      </Box>
+    </Paper>
+  );
+}
+
+// Contact Section
+function ContactSection({ theme, framework, layout }) {
+  return (
+    <Paper elevation={2} className={framework.paperClass} sx={{ mb: 3, p: 2, backgroundColor: theme.paper, color: theme.text, borderRadius: 2, textAlign: 'center' }}>
+      <Typography variant="h6" sx={{ color: theme.secondary, fontWeight: 'bold', mb: 2, fontFamily: framework.font }}>Contact</Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 1 }}>
+        <Button href="mailto:sreevarshan@example.com" sx={{ color: theme.primary, fontWeight: 'bold', textTransform: 'none' }}>Email</Button>
+        <Button href="https://github.com/sreevarshan-xenoz" target="_blank" sx={{ color: theme.secondary, fontWeight: 'bold', textTransform: 'none' }}>GitHub</Button>
+        <Button href="https://linkedin.com/in/sreevarshan" target="_blank" sx={{ color: theme.primary, fontWeight: 'bold', textTransform: 'none' }}>LinkedIn</Button>
+      </Box>
+      <Typography variant="body2" sx={{ color: theme.text, opacity: 0.7 }}>Let's build something wild together!</Typography>
+    </Paper>
+  );
+}
+
 const SelfModifyingPortfolio = () => {
   const [currentFramework, setCurrentFramework] = useState(0);
   const [isGlitching, setIsGlitching] = useState(false);
@@ -150,6 +273,7 @@ const SelfModifyingPortfolio = () => {
   // Get current theme colors
   const currentTheme = themeVariations[frameworks[currentFramework].className];
   const currentFrameworkObj = frameworks[currentFramework];
+  const layout = frameworkLayout[frameworks[currentFramework].className] || frameworkLayout['mui-theme'];
   
   // Glitch text effect for framework name
   useEffect(() => {
@@ -205,16 +329,19 @@ const SelfModifyingPortfolio = () => {
         width: '100%',
         minHeight: '400px',
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
+        flexDirection: layout.direction,
+        alignItems: layout.align,
+        justifyContent: layout.justify,
+        gap: layout.gap,
         padding: 4,
-        transition: 'all 0.3s ease',
+        transition: 'all 0.3s cubic-bezier(.4,2,.6,1)',
         background: currentTheme.background,
         color: currentTheme.text,
         borderRadius: 2,
         overflow: 'hidden',
         fontFamily: currentFrameworkObj.font,
+        fontSize: layout.fontSize,
+        fontWeight: layout.fontWeight,
         boxShadow: currentTheme.shadow,
         backdropFilter: currentTheme.blur ? `blur(${currentTheme.blur})` : undefined,
         ...(chaosMode && { animation: 'chaosShake 0.2s infinite alternate' }),
@@ -227,7 +354,7 @@ const SelfModifyingPortfolio = () => {
       {showConfetti && <div className="confetti-burst-placeholder" />}
       {/* Theme switcher dropdown */}
       <Box sx={{ mb: 2, alignSelf: 'flex-end' }}>
-        <select value={manualTheme || frameworks[currentFramework].name} onChange={handleManualTheme} style={{ fontSize: '1rem', borderRadius: 6, padding: '0.3rem 1rem' }}>
+        <select value={manualTheme || frameworks[currentFramework].name} onChange={handleManualTheme} style={{ fontSize: layout.fontSize, borderRadius: 6, padding: '0.3rem 1rem', fontFamily: currentFrameworkObj.font }}>
           {frameworks.map(f => <option key={f.name} value={f.name}>{f.name}</option>)}
         </select>
       </Box>
@@ -244,18 +371,24 @@ const SelfModifyingPortfolio = () => {
           component="h2"
           sx={{
             mb: 3,
-            fontWeight: 'bold',
+            fontWeight: layout.fontWeight,
             color: currentTheme.primary,
-            textAlign: 'center',
+            textAlign: layout.align === 'center' ? 'center' : 'left',
             textShadow: currentTheme.glow,
             fontFamily: currentFrameworkObj.font,
             letterSpacing: chaosMode ? '2px' : 'normal',
+            fontSize: layout.fontSize + 8,
           }}
           className={chaosMode ? 'glitch-text' : ''}
         >
           {glitchText}
         </Typography>
       </motion.div>
+      {/* --- Full Portfolio Sections --- */}
+      <AboutSection theme={currentTheme} framework={currentFrameworkObj} layout={layout} />
+      <ProjectsSection theme={currentTheme} framework={currentFrameworkObj} layout={layout} />
+      <SkillsSection theme={currentTheme} framework={currentFrameworkObj} layout={layout} />
+      <ContactSection theme={currentTheme} framework={currentFrameworkObj} layout={layout} />
       
       <Paper
         elevation={3}
