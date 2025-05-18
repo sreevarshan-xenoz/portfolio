@@ -16,6 +16,7 @@
     "@mui/material": "^5.15.7",
     "@react-three/drei": "^9.99.0",
     "@react-three/fiber": "^8.15.0",
+    "animejs": "^4.0.2",
     "chart.js": "^4.4.9",
     "d3": "^7.9.0",
     "framer-motion": "^10.18.0",

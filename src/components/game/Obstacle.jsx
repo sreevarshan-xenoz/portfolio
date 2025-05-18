@@ -1,304 +1,297 @@
-import { useState } from 'react';
-import { Box, Typography, Paper, Button, TextField, Slider, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@mui/material';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
+import { Box, Typography, Button, Modal, TextField, Slider, FormControl, RadioGroup, FormControlLabel, Radio, Paper } from '@mui/material';
+import { motion } from 'framer-motion';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Obstacle = ({ obstacle, isActive }) => {
   const [showChallenge, setShowChallenge] = useState(false);
-  const [challengeCompleted, setChallengeCompleted] = useState(false);
-  const [userAnswer, setUserAnswer] = useState('');
-  const [sliderValue, setSliderValue] = useState(0);
+  const [completed, setCompleted] = useState(false);
+  const [userInput, setUserInput] = useState('');
+  const [sliderValue, setSliderValue] = useState(50);
   const [selectedOption, setSelectedOption] = useState('');
-  const [draggedItems, setDraggedItems] = useState([]);
+  const [dragItems, setDragItems] = useState([]);
+  const [code, setCode] = useState('');
   
-  // Handle challenge completion
-  const handleChallengeComplete = () => {
-    setChallengeCompleted(true);
-    setShowChallenge(false);
-  };
-  
-  // Handle multiple choice answer
+  // Handle different challenge types
   const handleMultipleChoice = (option) => {
     setSelectedOption(option);
-    
-    if (option === obstacle.challenge.correctAnswer) {
-      handleChallengeComplete();
+    if (option === obstacle.correctAnswer) {
+      setCompleted(true);
+      obstacle.completed = true;
     }
   };
   
-  // Handle slider value change
-  const handleSliderChange = (event, newValue) => {
+  const handleSlider = (event, newValue) => {
     setSliderValue(newValue);
-    
-    if (Math.abs(newValue - obstacle.challenge.correctValue) < 10) {
-      handleChallengeComplete();
+    if (newValue === obstacle.correctAnswer) {
+      setCompleted(true);
+      obstacle.completed = true;
     }
   };
   
-  // Handle text input
   const handleTextInput = (event) => {
-    setUserAnswer(event.target.value);
-    
-    if (event.target.value.length >= obstacle.challenge.minLength) {
-      handleChallengeComplete();
+    setUserInput(event.target.value);
+    if (event.target.value.toLowerCase() === obstacle.correctAnswer.toLowerCase()) {
+      setCompleted(true);
+      obstacle.completed = true;
     }
   };
   
-  // Handle drag and drop
-  const handleDragStart = (item) => {
-    if (!draggedItems.includes(item)) {
-      setDraggedItems([...draggedItems, item]);
+  const handleDragDrop = (item) => {
+    setDragItems([...dragItems, item]);
+    if (dragItems.length + 1 === obstacle.correctAnswer.length) {
+      const isCorrect = [...dragItems, item].every((item, index) => 
+        item === obstacle.correctAnswer[index]
+      );
+      if (isCorrect) {
+        setCompleted(true);
+        obstacle.completed = true;
+      }
     }
   };
   
-  const handleDragEnd = () => {
-    // Check if all items are in the correct order
-    const isCorrect = draggedItems.every((item, index) => {
-      return item.correctPosition === index;
-    });
-    
-    if (isCorrect) {
-      handleChallengeComplete();
+  const handleCodeSubmit = () => {
+    // Simple code validation
+    if (code.includes(obstacle.correctAnswer)) {
+      setCompleted(true);
+      obstacle.completed = true;
     }
   };
   
   // Render different challenge types
   const renderChallenge = () => {
-    switch (obstacle.challenge.type) {
+    switch (obstacle.type) {
       case 'multiple-choice':
         return (
           <FormControl component="fieldset">
-            <FormLabel component="legend">{obstacle.challenge.question}</FormLabel>
-            <RadioGroup
-              value={selectedOption}
-              onChange={(e) => handleMultipleChoice(e.target.value)}
-            >
-              {obstacle.challenge.options.map((option) => (
+            <Typography variant="h6" gutterBottom>
+              {obstacle.question}
+            </Typography>
+            <RadioGroup value={selectedOption} onChange={(e) => handleMultipleChoice(e.target.value)}>
+              {obstacle.options.map((option, index) => (
                 <FormControlLabel
-                  key={option.id}
-                  value={option.id}
+                  key={index}
+                  value={option}
                   control={<Radio />}
-                  label={option.text}
+                  label={option}
                 />
               ))}
             </RadioGroup>
           </FormControl>
         );
-        
+      
       case 'slider':
         return (
-          <Box sx={{ width: '100%', px: 2 }}>
-            <Typography id="slider-label" gutterBottom>
-              {obstacle.challenge.question}
+          <Box sx={{ width: '100%', p: 2 }}>
+            <Typography variant="h6" gutterBottom>
+              {obstacle.question}
             </Typography>
             <Slider
               value={sliderValue}
-              onChange={handleSliderChange}
-              aria-labelledby="slider-label"
-              min={obstacle.challenge.min}
-              max={obstacle.challenge.max}
+              onChange={handleSlider}
+              min={0}
+              max={100}
               valueLabelDisplay="auto"
             />
+            <Typography variant="body2" color="text.secondary">
+              Current value: {sliderValue}
+            </Typography>
           </Box>
         );
-        
+      
       case 'text-input':
         return (
-          <Box sx={{ width: '100%' }}>
-            <Typography gutterBottom>{obstacle.challenge.question}</Typography>
+          <Box sx={{ width: '100%', p: 2 }}>
+            <Typography variant="h6" gutterBottom>
+              {obstacle.question}
+            </Typography>
             <TextField
               fullWidth
-              multiline
-              rows={3}
-              value={userAnswer}
+              value={userInput}
               onChange={handleTextInput}
               placeholder="Type your answer here..."
               variant="outlined"
             />
           </Box>
         );
-        
+      
       case 'drag-drop':
         return (
-          <Box sx={{ width: '100%' }}>
-            <Typography gutterBottom>Arrange the items in the correct order:</Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 1,
-                minHeight: 200,
-                p: 2,
-                border: '1px dashed #64ffda',
-                borderRadius: 1,
-              }}
-            >
-              {obstacle.challenge.elements.map((item) => (
-                <motion.div
-                  key={item.id}
-                  draggable
-                  onDragStart={() => handleDragStart(item)}
-                  onDragEnd={handleDragEnd}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  style={{
-                    padding: '8px 16px',
-                    backgroundColor: draggedItems.includes(item) ? '#64ffda' : 'rgba(100, 255, 218, 0.2)',
-                    color: '#0a192f',
-                    borderRadius: 4,
-                    cursor: 'grab',
-                    userSelect: 'none',
+          <Box sx={{ width: '100%', p: 2 }}>
+            <Typography variant="h6" gutterBottom>
+              {obstacle.question}
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+              {obstacle.options.map((option, index) => (
+                <Paper
+                  key={index}
+                  sx={{
+                    p: 2,
+                    cursor: 'pointer',
+                    backgroundColor: dragItems.includes(option) ? '#e0e0e0' : 'white',
                   }}
+                  onClick={() => handleDragDrop(option)}
                 >
-                  {item.text}
-                </motion.div>
+                  {option}
+                </Paper>
+              ))}
+            </Box>
+            <Box sx={{ minHeight: 100, border: '1px dashed #ccc', p: 2 }}>
+              {dragItems.map((item, index) => (
+                <Paper key={index} sx={{ p: 1, m: 0.5, display: 'inline-block' }}>
+                  {item}
+                </Paper>
               ))}
             </Box>
           </Box>
         );
-        
+      
       case 'code-editor':
         return (
-          <Box sx={{ width: '100%' }}>
-            <Typography gutterBottom>{obstacle.challenge.task}</Typography>
-            <Paper
-              sx={{
-                p: 2,
-                backgroundColor: '#0a192f',
-                color: '#64ffda',
-                fontFamily: 'monospace',
-                whiteSpace: 'pre-wrap',
-                overflow: 'auto',
-                maxHeight: 200,
-              }}
-            >
-              {obstacle.challenge.code}
-            </Paper>
-            <Button
-              variant="contained"
-              onClick={handleChallengeComplete}
-              sx={{
-                mt: 2,
-                backgroundColor: '#64ffda',
-                color: '#0a192f',
-                '&:hover': {
-                  backgroundColor: '#4cd8b2',
-                },
-              }}
-            >
-              Submit Solution
+          <Box sx={{ width: '100%', p: 2 }}>
+            <Typography variant="h6" gutterBottom>
+              {obstacle.question}
+            </Typography>
+            <TextField
+              fullWidth
+              multiline
+              rows={4}
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              placeholder="Write your code here..."
+              variant="outlined"
+              sx={{ fontFamily: 'monospace', mb: 2 }}
+            />
+            <Button variant="contained" onClick={handleCodeSubmit}>
+              Submit Code
             </Button>
           </Box>
         );
-        
+      
       default:
-        return null;
+        return (
+          <Typography variant="body1">
+            Unknown challenge type
+          </Typography>
+        );
     }
   };
   
   return (
     <>
-      {/* Obstacle visual */}
-      <motion.div
-        style={{
-          position: 'absolute',
-          left: obstacle.position.x,
-          top: obstacle.position.y,
-          width: obstacle.width,
-          height: obstacle.height,
-          backgroundColor: obstacle.color,
-          borderRadius: obstacle.type === 'spike' ? '50% 50% 0 0' : 4,
-          cursor: isActive ? 'pointer' : 'default',
-          opacity: isActive ? 1 : 0.5,
-          zIndex: 5,
+      {/* 3D Obstacle */}
+      <Box
+        component={motion.div}
+        initial={{ scale: 0.8, opacity: 0 }}
+        animate={{ 
+          scale: isActive ? 1.1 : 1,
+          opacity: 1,
+          y: isActive ? -10 : 0,
         }}
-        whileHover={isActive ? { scale: 1.05 } : {}}
-        onClick={() => isActive && setShowChallenge(true)}
-      />
-      
-      {/* Challenge modal */}
-      <AnimatePresence>
-        {showChallenge && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: '80%',
-              maxWidth: 600,
-              zIndex: 20,
-            }}
-          >
-            <Paper
-              sx={{
-                p: 4,
-                backgroundColor: 'rgba(10, 25, 47, 0.9)',
-                color: 'white',
-                border: '1px solid #64ffda',
-              }}
-            >
-              <Typography variant="h5" component="h3" gutterBottom>
-                {obstacle.name}
-              </Typography>
-              <Typography variant="body1" sx={{ mb: 3 }}>
-                {obstacle.description}
-              </Typography>
-              
-              {renderChallenge()}
-              
-              <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                <Button
-                  variant="outlined"
-                  onClick={() => setShowChallenge(false)}
-                  sx={{
-                    color: 'white',
-                    borderColor: 'white',
-                    '&:hover': {
-                      borderColor: '#64ffda',
-                      color: '#64ffda',
-                    },
-                  }}
-                >
-                  Cancel
-                </Button>
-              </Box>
-            </Paper>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      
-      {/* Challenge completed indicator */}
-      {challengeCompleted && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          style={{
+        transition={{ duration: 0.3 }}
+        onClick={() => setShowChallenge(true)}
+        sx={{
+          position: 'absolute',
+          left: `${obstacle.position.x}%`,
+          bottom: `${obstacle.position.z}%`,
+          width: '40px',
+          height: '40px',
+          transform: 'translateZ(20px)',
+          cursor: 'pointer',
+          zIndex: 3,
+        }}
+      >
+        {/* Obstacle base */}
+        <Box
+          sx={{
             position: 'absolute',
-            left: obstacle.position.x + obstacle.width / 2,
-            top: obstacle.position.y - 30,
-            zIndex: 6,
+            width: '100%',
+            height: '100%',
+            backgroundColor: completed ? '#2ecc71' : '#e74c3c',
+            borderRadius: '5px',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+            transform: 'translateZ(0)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: 'white',
+            fontWeight: 'bold',
+            fontSize: '1.2rem',
           }}
         >
-          <Box
+          {obstacle.icon || '🚧'}
+        </Box>
+        
+        {/* Obstacle top */}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '-10px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '20px',
+            height: '20px',
+            backgroundColor: completed ? '#27ae60' : '#c0392b',
+            borderRadius: '50%',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+          }}
+        />
+      </Box>
+      
+      {/* Challenge Modal */}
+      <Modal
+        open={showChallenge}
+        onClose={() => setShowChallenge(false)}
+        aria-labelledby="challenge-modal"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Box
+          sx={{
+            position: 'relative',
+            width: '80%',
+            maxWidth: 600,
+            bgcolor: 'background.paper',
+            borderRadius: 2,
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Button
+            onClick={() => setShowChallenge(false)}
             sx={{
-              width: 30,
-              height: 30,
-              borderRadius: '50%',
-              backgroundColor: '#64ffda',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              color: '#0a192f',
-              fontWeight: 'bold',
+              position: 'absolute',
+              top: 8,
+              right: 8,
             }}
           >
-            ✓
-          </Box>
-        </motion.div>
-      )}
+            <CloseIcon />
+          </Button>
+          
+          {renderChallenge()}
+          
+          {completed && (
+            <Box
+              sx={{
+                mt: 2,
+                p: 2,
+                backgroundColor: '#2ecc71',
+                color: 'white',
+                borderRadius: 1,
+                textAlign: 'center',
+              }}
+            >
+              <Typography variant="h6">Challenge Completed!</Typography>
+              <Typography variant="body2">
+                {obstacle.completionMessage || 'You have successfully completed this challenge!'}
+              </Typography>
+            </Box>
+          )}
+        </Box>
+      </Modal>
     </>
   );
 };
