@@ -24,6 +24,7 @@ const navItems = [
   { name: 'About', path: '/about' },
   { name: 'Projects', path: '/projects' },
   { name: 'Contact', path: '/contact' },
+  { name: 'My World', path: '/stickman-quest' },
 ];
 
 const MotionButton = motion(Button);
