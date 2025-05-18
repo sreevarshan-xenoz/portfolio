@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import SelfModifyingPortfolio from '../components/SelfModifyingPortfolio';
+import MatrixPortfolio from '../components/MatrixPortfolio';
 import '../styles/ExperimentalPortfolioEffects.css';
 
 // Theme-based card hover/active styles
@@ -78,6 +79,12 @@ const cardThemeStyles = {
 
 // Data-driven experiments list
 const experiments = [
+  {
+    key: 'true-matrix',
+    title: 'The True Matrix Portfolio',
+    description: 'A portfolio that fully immerses you in the Matrix: digital rain, terminal UI, and green code everywhere.',
+    render: () => <MatrixPortfolio />,
+  },
   {
     key: 'self-modifying',
     title: 'The Self-Modifying Portfolio',
