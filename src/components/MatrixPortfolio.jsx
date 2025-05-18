@@ -2,7 +2,19 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Box, Button, Typography, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-// Matrix rain effect (canvas, scoped to parent container)
+// --- Layout mapping for each card ---
+const cardLayouts = {
+  about: 'column',
+  projects: 'grid',
+  skills: 'row',
+  contact: 'column-reverse',
+};
+
+// Update green color for rain, borders, text, and glows
+const SOFT_GREEN = '#66ff99';
+const RAIN_COLORS = [SOFT_GREEN, '#00bfff', '#ff2052'];
+
+// Matrix rain effect (canvas, scoped to parent container, now RGB)
 function MatrixRainBackground({ parentRef }) {
   const canvasRef = useRef(null);
   useEffect(() => {
@@ -16,17 +28,18 @@ function MatrixRainBackground({ parentRef }) {
     const fontSize = 18;
     const columns = Math.floor(width / fontSize);
     const drops = Array(columns).fill(1);
-    const speed = 0.4; // SLOWER
+    const speed = 0.4;
     const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズヅブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const colors = RAIN_COLORS;
     let animationFrame;
     function draw() {
       const ctx = canvas.getContext('2d');
       ctx.fillStyle = 'rgba(0,0,0,0.08)';
       ctx.fillRect(0, 0, width, height);
       ctx.font = fontSize + 'px monospace';
-      ctx.fillStyle = '#39ff14';
       for (let i = 0; i < drops.length; i++) {
         const text = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
         ctx.fillText(text, i * fontSize, Math.floor(drops[i]) * fontSize);
         if (Math.floor(drops[i]) * fontSize > height && Math.random() > 0.975) {
           drops[i] = 0;
@@ -65,7 +78,7 @@ function MatrixRainBackground({ parentRef }) {
   );
 }
 
-// Mini Matrix rain for cards
+// Mini Matrix rain for cards (now RGB)
 function MiniMatrixRainBackground({ parentRef }) {
   const canvasRef = useRef(null);
   useEffect(() => {
@@ -79,17 +92,18 @@ function MiniMatrixRainBackground({ parentRef }) {
     const fontSize = 14;
     const columns = Math.floor(width / fontSize);
     const drops = Array(columns).fill(1);
-    const speed = 0.3; // SLOWER
+    const speed = 0.3;
     const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズヅブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const colors = RAIN_COLORS;
     let animationFrame;
     function draw() {
       const ctx = canvas.getContext('2d');
       ctx.fillStyle = 'rgba(0,0,0,0.12)';
       ctx.fillRect(0, 0, width, height);
       ctx.font = fontSize + 'px monospace';
-      ctx.fillStyle = '#39ff14';
       for (let i = 0; i < drops.length; i++) {
         const text = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
         ctx.fillText(text, i * fontSize, Math.floor(drops[i]) * fontSize);
         if (Math.floor(drops[i]) * fontSize > height && Math.random() > 0.97) {
           drops[i] = 0;
@@ -153,7 +167,7 @@ function GlitchText({ text }) {
 }
 
 // Matrix section card with hover/glitch and mini rain
-function MatrixSectionCard({ title, children, onHover, onLeave, glitch }) {
+function MatrixSectionCard({ title, children, onHover, onLeave, glitch, focus }) {
   const cardRef = useRef(null);
   const [hovered, setHovered] = useState(false);
   function handleEnter() {
@@ -171,31 +185,36 @@ function MatrixSectionCard({ title, children, onHover, onLeave, glitch }) {
       onMouseLeave={handleExit}
       sx={{
         background: 'rgba(0,0,0,0.85)',
-        border: glitch ? '2px solid #39ff14' : '1.5px solid #39ff14',
-        boxShadow: glitch ? '0 0 24px 4px #39ff14, 0 0 8px #fff' : '0 0 12px 2px #39ff1440',
+        border: glitch ? `2px solid ${SOFT_GREEN}` : `1.5px solid ${SOFT_GREEN}`,
+        boxShadow: glitch ? `0 0 24px 4px ${SOFT_GREEN}80, 0 0 8px #fff2` : `0 0 12px 2px ${SOFT_GREEN}40`,
         borderRadius: 2,
         p: 3,
         m: 1,
         minWidth: 260,
         minHeight: 180,
         fontFamily: 'monospace',
-        color: '#39ff14',
+        color: SOFT_GREEN,
         position: 'relative',
         overflow: 'hidden',
         transition: 'all 0.18s cubic-bezier(.4,2,.6,1)',
-        filter: glitch ? 'contrast(1.5) brightness(1.2) drop-shadow(0 0 8px #39ff14)' : 'none',
+        filter: glitch ? `contrast(1.5) brightness(1.2) drop-shadow(0 0 8px ${SOFT_GREEN})` : 'none',
         transform: glitch ? 'scale(1.04) skewX(-2deg)' : 'none',
         cursor: 'pointer',
         zIndex: 2,
+        ...(focus && {
+          border: `2px solid ${SOFT_GREEN}`,
+          boxShadow: `0 0 24px 4px ${SOFT_GREEN}80, 0 0 8px #fff2`,
+          transform: 'scale(1.04) skewX(-2deg)',
+        }),
       }}
       className={glitch ? 'matrix-glitch' : ''}
     >
       {/* Mini Matrix rain on hover */}
       {hovered && <MiniMatrixRainBackground parentRef={cardRef} />}
-      <Typography variant="h5" sx={{ mb: 2, fontFamily: 'monospace', textShadow: '0 0 8px #39ff14', position: 'relative', zIndex: 2 }}>{title}</Typography>
+      <Typography variant="h5" sx={{ mb: 2, fontFamily: 'monospace', textShadow: `0 0 8px ${SOFT_GREEN}`, position: 'relative', zIndex: 2 }}>{title}</Typography>
       <Box sx={{ position: 'relative', zIndex: 2 }}>{children}</Box>
       {/* Glitch scanline overlay */}
-      {glitch && <Box sx={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: 'repeating-linear-gradient(transparent, #39ff1422 2px, transparent 4px)', zIndex: 3, mixBlendMode: 'screen' }} />}
+      {glitch && <Box sx={{ position: 'absolute', inset: 0, pointerEvents: 'none', background: `repeating-linear-gradient(transparent, ${SOFT_GREEN}22 2px, transparent 4px)`, zIndex: 3, mixBlendMode: 'screen' }} />}
     </Box>
   );
 }
@@ -316,20 +335,118 @@ function MatrixContactCard(props) {
   );
 }
 
+// --- Matrix Terminal Component ---
+function MatrixTerminal({ onCommand }) {
+  const [input, setInput] = useState('');
+  const [history, setHistory] = useState([]);
+  const [output, setOutput] = useState([]);
+  const inputRef = useRef(null);
+
+  // Focus input on mount
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  // Command handler
+  function handleCommand(cmd) {
+    const command = cmd.trim().toLowerCase();
+    let out = '';
+    if (command === 'about') out = 'Focusing About section...';
+    else if (command === 'projects') out = 'Focusing Projects section...';
+    else if (command === 'skills') out = 'Focusing Skills section...';
+    else if (command === 'contact') out = 'Focusing Contact section...';
+    else if (command === 'help') out = 'Available: about, projects, skills, contact, help, clear';
+    else if (command === 'clear') {
+      setOutput([]);
+      return;
+    } else out = 'Unknown command. Type help.';
+    setOutput(o => [...o, `$ ${cmd}`, out]);
+    if (['about','projects','skills','contact'].includes(command)) {
+      onCommand(command);
+    }
+  }
+
+  function handleKeyDown(e) {
+    if (e.key === 'Enter') {
+      if (input.trim()) {
+        setHistory(h => [...h, input]);
+        handleCommand(input);
+        setInput('');
+      }
+    }
+  }
+
+  return (
+    <Box sx={{
+      position: 'absolute',
+      left: 0,
+      bottom: 0,
+      width: '100%',
+      background: 'rgba(0,0,0,0.92)',
+      color: SOFT_GREEN,
+      fontFamily: 'monospace',
+      fontSize: 16,
+      p: 2,
+      zIndex: 10,
+      borderTop: `2px solid ${SOFT_GREEN}`,
+      boxShadow: `0 -2px 16px ${SOFT_GREEN}40`,
+      userSelect: 'none',
+    }}>
+      {output.slice(-6).map((line, i) => (
+        <Box key={i} sx={{ whiteSpace: 'pre', color: SOFT_GREEN, fontFamily: 'monospace' }}>{line}</Box>
+      ))}
+      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box component="span" sx={{ color: SOFT_GREEN, mr: 1 }}>$</Box>
+        <input
+          ref={inputRef}
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            outline: 'none',
+            color: SOFT_GREEN,
+            fontFamily: 'monospace',
+            fontSize: 16,
+            width: '60vw',
+          }}
+          autoFocus
+        />
+        <Box component="span" sx={{
+          width: 10, height: 20, ml: 0.5, display: 'inline-block',
+          background: SOFT_GREEN, opacity: 0.7,
+          animation: 'matrix-blink 1s steps(1) infinite',
+        }} />
+      </Box>
+      <style>{`
+        @keyframes matrix-blink { 0%, 50% { opacity: 0.7; } 51%, 100% { opacity: 0; } }
+      `}</style>
+    </Box>
+  );
+}
+
 export default function MatrixPortfolio() {
   const navigate = useNavigate();
   const [glitch, setGlitch] = useState(false);
-  const [layout, setLayout] = useState('grid'); // 'grid' or 'column'
+  const [layout, setLayout] = useState('grid');
   const containerRef = useRef(null);
+  const [focusSection, setFocusSection] = useState(null);
 
-  // When any card is hovered, trigger glitch and morph layout
-  function handleHover() {
+  // New: track which card is hovered
+  function handleHover(cardKey) {
     setGlitch(true);
-    setLayout(l => (l === 'grid' ? 'column' : 'grid'));
+    setLayout(cardLayouts[cardKey] || 'grid');
     setTimeout(() => setGlitch(false), 350);
   }
   function handleLeave() {
     setGlitch(false);
+  }
+
+  // Terminal command handler
+  function handleTerminalCommand(cmd) {
+    setFocusSection(cmd);
+    setTimeout(() => setFocusSection(null), 1200);
   }
 
   return (
@@ -353,45 +470,77 @@ export default function MatrixPortfolio() {
         <Grid
           container
           spacing={3}
-          direction={layout === 'grid' ? 'row' : 'column'}
+          direction={
+            layout === 'grid' ? 'row'
+            : layout === 'row' ? 'row'
+            : layout === 'column' ? 'column'
+            : layout === 'column-reverse' ? 'column-reverse'
+            : 'row'
+          }
           alignItems="stretch"
           justifyContent="center"
           sx={{ transition: 'all 0.4s cubic-bezier(.4,2,.6,1)', zIndex: 2 }}
         >
           <Grid item xs={12} sm={6} md={3}>
-            <MatrixSectionCard title="About Me" onHover={handleHover} onLeave={handleLeave} glitch={glitch}>
+            <MatrixSectionCard title="About Me" onHover={() => handleHover('about')} onLeave={handleLeave} glitch={glitch} focus={focusSection === 'about'}>
               <MatrixAboutCard />
             </MatrixSectionCard>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <MatrixSectionCard title="Projects" onHover={handleHover} onLeave={handleLeave} glitch={glitch}>
+            <MatrixSectionCard title="Projects" onHover={() => handleHover('projects')} onLeave={handleLeave} glitch={glitch} focus={focusSection === 'projects'}>
               <MatrixProjectsCard />
             </MatrixSectionCard>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <MatrixSectionCard title="Skills" onHover={handleHover} onLeave={handleLeave} glitch={glitch}>
+            <MatrixSectionCard title="Skills" onHover={() => handleHover('skills')} onLeave={handleLeave} glitch={glitch} focus={focusSection === 'skills'}>
               <MatrixSkillsCard />
             </MatrixSectionCard>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <MatrixSectionCard title="Contact" onHover={handleHover} onLeave={handleLeave} glitch={glitch}>
+            <MatrixSectionCard title="Contact" onHover={() => handleHover('contact')} onLeave={handleLeave} glitch={glitch} focus={focusSection === 'contact'}>
               <MatrixContactCard />
             </MatrixSectionCard>
           </Grid>
         </Grid>
       </Box>
+      <MatrixTerminal onCommand={handleTerminalCommand} />
       {/* Glitch CSS animation */}
       <style>{`
         .matrix-glitch {
           animation: matrix-glitch-anim 0.3s linear;
+          filter: drop-shadow(0 0 8px #39ff14) drop-shadow(-2px 0 4px #00bfff) drop-shadow(2px 0 4px #ff2052);
+        }
+        .matrix-glitch * {
+          text-shadow:
+            0 0 8px #39ff14,
+            -2px 0 4px #00bfff,
+            2px 0 4px #ff2052;
         }
         @keyframes matrix-glitch-anim {
-          0% { filter: none; transform: none; }
-          20% { filter: blur(1px) contrast(1.5); transform: translateX(-2px) skewX(-2deg); }
-          40% { filter: blur(2px) contrast(2); transform: translateX(2px) skewX(2deg); }
-          60% { filter: blur(1px) contrast(1.5); transform: translateX(-1px) skewX(-1deg); }
-          80% { filter: blur(0.5px) contrast(1.2); transform: translateX(1px) skewX(1deg); }
-          100% { filter: none; transform: none; }
+          0% {
+            filter: none;
+            transform: none;
+          }
+          20% {
+            filter: drop-shadow(0 0 8px #39ff14) drop-shadow(-2px 0 4px #00bfff) drop-shadow(2px 0 4px #ff2052) blur(1px) contrast(1.5);
+            transform: translateX(-2px) skewX(-2deg);
+          }
+          40% {
+            filter: drop-shadow(0 0 12px #39ff14) drop-shadow(-4px 0 8px #00bfff) drop-shadow(4px 0 8px #ff2052) blur(2px) contrast(2);
+            transform: translateX(2px) skewX(2deg);
+          }
+          60% {
+            filter: drop-shadow(0 0 8px #39ff14) drop-shadow(-2px 0 4px #00bfff) drop-shadow(2px 0 4px #ff2052) blur(1px) contrast(1.5);
+            transform: translateX(-1px) skewX(-1deg);
+          }
+          80% {
+            filter: drop-shadow(0 0 6px #39ff14) drop-shadow(-1px 0 2px #00bfff) drop-shadow(1px 0 2px #ff2052) blur(0.5px) contrast(1.2);
+            transform: translateX(1px) skewX(1deg);
+          }
+          100% {
+            filter: none;
+            transform: none;
+          }
         }
       `}</style>
     </Box>
