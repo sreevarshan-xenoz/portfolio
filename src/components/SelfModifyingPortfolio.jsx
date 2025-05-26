@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Box, Button, Typography, Paper, useTheme, useMediaQuery } from '@mui/material';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 import '../styles/SelfModifyingPortfolio.css';
@@ -231,43 +231,184 @@ const sectionHover = {
 
 // About Section
 function AboutSection({ theme, framework, layout }) {
+  // Create motion values for parallax effect
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  
+  // Transform mouse position to parallax movement
+  const avatarX = useTransform(mouseX, [-300, 300], [-10, 10]);
+  const avatarY = useTransform(mouseY, [-300, 300], [-10, 10]);
+  const nameX = useTransform(mouseX, [-300, 300], [-5, 5]);
+  const nameY = useTransform(mouseY, [-300, 300], [-5, 5]);
+  const bioX = useTransform(mouseX, [-300, 300], [-3, 3]);
+  const bioY = useTransform(mouseY, [-300, 300], [-3, 3]);
+  
+  // Create spring animations for smoother movement
+  const springAvatarX = useSpring(avatarX, { stiffness: 100, damping: 30 });
+  const springAvatarY = useSpring(avatarY, { stiffness: 100, damping: 30 });
+  const springNameX = useSpring(nameX, { stiffness: 80, damping: 30 });
+  const springNameY = useSpring(nameY, { stiffness: 80, damping: 30 });
+  const springBioX = useSpring(bioX, { stiffness: 60, damping: 30 });
+  const springBioY = useSpring(bioY, { stiffness: 60, damping: 30 });
+  
+  // Handle mouse movement
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    // Calculate mouse position relative to center of card
+    const x = e.clientX - centerX;
+    const y = e.clientY - centerY;
+    
+    mouseX.set(x);
+    mouseY.set(y);
+  };
+  
+  // Reset on mouse leave
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+  
   return (
-    <Paper elevation={2} className={framework.paperClass} sx={{ 
-      mb: 3, 
-      p: 2, 
-      backgroundColor: theme.paper, 
-      color: theme.text, 
-      borderRadius: 2,
-      backgroundImage: theme.gradient,
-      boxShadow: theme.glow,
-      transition: 'all 0.3s ease'
-    }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Box sx={{ 
-          width: 64, 
-          height: 64, 
-          borderRadius: '50%', 
-          background: theme.gradient, 
-          display: 'flex', 
-          alignItems: 'center', 
-          justifyContent: 'center', 
-          fontSize: 36, 
-          color: theme.background, 
-          fontWeight: 'bold',
-          boxShadow: theme.glow
-        }}>
-          S
-        </Box>
+    <Paper 
+      elevation={2} 
+      className={`${framework.paperClass} parallax-card about-card-hover about-parallax-container`} 
+      sx={{ 
+        mb: 3, 
+        p: 2, 
+        backgroundColor: theme.paper, 
+        color: theme.text, 
+        borderRadius: 2,
+        backgroundImage: theme.gradient,
+        boxShadow: theme.glow,
+        transition: 'all 0.3s ease',
+        position: 'relative',
+        overflow: 'hidden',
+        transformStyle: 'preserve-3d',
+        perspective: '1000px'
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Static decorative elements */}
+      <div className="about-decoration about-decoration-1" style={{ borderColor: theme.primary }} />
+      <div className="about-decoration about-decoration-2" style={{ borderColor: theme.secondary }} />
+      <div className="about-decoration about-decoration-3" style={{ background: `radial-gradient(circle, ${theme.primary} 0%, transparent 70%)` }} />
+      
+      {/* Static particles */}
+      <div className="about-particle about-particle-1" style={{ '--primary-color': theme.primary }} />
+      <div className="about-particle about-particle-2" style={{ '--secondary-color': theme.secondary }} />
+      <div className="about-particle about-particle-3" style={{ '--primary-color': theme.primary }} />
+      <div className="about-particle about-particle-4" style={{ '--secondary-color': theme.secondary }} />
+      <div className="about-particle about-particle-5" style={{ '--primary-color': theme.primary }} />
+      
+      {/* Mouse follow highlight */}
+      <motion.div
+        className="about-mouse-follow"
+        style={{
+          x: useTransform(mouseX, [-300, 300], ['30%', '70%']),
+          y: useTransform(mouseY, [-300, 300], ['30%', '70%']),
+          '--primary-color': theme.primary
+        }}
+      />
+      
+      <Box sx={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        gap: 2,
+        position: 'relative',
+        zIndex: 1
+      }}>
+        {/* Avatar with parallax effect */}
+        <motion.div
+          className="about-avatar-parallax"
+          style={{
+            x: springAvatarX,
+            y: springAvatarY,
+            z: 30
+          }}
+        >
+          <Box sx={{ 
+            width: 64, 
+            height: 64, 
+            borderRadius: '50%', 
+            background: theme.gradient, 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            fontSize: 36, 
+            color: theme.background, 
+            fontWeight: 'bold',
+            boxShadow: theme.glow,
+            position: 'relative',
+            overflow: 'hidden'
+          }}>
+            <div className="about-avatar-glow" style={{ '--primary-color': theme.primary }} />
+            <motion.span
+              style={{
+                position: 'relative',
+                zIndex: 2
+              }}
+            >
+              S
+            </motion.span>
+          </Box>
+        </motion.div>
+        
         <Box>
-          <Typography variant="h5" sx={{ 
-            fontWeight: 'bold', 
-            color: theme.primary, 
-            fontFamily: framework.font,
-            textShadow: theme.glow
-          }}>Sreevarshan</Typography>
-          <Typography variant="body2" sx={{ color: theme.text, opacity: 0.8 }}>
-            Futuristic developer, AI/OS hacker, and creative technologist. I build wild, adaptive, and sentient web experiences.
-          </Typography>
+          {/* Name with parallax effect */}
+          <motion.div
+            className="about-name-parallax"
+            style={{
+              x: springNameX,
+              y: springNameY,
+              z: 20,
+              '--primary-color': theme.primary
+            }}
+          >
+            <Typography 
+              variant="h5" 
+              className="parallax-text"
+              sx={{ 
+                fontWeight: 'bold', 
+                color: theme.primary, 
+                fontFamily: framework.font,
+                textShadow: theme.glow,
+                position: 'relative',
+                display: 'inline-block'
+              }}
+            >
+              Sreevarshan
+              <div className="about-name-underline" style={{ 
+                '--primary-color': theme.primary,
+                '--secondary-color': theme.secondary
+              }} />
+            </Typography>
+          </motion.div>
+          
+          {/* Bio with parallax effect */}
+          <motion.div
+            className="about-bio-parallax"
+            style={{
+              x: springBioX,
+              y: springBioY,
+              z: 10
+            }}
+          >
+            <Typography 
+              variant="body2" 
+              className="parallax-text"
+              sx={{ 
+                color: theme.text, 
+                opacity: 0.8,
+                position: 'relative'
+              }}
+            >
+              Futuristic developer, AI/OS hacker, and creative technologist. I build wild, adaptive, and sentient web experiences.
+            </Typography>
+          </motion.div>
         </Box>
       </Box>
     </Paper>
@@ -276,40 +417,90 @@ function AboutSection({ theme, framework, layout }) {
 
 // Projects Section
 const demoProjects = [
-  {
-    title: 'IRIS OS',
-    desc: 'Custom Linux OS with built-in AI voice assistant. Arch-based, hackable, and beautiful.',
-    tech: ['Python', 'Arch Linux', 'LLMs', 'Hyprland'],
-    github: 'https://github.com/sreevarshan-xenoz/iris-os',
-    live: '#',
+  { 
+    title: 'Matrix Portfolio', 
+    desc: 'A portfolio that fully immerses you in the Matrix with digital rain, terminal UI, and green code everywhere.', 
+    tech: ['React', 'Framer Motion', 'CSS', 'Matrix Effects'], 
+    github: 'https://github.com/yourusername/matrix-portfolio', 
+    live: 'https://matrix-portfolio.example.com',
+    image: 'https://source.unsplash.com/random/300x200/?matrix,code'
   },
-  {
-    title: 'AURA',
-    desc: 'Smart home system with voice/gesture control and AI routines.',
-    tech: ['IoT', 'React', 'Node.js', 'ML'],
-    github: 'https://github.com/sreevarshan-xenoz/aura',
-    live: '#',
+  { 
+    title: 'Self-Modifying Portfolio', 
+    desc: 'A website that rewrites its own code in real time based on user behavior, trends, or cosmic radiation.', 
+    tech: ['React', 'Framer Motion', 'CSS', 'Dynamic Themes'], 
+    github: 'https://github.com/yourusername/self-modifying-portfolio', 
+    live: 'https://self-modifying-portfolio.example.com',
+    image: 'https://source.unsplash.com/random/300x200/?code,abstract'
   },
-  {
-    title: 'Student Job Finder',
-    desc: 'Platform connecting students with jobs and internships. Skill-matching and campus focus.',
-    tech: ['React', 'Node.js', 'MongoDB'],
-    github: 'https://github.com/sreevarshan-xenoz/student-job-finder',
-    live: '#',
+  { 
+    title: 'AI Collaborator Portfolio', 
+    desc: 'A portfolio co-created by you and an AI art bot, where both contributions are indistinguishable.', 
+    tech: ['React', 'AI', 'Canvas', 'Generative Art'], 
+    github: 'https://github.com/yourusername/ai-collaborator', 
+    live: 'https://ai-collaborator.example.com',
+    image: 'https://source.unsplash.com/random/300x200/?ai,art'
   },
+  { 
+    title: 'Data-Driven Identity', 
+    desc: 'Your identity and projects shift based on live global data streams (stock markets, climate, social media).', 
+    tech: ['React', 'D3.js', 'APIs', 'Data Visualization'], 
+    github: 'https://github.com/yourusername/data-driven-identity', 
+    live: 'https://data-driven-identity.example.com',
+    image: 'https://source.unsplash.com/random/300x200/?data,visualization'
+  }
 ];
+
 function ProjectsSection({ theme, framework, layout }) {
+  // Create motion values for parallax effect
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  
+  // Transform mouse position to parallax movement
+  const containerX = useTransform(mouseX, [-300, 300], [-5, 5]);
+  const containerY = useTransform(mouseY, [-300, 300], [-5, 5]);
+  
+  // Create spring animations for smoother movement
+  const springContainerX = useSpring(containerX, { stiffness: 50, damping: 30 });
+  const springContainerY = useSpring(containerY, { stiffness: 50, damping: 30 });
+  
+  // Handle mouse movement
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    // Calculate mouse position relative to center of card
+    const x = e.clientX - centerX;
+    const y = e.clientY - centerY;
+    
+    mouseX.set(x);
+    mouseY.set(y);
+  };
+  
+  // Reset on mouse leave
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+  
   return (
-    <Paper elevation={2} className={framework.paperClass} sx={{ 
-      mb: 3, 
-      p: 2, 
-      backgroundColor: theme.paper, 
-      color: theme.text, 
-      borderRadius: 2,
-      backgroundImage: theme.gradient,
-      boxShadow: theme.glow,
-      transition: 'all 0.3s ease'
-    }}>
+    <Paper 
+      elevation={2} 
+      className={`${framework.paperClass} parallax-card projects-parallax-container`} 
+      sx={{ 
+        mb: 3, 
+        p: 2, 
+        backgroundColor: theme.paper, 
+        color: theme.text, 
+        borderRadius: 2,
+        backgroundImage: theme.gradient,
+        boxShadow: theme.glow,
+        transition: 'all 0.3s ease'
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
       <Typography variant="h6" sx={{ 
         color: theme.secondary, 
         fontWeight: 'bold', 
@@ -317,58 +508,109 @@ function ProjectsSection({ theme, framework, layout }) {
         fontFamily: framework.font,
         textShadow: theme.glow
       }}>Projects</Typography>
+      
+      {/* Mouse follow highlight effect */}
+      <motion.div 
+        className="project-mouse-follow"
+        style={{
+          x: springContainerX,
+          y: springContainerY
+        }}
+      />
+      
+      {/* Decorative elements */}
+      <div className="project-decoration project-decoration-1" />
+      <div className="project-decoration project-decoration-2" />
+      
+      {/* Particles */}
+      <div className="project-particle project-particle-1" />
+      <div className="project-particle project-particle-2" />
+      <div className="project-particle project-particle-3" />
+      
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
         {demoProjects.map((proj, i) => (
-          <Box key={proj.title} sx={{ 
-            flex: '1 1 220px', 
-            minWidth: 200, 
-            maxWidth: 260, 
-            p: 2, 
-            borderRadius: 2, 
-            background: theme.background, 
-            color: theme.text, 
-            boxShadow: theme.shadow || theme.glow, 
-            mb: 1, 
-            fontFamily: framework.font,
-            transition: 'all 0.3s ease',
-            '&:hover': {
-              transform: 'translateY(-5px)',
-              boxShadow: theme.glow
-            }
-          }}>
-            <Typography variant="subtitle1" sx={{ 
-              color: theme.primary, 
-              fontWeight: 'bold', 
-              mb: 1,
-              textShadow: theme.glow
-            }}>{proj.title}</Typography>
-            <Typography variant="body2" sx={{ mb: 1 }}>{proj.desc}</Typography>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1 }}>
-              {proj.tech.map(t => <Box key={t} sx={{ 
-                px: 1, 
-                py: 0.2, 
-                borderRadius: 1, 
-                background: theme.secondary, 
-                color: theme.background, 
-                fontSize: 12,
-                boxShadow: theme.glow
-              }}>{t}</Box>)}
-            </Box>
-            <Box sx={{ display: 'flex', gap: 1 }}>
-              <Button size="small" href={proj.github} target="_blank" sx={{ 
+          <motion.div
+            key={proj.title}
+            className="project-card-parallax project-card-hover"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.1, duration: 0.5 }}
+            style={{
+              flex: '1 1 220px',
+              minWidth: 200,
+              maxWidth: 260,
+              padding: '16px',
+              borderRadius: '8px',
+              background: theme.background,
+              color: theme.text,
+              boxShadow: theme.shadow || theme.glow,
+              marginBottom: '8px',
+              fontFamily: framework.font,
+              transformStyle: 'preserve-3d',
+              transform: `translateZ(${i * 5}px)`
+            }}
+          >
+            {/* Project image with hover effect */}
+            <div className="project-image-container">
+              <img 
+                src={proj.image} 
+                alt={proj.title} 
+                className="project-image"
+              />
+              <div className="project-image-overlay" />
+            </div>
+            
+            <Typography 
+              variant="subtitle1" 
+              className="project-title-parallax"
+              sx={{ 
                 color: theme.primary, 
                 fontWeight: 'bold', 
-                textTransform: 'none',
+                mb: 1,
                 textShadow: theme.glow
-              }}>Code</Button>
-              <Button size="small" href={proj.live} target="_blank" sx={{ 
-                color: theme.secondary, 
-                fontWeight: 'bold', 
-                textTransform: 'none',
-                textShadow: theme.glow
-              }}>Live</Button>
+              }}
+            >
+              {proj.title}
+            </Typography>
+            
+            <Typography 
+              variant="body2" 
+              className="project-desc-parallax"
+              sx={{ mb: 1, opacity: 0.8 }}
+            >
+              {proj.desc}
+            </Typography>
+            
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 1 }}>
+              {proj.tech.map(t => (
+                <span 
+                  key={t} 
+                  className="project-tech-parallax project-tech-tag"
+                >
+                  {t}
+                </span>
+              ))}
             </Box>
-          </Box>
+            
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              <a 
+                href={proj.github} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="project-link"
+              >
+                Code
+              </a>
+              <a 
+                href={proj.live} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="project-link"
+              >
+                Live
+              </a>
+            </Box>
+          </motion.div>
         ))}
       </Box>
     </Paper>
@@ -382,19 +624,61 @@ const demoSkills = [
   { name: 'Python', color: '#3776ab', level: 80 },
   { name: 'AI/ML', color: '#7928ca', level: 75 },
   { name: 'Linux', color: '#64ffda', level: 80 },
+  { name: 'Node.js', color: '#339933', level: 85 },
+  { name: 'CSS/SCSS', color: '#cc6699', level: 90 },
+  { name: 'TypeScript', color: '#3178c6', level: 75 },
 ];
+
 function SkillsSection({ theme, framework, layout }) {
+  // Create motion values for parallax effect
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  
+  // Transform mouse position to parallax movement
+  const containerX = useTransform(mouseX, [-300, 300], [-5, 5]);
+  const containerY = useTransform(mouseY, [-300, 300], [-5, 5]);
+  
+  // Create spring animations for smoother movement
+  const springContainerX = useSpring(containerX, { stiffness: 50, damping: 30 });
+  const springContainerY = useSpring(containerY, { stiffness: 50, damping: 30 });
+  
+  // Handle mouse movement
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    // Calculate mouse position relative to center of card
+    const x = e.clientX - centerX;
+    const y = e.clientY - centerY;
+    
+    mouseX.set(x);
+    mouseY.set(y);
+  };
+  
+  // Reset on mouse leave
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+  
   return (
-    <Paper elevation={2} className={framework.paperClass} sx={{ 
-      mb: 3, 
-      p: 2, 
-      backgroundColor: theme.paper, 
-      color: theme.text, 
-      borderRadius: 2,
-      backgroundImage: theme.gradient,
-      boxShadow: theme.glow,
-      transition: 'all 0.3s ease'
-    }}>
+    <Paper 
+      elevation={2} 
+      className={`${framework.paperClass} parallax-card skills-parallax-container`} 
+      sx={{ 
+        mb: 3, 
+        p: 2, 
+        backgroundColor: theme.paper, 
+        color: theme.text, 
+        borderRadius: 2,
+        backgroundImage: theme.gradient,
+        boxShadow: theme.glow,
+        transition: 'all 0.3s ease'
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
       <Typography variant="h6" sx={{ 
         color: theme.secondary, 
         fontWeight: 'bold', 
@@ -402,35 +686,76 @@ function SkillsSection({ theme, framework, layout }) {
         fontFamily: framework.font,
         textShadow: theme.glow
       }}>Skills</Typography>
+      
+      {/* Mouse follow highlight effect */}
+      <motion.div 
+        className="skill-mouse-follow"
+        style={{
+          x: springContainerX,
+          y: springContainerY
+        }}
+      />
+      
+      {/* Decorative elements */}
+      <div className="skill-decoration skill-decoration-1" />
+      <div className="skill-decoration skill-decoration-2" />
+      
+      {/* Particles */}
+      <div className="skill-particle skill-particle-1" />
+      <div className="skill-particle skill-particle-2" />
+      <div className="skill-particle skill-particle-3" />
+      
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-        {demoSkills.map(skill => (
-          <Box key={skill.name} sx={{ minWidth: 120, flex: '1 1 120px' }}>
-            <Typography variant="body2" sx={{ 
-              color: skill.color, 
-              fontWeight: 'bold', 
+        {demoSkills.map((skill, index) => (
+          <motion.div
+            key={skill.name}
+            className="skill-item-parallax skill-item-hover"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1, duration: 0.5 }}
+            style={{
+              flex: '1 1 200px',
+              minWidth: 180,
+              maxWidth: 240,
+              padding: '12px',
+              borderRadius: '8px',
+              background: theme.background,
+              color: theme.text,
+              boxShadow: theme.shadow || theme.glow,
               fontFamily: framework.font,
-              textShadow: theme.glow
-            }}>{skill.name}</Typography>
-            <Box sx={{ 
-              height: 8, 
-              borderRadius: 4, 
-              background: theme.background, 
-              boxShadow: theme.shadow || theme.glow, 
-              overflow: 'hidden', 
-              mb: 1 
-            }}>
+              transformStyle: 'preserve-3d',
+              transform: `translateZ(${index * 3}px)`
+            }}
+          >
+            <Box sx={{ position: 'relative', mb: 1 }}>
+              <Typography 
+                variant="body2" 
+                className="skill-name-parallax"
+                sx={{ 
+                  color: skill.color, 
+                  fontWeight: 'bold', 
+                  fontFamily: framework.font,
+                  textShadow: theme.glow
+                }}
+              >
+                {skill.name}
+              </Typography>
+              <span className="skill-level-indicator">{skill.level}%</span>
+            </Box>
+            
+            <div className="skill-bar-container">
               <motion.div 
+                className="skill-bar-fill"
                 initial={{ width: 0 }} 
-                animate={{ width: skill.level + '%' }} 
-                transition={{ duration: 1.2 }} 
+                animate={{ width: `${skill.level}%` }} 
+                transition={{ duration: 1.2, delay: index * 0.1 }} 
                 style={{ 
-                  height: '100%', 
                   background: skill.color,
                   boxShadow: theme.glow
                 }} 
               />
-            </Box>
-          </Box>
+            </div>
+          </motion.div>
         ))}
       </Box>
     </Paper>
@@ -439,18 +764,56 @@ function SkillsSection({ theme, framework, layout }) {
 
 // Contact Section
 function ContactSection({ theme, framework, layout }) {
+  // Create motion values for parallax effect
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  
+  // Transform mouse position to parallax movement
+  const containerX = useTransform(mouseX, [-300, 300], [-5, 5]);
+  const containerY = useTransform(mouseY, [-300, 300], [-5, 5]);
+  
+  // Create spring animations for smoother movement
+  const springContainerX = useSpring(containerX, { stiffness: 50, damping: 30 });
+  const springContainerY = useSpring(containerY, { stiffness: 50, damping: 30 });
+  
+  // Handle mouse movement
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    // Calculate mouse position relative to center of card
+    const x = e.clientX - centerX;
+    const y = e.clientY - centerY;
+    
+    mouseX.set(x);
+    mouseY.set(y);
+  };
+  
+  // Reset on mouse leave
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+  
   return (
-    <Paper elevation={2} className={framework.paperClass} sx={{ 
-      mb: 3, 
-      p: 2, 
-      backgroundColor: theme.paper, 
-      color: theme.text, 
-      borderRadius: 2, 
-      textAlign: 'center',
-      backgroundImage: theme.gradient,
-      boxShadow: theme.glow,
-      transition: 'all 0.3s ease'
-    }}>
+    <Paper 
+      elevation={2} 
+      className={`${framework.paperClass} parallax-card contact-parallax-container`} 
+      sx={{ 
+        mb: 3, 
+        p: 2, 
+        backgroundColor: theme.paper, 
+        color: theme.text, 
+        borderRadius: 2, 
+        textAlign: 'center',
+        backgroundImage: theme.gradient,
+        boxShadow: theme.glow,
+        transition: 'all 0.3s ease'
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
       <Typography variant="h6" sx={{ 
         color: theme.secondary, 
         fontWeight: 'bold', 
@@ -458,30 +821,331 @@ function ContactSection({ theme, framework, layout }) {
         fontFamily: framework.font,
         textShadow: theme.glow
       }}>Contact</Typography>
-      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 1 }}>
-        <Button href="mailto:sreevarshan@example.com" sx={{ 
-          color: theme.primary, 
-          fontWeight: 'bold', 
-          textTransform: 'none',
-          textShadow: theme.glow
-        }}>Email</Button>
-        <Button href="https://github.com/sreevarshan-xenoz" target="_blank" sx={{ 
-          color: theme.secondary, 
-          fontWeight: 'bold', 
-          textTransform: 'none',
-          textShadow: theme.glow
-        }}>GitHub</Button>
-        <Button href="https://linkedin.com/in/sreevarshan" target="_blank" sx={{ 
-          color: theme.primary, 
-          fontWeight: 'bold', 
-          textTransform: 'none',
-          textShadow: theme.glow
-        }}>LinkedIn</Button>
+      
+      {/* Mouse follow highlight effect */}
+      <motion.div 
+        className="contact-mouse-follow"
+        style={{
+          x: springContainerX,
+          y: springContainerY
+        }}
+      />
+      
+      {/* Decorative elements */}
+      <div className="contact-decoration contact-decoration-1" />
+      <div className="contact-decoration contact-decoration-2" />
+      
+      {/* Particles */}
+      <div className="contact-particle contact-particle-1" />
+      <div className="contact-particle contact-particle-2" />
+      <div className="contact-particle contact-particle-3" />
+      
+      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 2 }}>
+        <motion.div
+          className="contact-item-parallax"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+        >
+          <a 
+            href="mailto:your.email@example.com" 
+            className="contact-link-parallax contact-button-hover"
+            style={{ color: theme.primary, textShadow: theme.glow }}
+          >
+            Email
+          </a>
+        </motion.div>
+        
+        <motion.div
+          className="contact-item-parallax"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          <a 
+            href="https://github.com/yourusername" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="contact-link-parallax contact-button-hover"
+            style={{ color: theme.secondary, textShadow: theme.glow }}
+          >
+            GitHub
+          </a>
+        </motion.div>
+        
+        <motion.div
+          className="contact-item-parallax"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          <a 
+            href="https://linkedin.com/in/yourusername" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="contact-link-parallax contact-button-hover"
+            style={{ color: theme.primary, textShadow: theme.glow }}
+          >
+            LinkedIn
+          </a>
+        </motion.div>
       </Box>
-      <Typography variant="body2" sx={{ color: theme.text, opacity: 0.7 }}>Let's build something wild together!</Typography>
+      
+      <motion.div
+        className="contact-message-parallax"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4, duration: 0.5 }}
+        style={{ opacity: 0.7 }}
+      >
+        <Typography variant="body2" sx={{ color: theme.text }}>
+          Let's build something wild together!
+        </Typography>
+      </motion.div>
+      
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+        <motion.div
+          className="contact-social-icon"
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          whileHover={{ scale: 1.1, rotate: 5 }}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2ZM12 20C7.582 20 4 16.418 4 12C4 7.582 7.582 4 12 4C16.418 4 20 7.582 20 12C20 16.418 16.418 20 12 20Z" fill="currentColor"/>
+            <path d="M12 6C8.686 6 6 8.686 6 12C6 15.314 8.686 18 12 18C15.314 18 18 15.314 18 12C18 8.686 15.314 6 12 6ZM12 16C9.791 16 8 14.209 8 12C8 9.791 9.791 8 12 8C14.209 8 16 9.791 16 12C16 14.209 14.209 16 12 16Z" fill="currentColor"/>
+          </svg>
+        </motion.div>
+        
+        <motion.div
+          className="contact-social-icon"
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+          whileHover={{ scale: 1.1, rotate: -5 }}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2ZM12 20C7.582 20 4 16.418 4 12C4 7.582 7.582 4 12 4C16.418 4 20 7.582 20 12C20 16.418 16.418 20 12 20Z" fill="currentColor"/>
+            <path d="M12 6C8.686 6 6 8.686 6 12C6 15.314 8.686 18 12 18C15.314 18 18 15.314 18 12C18 8.686 15.314 6 12 6ZM12 16C9.791 16 8 14.209 8 12C8 9.791 9.791 8 12 8C14.209 8 16 9.791 16 12C16 14.209 14.209 16 12 16Z" fill="currentColor"/>
+          </svg>
+        </motion.div>
+        
+        <motion.div
+          className="contact-social-icon"
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.7, duration: 0.5 }}
+          whileHover={{ scale: 1.1, rotate: 5 }}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.477 2 2 6.477 2 12C2 17.523 6.477 22 12 22C17.523 22 22 17.523 22 12C22 6.477 17.523 2 12 2ZM12 20C7.582 20 4 16.418 4 12C4 7.582 7.582 4 12 4C16.418 4 20 7.582 20 12C20 16.418 16.418 20 12 20Z" fill="currentColor"/>
+            <path d="M12 6C8.686 6 6 8.686 6 12C6 15.314 8.686 18 12 18C15.314 18 18 15.314 18 12C18 8.686 15.314 6 12 6ZM12 16C9.791 16 8 14.209 8 12C8 9.791 9.791 8 12 8C14.209 8 16 9.791 16 12C16 14.209 14.209 16 12 16Z" fill="currentColor"/>
+          </svg>
+        </motion.div>
+      </Box>
     </Paper>
   );
 }
+
+// ParallaxBackground component for creating depth effect
+const ParallaxBackground = ({ theme, framework }) => {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  
+  // Transform mouse position to parallax movement
+  const backgroundX = useTransform(mouseX, [-500, 500], [-20, 20]);
+  const backgroundY = useTransform(mouseY, [-500, 500], [-20, 20]);
+  
+  // Create spring animations for smoother movement
+  const springX = useSpring(backgroundX, { stiffness: 50, damping: 30 });
+  const springY = useSpring(backgroundY, { stiffness: 50, damping: 30 });
+  
+  // Handle mouse movement
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+    const { innerWidth, innerHeight } = window;
+    
+    // Calculate mouse position relative to center of screen
+    const x = clientX - innerWidth / 2;
+    const y = clientY - innerHeight / 2;
+    
+    mouseX.set(x);
+    mouseY.set(y);
+  };
+  
+  // Add and remove event listener
+  useEffect(() => {
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+  
+  // Generate random particles for depth effect
+  const particles = Array.from({ length: 50 }, (_, i) => ({
+    id: i,
+    size: Math.random() * 4 + 1,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    depth: Math.random() * 0.5 + 0.5, // Depth factor (0.5-1.0)
+    color: theme.primary,
+    opacity: Math.random() * 0.5 + 0.1
+  }));
+  
+  return (
+    <motion.div 
+      className="parallax-background"
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        overflow: 'hidden',
+        zIndex: -1,
+        background: theme.background,
+        x: springX,
+        y: springY
+      }}
+    >
+      {/* Background gradient */}
+      <div 
+        className="parallax-gradient"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: theme.gradient,
+          opacity: 0.7,
+          filter: 'blur(60px)',
+          transform: 'scale(1.5)',
+          transformOrigin: 'center'
+        }}
+      />
+      
+      {/* Parallax particles */}
+      {particles.map(particle => {
+        // Calculate parallax movement based on depth
+        const particleX = useTransform(mouseX, [-500, 500], [-20 * particle.depth, 20 * particle.depth]);
+        const particleY = useTransform(mouseY, [-500, 500], [-20 * particle.depth, 20 * particle.depth]);
+        
+        // Create spring for smooth movement
+        const springParticleX = useSpring(particleX, { stiffness: 50, damping: 30 });
+        const springParticleY = useSpring(particleY, { stiffness: 50, damping: 30 });
+        
+        return (
+          <motion.div
+            key={particle.id}
+            style={{
+              position: 'absolute',
+              width: particle.size,
+              height: particle.size,
+              borderRadius: '50%',
+              background: particle.color,
+              opacity: particle.opacity,
+              left: `${particle.x}%`,
+              top: `${particle.y}%`,
+              x: springParticleX,
+              y: springParticleY,
+              boxShadow: `0 0 ${particle.size * 2}px ${particle.color}`,
+              zIndex: Math.floor(particle.depth * 10)
+            }}
+          />
+        );
+      })}
+    </motion.div>
+  );
+};
+
+// ParallaxCard component for section cards with parallax effect
+const ParallaxCard = ({ children, theme, framework, hover, depth = 0.2 }) => {
+  const cardRef = useRef(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  
+  // Transform mouse position to card rotation
+  const rotateX = useTransform(mouseY, [-300, 300], [depth * 10, -depth * 10]);
+  const rotateY = useTransform(mouseX, [-300, 300], [-depth * 10, depth * 10]);
+  
+  // Create spring animations for smoother movement
+  const springRotateX = useSpring(rotateX, { stiffness: 100, damping: 30 });
+  const springRotateY = useSpring(rotateY, { stiffness: 100, damping: 30 });
+  
+  // Handle mouse movement
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    
+    const rect = cardRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    // Calculate mouse position relative to center of card
+    const x = e.clientX - centerX;
+    const y = e.clientY - centerY;
+    
+    mouseX.set(x);
+    mouseY.set(y);
+  };
+  
+  // Reset on mouse leave
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
+  
+  return (
+    <motion.div
+      ref={cardRef}
+      whileHover={hover.motion}
+      className={hover.class}
+      style={{ 
+        width: '100%',
+        perspective: 1000,
+        transformStyle: 'preserve-3d'
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      transition={{ type: 'spring', stiffness: 200, damping: 18 }}
+    >
+      <motion.div
+        style={{
+          rotateX: springRotateX,
+          rotateY: springRotateY,
+          transformStyle: 'preserve-3d',
+          width: '100%',
+          height: '100%'
+        }}
+      >
+        {/* Card content with 3D effect */}
+        <motion.div
+          style={{
+            transform: 'translateZ(20px)',
+            width: '100%',
+            height: '100%'
+          }}
+        >
+          {children}
+        </motion.div>
+        
+        {/* Card highlight/glow effect */}
+        <motion.div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: `radial-gradient(circle at ${useTransform(mouseX, [-300, 300], ['30%', '70%'])} ${useTransform(mouseY, [-300, 300], ['30%', '70%'])}, ${theme.primary}20, transparent 70%)`,
+            opacity: 0.5,
+            borderRadius: 'inherit',
+            pointerEvents: 'none',
+            zIndex: 1
+          }}
+        />
+      </motion.div>
+    </motion.div>
+  );
+};
 
 const SelfModifyingPortfolio = () => {
   const [currentFramework, setCurrentFramework] = useState(0);
@@ -502,6 +1166,7 @@ const SelfModifyingPortfolio = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [colorCycle, setColorCycle] = useState(false);
   const colorCycleInterval = useRef(null);
+  const [enableParallax, setEnableParallax] = useState(true);
   
   // Function to apply a new framework theme
   const applyFramework = (index) => {
@@ -743,6 +1408,14 @@ const SelfModifyingPortfolio = () => {
       }}
       onMouseEnter={handleHover}
     >
+      {/* Parallax background */}
+      {enableParallax && (
+        <ParallaxBackground 
+          theme={themeVariations[currentFrameworkObj.className]} 
+          framework={currentFrameworkObj} 
+        />
+      )}
+      
       {/* Top controls bar: fullscreen left, theme switcher right */}
       <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2, zIndex: 10 }}>
         <Button
@@ -754,7 +1427,22 @@ const SelfModifyingPortfolio = () => {
           {isFullscreen ? <FullscreenExitIcon fontSize="small" /> : <FullscreenIcon fontSize="small" />}
           <span style={{ marginLeft: 6, fontSize: 14 }}>{isFullscreen ? 'Exit Full Screen' : 'View Full Screen'}</span>
         </Button>
-        <Box>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => setEnableParallax(!enableParallax)}
+            sx={{ 
+              borderRadius: 2, 
+              p: 1, 
+              color: themeVariations[currentFrameworkObj.className].primary, 
+              borderColor: themeVariations[currentFrameworkObj.className].primary, 
+              background: 'rgba(0,0,0,0.15)',
+              minWidth: 36
+            }}
+          >
+            {enableParallax ? 'Disable Parallax' : 'Enable Parallax'}
+          </Button>
           <select value={manualTheme || frameworks[currentFramework].name} onChange={handleManualTheme} style={{ fontSize: layout.fontSize, borderRadius: 6, padding: '0.3rem 1rem', fontFamily: currentFrameworkObj.font }}>
             {frameworks.map(f => <option key={f.name} value={f.name}>{f.name}</option>)}
           </select>
@@ -842,7 +1530,7 @@ const SelfModifyingPortfolio = () => {
         Hover count: {hoverCount} | Last interaction: {Math.floor((Date.now() - lastInteraction) / 1000)}s ago
       </Typography>
       
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, mt: 2 }}>
         <Typography variant="h4" sx={{ 
           fontWeight: 'bold', 
           color: themeVariations[currentFrameworkObj.className].primary,
@@ -889,15 +1577,22 @@ const SelfModifyingPortfolio = () => {
 
 // SectionWrapper: applies hover animation and class
 function SectionWrapper({ children, theme, framework, hover }) {
+  // Use different depth values for different sections to create layered effect
+  const depthMap = {
+    'about': 0.15,
+    'projects': 0.25,
+    'skills': 0.2,
+    'contact': 0.1
+  };
+  
+  // Determine which section this is based on the first child's type
+  const sectionType = React.Children.toArray(children)[0]?.type?.name?.toLowerCase().replace('section', '') || 'about';
+  const depth = depthMap[sectionType] || 0.2;
+  
   return (
-    <motion.div
-      whileHover={hover.motion}
-      className={hover.class}
-      style={{ width: '100%' }}
-      transition={{ type: 'spring', stiffness: 200, damping: 18 }}
-    >
+    <ParallaxCard theme={theme} framework={framework} hover={hover} depth={depth}>
       {children}
-    </motion.div>
+    </ParallaxCard>
   );
 }
 

@@ -3,6 +3,8 @@
   transition: all 0.5s ease;
   border-radius: 8px;
   overflow: hidden;
+  position: relative;
+  perspective: 1000px;
 }
 
 /* Material UI theme */
@@ -470,4 +472,1082 @@
 
 .chaos-mode {
   animation: chaosShake 0.2s infinite alternate;
+}
+
+/* Parallax background styles */
+.parallax-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: -1;
+  transition: all 0.5s ease;
+}
+
+.parallax-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.7;
+  filter: blur(60px);
+  transform: scale(1.5);
+  transform-origin: center;
+  transition: all 0.5s ease;
+}
+
+/* Parallax card styles */
+.parallax-card {
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.parallax-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.parallax-card:hover::before {
+  opacity: 1;
+}
+
+/* Parallax particle animation */
+@keyframes floatParticle {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-10px) translateX(5px);
+  }
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+}
+
+.parallax-particle {
+  animation: floatParticle 8s ease-in-out infinite;
+  animation-delay: calc(var(--delay) * 1s);
+}
+
+/* Parallax depth effect for different sections */
+.parallax-depth-1 {
+  transform: translateZ(10px);
+}
+
+.parallax-depth-2 {
+  transform: translateZ(20px);
+}
+
+.parallax-depth-3 {
+  transform: translateZ(30px);
+}
+
+.parallax-depth-4 {
+  transform: translateZ(40px);
+}
+
+/* Enhanced hover effects with parallax */
+.mui-section-hover:hover,
+.tailwind-section-hover:hover,
+.bootstrap-section-hover:hover,
+.chakra-section-hover:hover,
+.ant-section-hover:hover,
+.bulma-section-hover:hover,
+.neumorph-section-hover:hover,
+.glass-section-hover:hover,
+.retro-section-hover:hover,
+.cyberpunk-section-hover:hover,
+.matrix-section-hover:hover,
+.spacepunk-section-hover:hover,
+.rainbow-section-hover:hover,
+.synthwave-section-hover:hover,
+.neon-section-hover:hover {
+  transform: translateY(-5px) translateZ(20px);
+  transition: all 0.3s ease;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Rainbow section hover with parallax */
+.rainbow-section-hover:hover {
+  animation: rainbowHover 2s linear infinite;
+  transform: translateY(-5px) translateZ(20px);
+}
+
+/* Synthwave section hover with parallax */
+.synthwave-section-hover:hover {
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.7);
+  border-color: var(--secondary-color);
+  transform: translateY(-5px) translateZ(20px);
+}
+
+/* Neon section hover with parallax */
+.neon-section-hover:hover {
+  box-shadow: 0 0 25px rgba(255, 0, 255, 0.9);
+  border-color: var(--secondary-color);
+  transform: translateY(-5px) translateZ(20px);
+}
+
+/* Parallax mouse follow effect */
+.mouse-follow {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease-out;
+}
+
+/* Parallax tilt effect for cards */
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.tilt-card-content {
+  transform: translateZ(20px);
+}
+
+/* Parallax scroll effect */
+.parallax-scroll {
+  transform: translateY(calc(var(--scroll) * 0.5px));
+  transition: transform 0.1s linear;
+}
+
+/* Parallax mouse movement effect */
+.parallax-mouse-move {
+  transform: translate(
+    calc(var(--mouse-x) * 0.05px),
+    calc(var(--mouse-y) * 0.05px)
+  );
+  transition: transform 0.1s ease-out;
+}
+
+/* Parallax depth layers */
+.parallax-layer-1 {
+  transform: translateZ(10px);
+}
+
+.parallax-layer-2 {
+  transform: translateZ(20px);
+}
+
+.parallax-layer-3 {
+  transform: translateZ(30px);
+}
+
+.parallax-layer-4 {
+  transform: translateZ(40px);
+}
+
+.parallax-layer-5 {
+  transform: translateZ(50px);
+}
+
+/* Parallax card hover effect */
+.parallax-card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.parallax-card-hover:hover {
+  transform: translateY(-10px) translateZ(30px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Parallax button effect */
+.parallax-button {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.parallax-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.parallax-button:hover {
+  transform: translateY(-3px) translateZ(10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.parallax-button:hover::before {
+  transform: translateX(100%);
+}
+
+/* Parallax text effect */
+.parallax-text {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+.parallax-text:hover {
+  transform: translateZ(20px);
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+}
+
+/* Parallax image effect */
+.parallax-image {
+  transition: transform 0.3s ease;
+}
+
+.parallax-image:hover {
+  transform: scale(1.05) translateZ(20px);
+}
+
+/* Parallax toggle button */
+.parallax-toggle {
+  position: relative;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.parallax-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Parallax disabled state */
+.parallax-disabled .parallax-background,
+.parallax-disabled .parallax-card,
+.parallax-disabled .parallax-button,
+.parallax-disabled .parallax-text,
+.parallax-disabled .parallax-image {
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+}
+
+/* About section specific parallax styles */
+.about-parallax-container {
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.about-avatar-parallax {
+  transition: transform 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.about-avatar-parallax:hover {
+  transform: translateZ(20px) scale(1.05);
+}
+
+.about-name-parallax {
+  position: relative;
+  display: inline-block;
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+.about-name-parallax:hover {
+  transform: translateZ(15px);
+  text-shadow: 0 0 15px var(--primary-color);
+}
+
+.about-bio-parallax {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.about-bio-parallax:hover {
+  transform: translateZ(10px);
+  opacity: 1 !important;
+}
+
+/* About section decorative elements */
+.about-decoration {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  transition: transform 0.5s ease;
+}
+
+.about-decoration-1 {
+  top: 10%;
+  right: 5%;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid var(--primary-color);
+  opacity: 0.2;
+  transform: translateZ(5px);
+}
+
+.about-decoration-2 {
+  bottom: 15%;
+  left: 8%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--secondary-color);
+  opacity: 0.2;
+  transform: translateZ(10px);
+}
+
+.about-decoration-3 {
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+  opacity: 0.05;
+  transform: translate(-50%, -50%) translateZ(-10px);
+}
+
+/* About section particle effects */
+.about-particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: floatParticle 8s ease-in-out infinite;
+  animation-delay: calc(var(--delay) * 1s);
+}
+
+.about-particle-1 {
+  width: 3px;
+  height: 3px;
+  background-color: var(--primary-color);
+  box-shadow: 0 0 6px var(--primary-color);
+  top: 20%;
+  left: 15%;
+  --delay: 0;
+}
+
+.about-particle-2 {
+  width: 2px;
+  height: 2px;
+  background-color: var(--secondary-color);
+  box-shadow: 0 0 4px var(--secondary-color);
+  top: 60%;
+  right: 25%;
+  --delay: 1;
+}
+
+.about-particle-3 {
+  width: 4px;
+  height: 4px;
+  background-color: var(--primary-color);
+  box-shadow: 0 0 8px var(--primary-color);
+  bottom: 30%;
+  left: 40%;
+  --delay: 2;
+}
+
+.about-particle-4 {
+  width: 2px;
+  height: 2px;
+  background-color: var(--secondary-color);
+  box-shadow: 0 0 4px var(--secondary-color);
+  top: 40%;
+  right: 10%;
+  --delay: 3;
+}
+
+.about-particle-5 {
+  width: 3px;
+  height: 3px;
+  background-color: var(--primary-color);
+  box-shadow: 0 0 6px var(--primary-color);
+  bottom: 20%;
+  right: 30%;
+  --delay: 4;
+}
+
+/* About section mouse follow effect */
+.about-mouse-follow {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease-out;
+}
+
+/* About section hover effects */
+.about-card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-card-hover:hover {
+  transform: translateY(-5px) translateZ(20px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* About section underline animation */
+.about-name-underline {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  transform-origin: left;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.about-name-parallax:hover .about-name-underline {
+  transform: scaleX(1.2);
+  opacity: 1;
+}
+
+/* About section avatar glow effect */
+.about-avatar-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  box-shadow: 0 0 20px var(--primary-color);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.about-avatar-parallax:hover .about-avatar-glow {
+  opacity: 0.5;
+}
+
+/* Projects section specific parallax styles */
+.projects-parallax-container {
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.project-card-parallax {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card-parallax:hover {
+  transform: translateZ(20px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.project-title-parallax {
+  position: relative;
+  display: inline-block;
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+.project-title-parallax:hover {
+  transform: translateZ(15px);
+  text-shadow: 0 0 15px var(--primary-color);
+}
+
+.project-desc-parallax {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.project-desc-parallax:hover {
+  transform: translateZ(10px);
+  opacity: 1 !important;
+}
+
+.project-tech-parallax {
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.project-tech-parallax:hover {
+  transform: translateZ(5px) scale(1.05);
+}
+
+/* Projects section decorative elements */
+.project-decoration {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  transition: transform 0.5s ease;
+}
+
+.project-decoration-1 {
+  top: 5%;
+  right: 5%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--primary-color);
+  opacity: 0.2;
+  transform: translateZ(5px);
+}
+
+.project-decoration-2 {
+  bottom: 10%;
+  left: 8%;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--secondary-color);
+  opacity: 0.2;
+  transform: translateZ(10px);
+}
+
+/* Projects section particle effects */
+.project-particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: floatParticle 8s ease-in-out infinite;
+  animation-delay: calc(var(--delay) * 1s);
+}
+
+.project-particle-1 {
+  width: 3px;
+  height: 3px;
+  background-color: var(--primary-color);
+  box-shadow: 0 0 6px var(--primary-color);
+  top: 15%;
+  left: 10%;
+  --delay: 0;
+}
+
+.project-particle-2 {
+  width: 2px;
+  height: 2px;
+  background-color: var(--secondary-color);
+  box-shadow: 0 0 4px var(--secondary-color);
+  top: 50%;
+  right: 20%;
+  --delay: 1;
+}
+
+.project-particle-3 {
+  width: 4px;
+  height: 4px;
+  background-color: var(--primary-color);
+  box-shadow: 0 0 8px var(--primary-color);
+  bottom: 20%;
+  left: 30%;
+  --delay: 2;
+}
+
+/* Projects section mouse follow effect */
+.project-mouse-follow {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease-out;
+}
+
+/* Projects section hover effects */
+.project-card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card-hover:hover {
+  transform: translateY(-5px) translateZ(20px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Projects section tech tag effects */
+.project-tech-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  margin: 2px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  background: var(--primary-color);
+  color: white;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-tech-tag:hover {
+  transform: translateY(-2px) translateZ(10px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Projects section link effects */
+.project-link {
+  position: relative;
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.project-link:hover {
+  transform: translateX(5px) translateZ(15px);
+  color: var(--secondary-color);
+}
+
+.project-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--secondary-color);
+  transition: width 0.3s ease;
+}
+
+.project-link:hover::after {
+  width: 100%;
+}
+
+/* Projects section image effects */
+.project-image-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.project-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.project-image-container:hover .project-image {
+  transform: scale(1.05);
+}
+
+.project-image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.7));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.project-image-container:hover .project-image-overlay {
+  opacity: 1;
+}
+
+/* Skills section specific parallax styles */
+.skills-parallax-container {
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.skill-item-parallax {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.skill-item-parallax:hover {
+  transform: translateZ(15px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.skill-name-parallax {
+  position: relative;
+  display: inline-block;
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+  margin-bottom: 4px;
+}
+
+.skill-name-parallax:hover {
+  transform: translateZ(10px);
+  text-shadow: 0 0 10px var(--primary-color);
+}
+
+.skill-bar-container {
+  position: relative;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.skill-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1.2s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-bar-fill:hover {
+  transform: translateZ(5px);
+  box-shadow: 0 0 15px var(--primary-color);
+}
+
+.skill-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: skillBarShine 2s infinite;
+}
+
+@keyframes skillBarShine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Skills section decorative elements */
+.skill-decoration {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  transition: transform 0.5s ease;
+}
+
+.skill-decoration-1 {
+  top: 10%;
+  right: 10%;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid var(--primary-color);
+  opacity: 0.15;
+  transform: translateZ(5px);
+}
+
+.skill-decoration-2 {
+  bottom: 15%;
+  left: 15%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--secondary-color);
+  opacity: 0.15;
+  transform: translateZ(10px);
+}
+
+/* Skills section particle effects */
+.skill-particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: floatParticle 10s ease-in-out infinite;
+  animation-delay: calc(var(--delay) * 1s);
+}
+
+.skill-particle-1 {
+  width: 4px;
+  height: 4px;
+  background-color: var(--primary-color);
+  box-shadow: 0 0 8px var(--primary-color);
+  top: 20%;
+  left: 15%;
+  --delay: 0;
+}
+
+.skill-particle-2 {
+  width: 3px;
+  height: 3px;
+  background-color: var(--secondary-color);
+  box-shadow: 0 0 6px var(--secondary-color);
+  top: 60%;
+  right: 25%;
+  --delay: 1.5;
+}
+
+.skill-particle-3 {
+  width: 5px;
+  height: 5px;
+  background-color: var(--primary-color);
+  box-shadow: 0 0 10px var(--primary-color);
+  bottom: 25%;
+  left: 35%;
+  --delay: 3;
+}
+
+/* Skills section mouse follow effect */
+.skill-mouse-follow {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease-out;
+}
+
+/* Skills section hover effects */
+.skill-item-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.skill-item-hover:hover {
+  transform: translateY(-3px) translateZ(15px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Skills section level indicator */
+.skill-level-indicator {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 0.7rem;
+  color: var(--primary-color);
+  opacity: 0.7;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.skill-item-hover:hover .skill-level-indicator {
+  transform: translateZ(10px);
+  opacity: 1;
+}
+
+/* Contact section specific parallax styles */
+.contact-parallax-container {
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.contact-item-parallax {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  margin: 0 8px;
+}
+
+.contact-item-parallax:hover {
+  transform: translateZ(20px) scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.contact-link-parallax {
+  position: relative;
+  display: inline-block;
+  padding: 8px 16px;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: bold;
+  transition: transform 0.3s ease, color 0.3s ease, text-shadow 0.3s ease;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.contact-link-parallax:hover {
+  transform: translateZ(15px);
+  color: var(--secondary-color);
+  text-shadow: 0 0 10px var(--secondary-color);
+}
+
+.contact-link-parallax::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.contact-link-parallax:hover::before {
+  transform: translateX(100%);
+}
+
+.contact-message-parallax {
+  position: relative;
+  display: inline-block;
+  margin-top: 16px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.contact-message-parallax:hover {
+  transform: translateZ(10px);
+  opacity: 1 !important;
+}
+
+/* Contact section decorative elements */
+.contact-decoration {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+  transition: transform 0.5s ease;
+}
+
+.contact-decoration-1 {
+  top: 15%;
+  right: 15%;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid var(--primary-color);
+  opacity: 0.1;
+  transform: translateZ(5px);
+}
+
+.contact-decoration-2 {
+  bottom: 20%;
+  left: 20%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--secondary-color);
+  opacity: 0.1;
+  transform: translateZ(10px);
+}
+
+/* Contact section particle effects */
+.contact-particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: floatParticle 12s ease-in-out infinite;
+  animation-delay: calc(var(--delay) * 1s);
+}
+
+.contact-particle-1 {
+  width: 3px;
+  height: 3px;
+  background-color: var(--primary-color);
+  box-shadow: 0 0 6px var(--primary-color);
+  top: 25%;
+  left: 20%;
+  --delay: 0;
+}
+
+.contact-particle-2 {
+  width: 2px;
+  height: 2px;
+  background-color: var(--secondary-color);
+  box-shadow: 0 0 4px var(--secondary-color);
+  top: 70%;
+  right: 30%;
+  --delay: 2;
+}
+
+.contact-particle-3 {
+  width: 4px;
+  height: 4px;
+  background-color: var(--primary-color);
+  box-shadow: 0 0 8px var(--primary-color);
+  bottom: 30%;
+  left: 40%;
+  --delay: 4;
+}
+
+/* Contact section mouse follow effect */
+.contact-mouse-follow {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease-out;
+}
+
+/* Contact section hover effects */
+.contact-button-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-button-hover:hover {
+  transform: translateY(-3px) translateZ(15px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.contact-button-hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.contact-button-hover:hover::after {
+  transform: translateX(100%);
+}
+
+/* Contact section social icons */
+.contact-social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--primary-color);
+  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  margin: 0 8px;
+}
+
+.contact-social-icon:hover {
+  transform: translateY(-5px) translateZ(20px);
+  background: var(--primary-color);
+  color: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 } 
