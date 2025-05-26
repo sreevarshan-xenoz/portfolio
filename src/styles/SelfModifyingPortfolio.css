@@ -194,4 +194,280 @@
     transform: translate(0);
     opacity: 0;
   }
+}
+
+/* Rainbow theme */
+.rainbow-theme {
+  --primary-color: #ff0000;
+  --secondary-color: #00ff00;
+  --background-color: #000000;
+  --paper-color: #1a1a1a;
+  --text-color: #ffffff;
+  
+  background-color: var(--background-color);
+  color: var(--text-color);
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+  border-radius: 8px;
+  animation: rainbowBorder 5s linear infinite;
+}
+
+.rainbow-theme .rainbow-button {
+  background: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+  background-size: 200% 200%;
+  color: white;
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+  animation: rainbowButton 5s linear infinite;
+}
+
+.rainbow-theme .rainbow-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+}
+
+.rainbow-theme .rainbow-paper {
+  background-color: var(--paper-color);
+  padding: 24px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  animation: rainbowBorder 5s linear infinite;
+}
+
+@keyframes rainbowBorder {
+  0% {
+    border-color: #ff0000;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+  }
+  14% {
+    border-color: #ff7f00;
+    box-shadow: 0 0 15px rgba(255, 127, 0, 0.5);
+  }
+  28% {
+    border-color: #ffff00;
+    box-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
+  }
+  42% {
+    border-color: #00ff00;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+  }
+  57% {
+    border-color: #0000ff;
+    box-shadow: 0 0 15px rgba(0, 0, 255, 0.5);
+  }
+  71% {
+    border-color: #4b0082;
+    box-shadow: 0 0 15px rgba(75, 0, 130, 0.5);
+  }
+  85% {
+    border-color: #8b00ff;
+    box-shadow: 0 0 15px rgba(139, 0, 255, 0.5);
+  }
+  100% {
+    border-color: #ff0000;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+  }
+}
+
+@keyframes rainbowButton {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+/* Synthwave theme */
+.synthwave-theme {
+  --primary-color: #ff00ff;
+  --secondary-color: #00ffff;
+  --background-color: #2b213a;
+  --paper-color: #1a1a2e;
+  --text-color: #ffffff;
+  
+  background-color: var(--background-color);
+  color: var(--text-color);
+  box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.synthwave-theme::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #ff00ff, #00ffff);
+  z-index: 1;
+}
+
+.synthwave-theme .synthwave-button {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+}
+
+.synthwave-theme .synthwave-button:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+}
+
+.synthwave-theme .synthwave-paper {
+  background-color: var(--paper-color);
+  padding: 24px;
+  border-radius: 4px;
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+}
+
+/* Neon theme */
+.neon-theme {
+  --primary-color: #ff00ff;
+  --secondary-color: #00ffff;
+  --background-color: #000000;
+  --paper-color: #1a1a1a;
+  --text-color: #ffffff;
+  
+  background-color: var(--background-color);
+  color: var(--text-color);
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.7);
+  border-radius: 8px;
+}
+
+.neon-theme .neon-button {
+  background-color: transparent;
+  color: var(--primary-color);
+  font-weight: 600;
+  border-radius: 4px;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+  text-shadow: 0 0 5px var(--primary-color);
+}
+
+.neon-theme .neon-button:hover {
+  background-color: var(--primary-color);
+  color: var(--background-color);
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
+}
+
+.neon-theme .neon-paper {
+  background-color: var(--paper-color);
+  padding: 24px;
+  border-radius: 4px;
+  border: 1px solid var(--primary-color);
+  box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+}
+
+/* Enhanced hover effects for all themes */
+.mui-section-hover:hover,
+.tailwind-section-hover:hover,
+.bootstrap-section-hover:hover,
+.chakra-section-hover:hover,
+.ant-section-hover:hover,
+.bulma-section-hover:hover,
+.neumorph-section-hover:hover,
+.glass-section-hover:hover,
+.retro-section-hover:hover,
+.cyberpunk-section-hover:hover,
+.matrix-section-hover:hover,
+.spacepunk-section-hover:hover,
+.rainbow-section-hover:hover,
+.synthwave-section-hover:hover,
+.neon-section-hover:hover {
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
+
+/* Rainbow section hover */
+.rainbow-section-hover:hover {
+  animation: rainbowHover 2s linear infinite;
+}
+
+@keyframes rainbowHover {
+  0% {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+  }
+  14% {
+    box-shadow: 0 0 15px rgba(255, 127, 0, 0.5);
+  }
+  28% {
+    box-shadow: 0 0 15px rgba(255, 255, 0, 0.5);
+  }
+  42% {
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+  }
+  57% {
+    box-shadow: 0 0 15px rgba(0, 0, 255, 0.5);
+  }
+  71% {
+    box-shadow: 0 0 15px rgba(75, 0, 130, 0.5);
+  }
+  85% {
+    box-shadow: 0 0 15px rgba(139, 0, 255, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+  }
+}
+
+/* Synthwave section hover */
+.synthwave-section-hover:hover {
+  box-shadow: 0 0 20px rgba(255, 0, 255, 0.7);
+  border-color: var(--secondary-color);
+}
+
+/* Neon section hover */
+.neon-section-hover:hover {
+  box-shadow: 0 0 25px rgba(255, 0, 255, 0.9);
+  border-color: var(--secondary-color);
+}
+
+/* Color cycle animation */
+@keyframes colorCycle {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+.color-cycle-active {
+  animation: colorCycle 10s linear infinite;
+}
+
+/* Chaos mode animation */
+@keyframes chaosShake {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(-2px, 2px) rotate(-1deg);
+  }
+  50% {
+    transform: translate(2px, -2px) rotate(1deg);
+  }
+  75% {
+    transform: translate(-2px, -2px) rotate(-1deg);
+  }
+  100% {
+    transform: translate(2px, 2px) rotate(1deg);
+  }
+}
+
+.chaos-mode {
+  animation: chaosShake 0.2s infinite alternate;
 } 
