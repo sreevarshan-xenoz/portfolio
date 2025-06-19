@@ -17,6 +17,7 @@ import SelfModifyingPortfolio from '../components/SelfModifyingPortfolio';
 import MatrixPortfolio from '../components/MatrixPortfolio';
 import InfiniteScrollParadox from '../components/InfiniteScrollParadox';
 import '../styles/ExperimentalPortfolioEffects.css';
+import { useNavigate } from 'react-router-dom';
 
 // Theme-based card hover/active styles
 const cardThemeStyles = {
@@ -289,6 +290,7 @@ const ExperimentalPortfolio = () => {
   const [activeKey, setActiveKey] = useState(experiments[0].key);
   const [hoveredKey, setHoveredKey] = useState(null);
   const activeExperiment = experiments.find(e => e.key === activeKey);
+  const navigate = useNavigate();
 
   return (
     <Container maxWidth="lg" sx={{ py: 8 }}>
@@ -307,6 +309,7 @@ const ExperimentalPortfolio = () => {
             const isActive = activeKey === exp.key;
             const isHovered = hoveredKey === exp.key;
             const { motion: hoverMotion, className } = getCardHoverEffect(exp);
+            const isInfiniteScroll = exp.key === 'infinite-scroll';
             return (
               <Grid item xs={12} sm={6} md={4} key={exp.key}>
                 <motion.div
@@ -332,7 +335,16 @@ const ExperimentalPortfolio = () => {
                     onMouseEnter={() => setHoveredKey(exp.key)}
                     onMouseLeave={() => setHoveredKey(null)}
                   >
-                    <CardActionArea onClick={() => setActiveKey(exp.key)} sx={{ height: '100%' }}>
+                    <CardActionArea
+                      onClick={() => {
+                        if (isInfiniteScroll) {
+                          navigate('/experimental/infinite-scroll-paradox');
+                        } else {
+                          setActiveKey(exp.key);
+                        }
+                      }}
+                      sx={{ height: '100%' }}
+                    >
                       <CardContent>
                         <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: isActive ? themeStyle.active?.borderColor || theme.palette.primary.main : theme.palette.secondary.main, mb: 1 }}>
                           {exp.title}
