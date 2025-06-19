@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Box, Typography, Paper } from '@mui/material';
 import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import '../styles/ExperimentalPortfolioEffects.css';
@@ -63,31 +63,102 @@ const futuristicProjects = [
   },
 ];
 
+const CARD_HEIGHT = 260; // px, including margin
+const VISIBLE_CARDS = 5;
+
 const InfiniteScrollParadox = () => {
-  // Placeholder for advanced scroll/portal/parallax logic
-  // (To be implemented: seamless infinite scroll, portal transitions, parallax layers)
+  const [scrollIndex, setScrollIndex] = useState(0);
+  const timelineRef = useRef(null);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  // Parallax background layers
+  const parallaxY = useMotionValue(0);
+  const bg1Y = useTransform(parallaxY, [0, 1], [0, -30]);
+  const bg2Y = useTransform(parallaxY, [0, 1], [0, -60]);
+
+  // Handle wheel scroll for seamless effect
+  const handleWheel = (e) => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    if (e.deltaY > 0) {
+      setScrollIndex((prev) => (prev + 1) % futuristicProjects.length);
+    } else {
+      setScrollIndex((prev) => (prev - 1 + futuristicProjects.length) % futuristicProjects.length);
+    }
+    setTimeout(() => setIsAnimating(false), 400);
+  };
+
+  // Parallax effect on scroll
+  useEffect(() => {
+    const onScroll = () => {
+      if (timelineRef.current) {
+        const rect = timelineRef.current.getBoundingClientRect();
+        const y = window.scrollY || window.pageYOffset;
+        parallaxY.set((rect.top + y) / 1000);
+      }
+    };
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [parallaxY]);
+
+  // Get visible cards for seamless loop
+  const getVisibleProjects = () => {
+    const cards = [];
+    for (let i = 0; i < VISIBLE_CARDS; i++) {
+      const idx = (scrollIndex + i) % futuristicProjects.length;
+      cards.push(futuristicProjects[idx]);
+    }
+    return cards;
+  };
 
   return (
     <Box className="infinite-scroll-paradox-root" sx={{ py: 6, minHeight: '80vh', background: 'linear-gradient(120deg, #0f2027, #2c5364 80%)', position: 'relative', overflow: 'hidden' }}>
-      <Typography variant="h3" sx={{ mb: 3, color: '#00fff7', fontWeight: 'bold', textAlign: 'center', letterSpacing: 2, textShadow: '0 0 24px #00fff7aa' }}>
+      {/* Parallax background layers */}
+      <motion.div
+        className="parallax-bg-layer bg1"
+        style={{ y: bg1Y, background: 'radial-gradient(circle at 60% 40%, #00fff733 0%, transparent 80%)', position: 'absolute', width: '100%', height: '100%', zIndex: 0 }}
+      />
+      <motion.div
+        className="parallax-bg-layer bg2"
+        style={{ y: bg2Y, background: 'radial-gradient(circle at 30% 70%, #ff00c833 0%, transparent 80%)', position: 'absolute', width: '100%', height: '100%', zIndex: 0 }}
+      />
+      <Typography variant="h3" sx={{ mb: 3, color: '#00fff7', fontWeight: 'bold', textAlign: 'center', letterSpacing: 2, textShadow: '0 0 24px #00fff7aa', position: 'relative', zIndex: 2 }}>
         Infinite Scroll Paradox
       </Typography>
-      <Typography variant="h6" sx={{ mb: 6, color: '#fff', textAlign: 'center', opacity: 0.8 }}>
+      <Typography variant="h6" sx={{ mb: 6, color: '#fff', textAlign: 'center', opacity: 0.8, position: 'relative', zIndex: 2 }}>
         A portfolio timeline that bends reality—scroll to reveal projects through animated portals, with parallax and anime-inspired effects.
       </Typography>
-      <Box className="infinite-scroll-timeline" sx={{ maxWidth: 900, mx: 'auto', position: 'relative' }}>
-        {futuristicProjects.map((proj, idx) => (
+      <Box
+        className="infinite-scroll-timeline"
+        ref={timelineRef}
+        sx={{ maxWidth: 900, mx: 'auto', position: 'relative', zIndex: 2, height: CARD_HEIGHT * VISIBLE_CARDS, overflow: 'hidden' }}
+        onWheel={handleWheel}
+      >
+        {getVisibleProjects().map((proj, idx) => (
           <motion.div
             key={proj.id}
             className="infinite-scroll-project-card"
-            initial={{ opacity: 0, y: 80 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, delay: idx * 0.15, type: 'spring', bounce: 0.3 }}
-            style={{ zIndex: 10 - idx }}
+            initial={{ opacity: 0, scale: 0.8, y: 80 }}
+            animate={{ opacity: 1, scale: 1, y: idx * CARD_HEIGHT }}
+            exit={{ opacity: 0, scale: 0.8, y: -80 }}
+            transition={{ duration: 0.7, type: 'spring', bounce: 0.3 }}
+            style={{
+              zIndex: VISIBLE_CARDS - idx,
+              position: 'absolute',
+              width: '100%',
+              top: 0,
+              left: 0,
+              pointerEvents: idx === 2 ? 'auto' : 'none',
+            }}
           >
-            {/* Portal effect placeholder */}
-            <div className="portal-effect" style={{ background: `radial-gradient(circle at 50% 50%, ${proj.portalColor}99 0%, transparent 80%)` }} />
+            {/* Portal animation effect */}
+            <motion.div
+              className="portal-effect"
+              initial={{ scale: 0.7, opacity: 0.5 }}
+              animate={{ scale: 1, opacity: 1, filter: `blur(${Math.abs(idx - 2) * 2}px)` }}
+              transition={{ duration: 0.7, type: 'spring' }}
+              style={{ background: `radial-gradient(circle at 50% 50%, ${proj.portalColor}99 0%, transparent 80%)` }}
+            />
             <Paper elevation={6} sx={{
               p: 3,
               mb: 6,
@@ -101,6 +172,9 @@ const InfiniteScrollParadox = () => {
               color: '#fff',
               fontFamily: 'Orbitron, monospace',
               transition: 'transform 0.3s cubic-bezier(.4,2,.6,1)',
+              filter: idx === 2 ? 'none' : 'blur(1.5px) grayscale(0.5)',
+              opacity: idx === 2 ? 1 : 0.7,
+              transform: idx === 2 ? 'scale(1.04)' : 'scale(0.96)',
             }}>
               <Typography variant="h5" sx={{ color: proj.portalColor, fontWeight: 'bold', mb: 1, textShadow: `0 0 12px ${proj.portalColor}cc` }}>{proj.title}</Typography>
               <Typography variant="body1" sx={{ mb: 2, opacity: 0.9 }}>{proj.desc}</Typography>
@@ -112,9 +186,8 @@ const InfiniteScrollParadox = () => {
             </Paper>
           </motion.div>
         ))}
-        {/* TODO: Add seamless infinite scroll, parallax, and portal animation logic */}
       </Box>
-      <Typography variant="body2" sx={{ mt: 8, color: '#00fff7', textAlign: 'center', opacity: 0.7, fontFamily: 'Orbitron, monospace' }}>
+      <Typography variant="body2" sx={{ mt: 8, color: '#00fff7', textAlign: 'center', opacity: 0.7, fontFamily: 'Orbitron, monospace', position: 'relative', zIndex: 2 }}>
         <span style={{ fontSize: 22, verticalAlign: 'middle' }}>∞</span> Scroll to see the future unfold <span style={{ fontSize: 22, verticalAlign: 'middle' }}>∞</span>
       </Typography>
     </Box>
