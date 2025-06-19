@@ -15,6 +15,7 @@ import {
 import { motion } from 'framer-motion';
 import SelfModifyingPortfolio from '../components/SelfModifyingPortfolio';
 import MatrixPortfolio from '../components/MatrixPortfolio';
+import InfiniteScrollParadox from '../components/InfiniteScrollParadox';
 import '../styles/ExperimentalPortfolioEffects.css';
 
 // Theme-based card hover/active styles
