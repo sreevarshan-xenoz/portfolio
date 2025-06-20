@@ -5,6 +5,7 @@ import Projects from './pages/Projects';
 import Contact from './pages/Contact';
 import ExperimentalPortfolio from './pages/ExperimentalPortfolio';
 import InfiniteScrollParadox from './components/InfiniteScrollParadox';
+import QuantumEntangledPortfolio from './components/QuantumEntangledPortfolio';
 
 const Routes = () => {
   return (
@@ -15,6 +16,7 @@ const Routes = () => {
       <Route path="/contact" element={<Contact />} />
       <Route path="/experimental" element={<ExperimentalPortfolio />} />
       <Route path="/experimental/infinite-scroll-paradox" element={<InfiniteScrollParadox />} />
+      <Route path="/experimental/quantum-entangled-portfolio" element={<QuantumEntangledPortfolio />} />
     </RouterRoutes>
   );
 };

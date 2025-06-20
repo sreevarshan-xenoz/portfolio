@@ -172,6 +172,12 @@ const experiments = [
     description: 'Prove your worth by hacking your own portfolio.',
     render: () => <ComingSoon title="The Zero-Trust Portfolio" />,
   },
+  {
+    key: 'quantum-entangled',
+    title: 'The Quantum Entanglement Portfolio',
+    description: 'Projects are linked in pairs — viewing one alters the presentation of its twin.',
+    render: () => <ComingSoon title="The Quantum Entanglement Portfolio" />,
+  },
 ];
 
 function ComingSoon({ title }) {
@@ -310,6 +316,7 @@ const ExperimentalPortfolio = () => {
             const isHovered = hoveredKey === exp.key;
             const { motion: hoverMotion, className } = getCardHoverEffect(exp);
             const isInfiniteScroll = exp.key === 'infinite-scroll';
+            const isQuantumEntangled = exp.key === 'quantum-entangled';
             return (
               <Grid item xs={12} sm={6} md={4} key={exp.key}>
                 <motion.div
@@ -339,6 +346,8 @@ const ExperimentalPortfolio = () => {
                       onClick={() => {
                         if (isInfiniteScroll) {
                           navigate('/experimental/infinite-scroll-paradox');
+                        } else if (isQuantumEntangled) {
+                          navigate('/experimental/quantum-entangled-portfolio');
                         } else {
                           setActiveKey(exp.key);
                         }
