@@ -370,4 +370,62 @@
 @keyframes scanline-move {
   0% { background-position-y: 0; }
   100% { background-position-y: 16px; }
+}
+
+.entanglement-lines-svg {
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+.entanglement-line {
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 8px #00fff7cc) drop-shadow(0 0 16px #ff00c888);
+  animation: entangle-pulse 2.2s cubic-bezier(.4,2,.6,1) infinite alternate;
+}
+@keyframes entangle-pulse {
+  0% { stroke-width: 4; opacity: 0.7; }
+  50% { stroke-width: 8; opacity: 1; }
+  100% { stroke-width: 4; opacity: 0.7; }
+}
+
+.quantum-shimmer {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  background: linear-gradient(120deg, rgba(255,255,255,0.12) 0%, rgba(0,255,247,0.18) 40%, rgba(255,0,200,0.18) 60%, rgba(255,255,255,0.12) 100%);
+  opacity: 0.7;
+  animation: quantum-shimmer-wave 0.7s cubic-bezier(.4,2,.6,1);
+  mix-blend-mode: lighten;
+}
+@keyframes quantum-shimmer-wave {
+  0% { opacity: 0.7; transform: scaleX(0.7) skewX(-12deg); }
+  60% { opacity: 1; transform: scaleX(1.1) skewX(8deg); }
+  100% { opacity: 0; transform: scaleX(1.2) skewX(0deg); }
+}
+
+.quantum-particle-layer {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.quantum-particle {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  font-family: 'Orbitron', 'monospace', 'Meiryo', 'sans-serif';
+  font-weight: bold;
+  text-shadow: 0 0 8px #00fff7cc, 0 0 24px #ff00c833, 0 0 2px #fff;
+  opacity: 0.22;
+  filter: blur(0.5px) brightness(1.2) saturate(1.5);
+  transition: opacity 0.3s;
+  will-change: transform, opacity;
+  mix-blend-mode: lighten;
 } 

@@ -54,13 +54,59 @@ const entangledPairs = [
   ],
 ];
 
-const QuantumEntangledPortfolio = () => {
-  // State: entangled styles/content for each pair
-  const [entangledState, setEntangledState] = useState({});
+// Quantum particle background
+const QUANTUM_PARTICLES = 24;
+const QuantumParticleLayer = () => (
+  <div className="quantum-particle-layer">
+    {Array.from({ length: QUANTUM_PARTICLES }).map((_, i) => (
+      <motion.span
+        key={i}
+        className="quantum-particle"
+        initial={{ x: `${Math.random() * 100}%`, y: `${Math.random() * 100}%`, opacity: 0 }}
+        animate={{
+          x: [`${Math.random() * 100}%`, `${Math.random() * 100}%`],
+          y: [`${Math.random() * 100}%`, `${Math.random() * 100}%`],
+          opacity: [0.18, 0.32, 0.18],
+        }}
+        transition={{ duration: 8 + Math.random() * 8, repeat: Infinity, ease: 'linear' }}
+        style={{
+          fontSize: 16 + Math.random() * 18,
+          color: ['#00fff7', '#ff00c8', '#39ff14', '#ffec00', '#a18cd1', '#64ffda'][i % 6],
+          filter: 'blur(1px)',
+          left: 0, top: 0, position: 'absolute', pointerEvents: 'none',
+          userSelect: 'none', fontFamily: 'monospace',
+          zIndex: 1,
+        }}
+      >
+        {['ψ', 'Φ', 'λ', 'Ω', 'Σ', 'Δ', '∑', 'π', 'μ', 'ν'][i % 10]}
+      </motion.span>
+    ))}
+  </div>
+);
 
-  // Handler: when a project is hovered/clicked, update its twin
+// Entanglement lines SVG
+const EntanglementLines = ({ pairs }) => (
+  <svg className="entanglement-lines-svg" width="100%" height="100%" style={{ position: 'absolute', left: 0, top: 0, zIndex: 2, pointerEvents: 'none' }}>
+    {pairs.map((pair, idx) => (
+      <line
+        key={idx}
+        x1="25%" x2="75%"
+        y1={`${18 + idx * 32}%`} y2={`${18 + idx * 32}%`}
+        stroke={pair[0].color}
+        strokeWidth="4"
+        opacity="0.7"
+        className="entanglement-line"
+      />
+    ))}
+  </svg>
+);
+
+const QuantumEntangledPortfolio = () => {
+  const [entangledState, setEntangledState] = useState({});
+  const [shimmered, setShimmered] = useState({});
+
+  // Handler: when a project is hovered/clicked, update its twin and trigger shimmer
   const handleEntangle = (pairIdx, projIdx) => {
-    // For demo: swap color and description with twin
     setEntangledState(prev => {
       const twinIdx = projIdx === 0 ? 1 : 0;
       const pair = entangledPairs[pairIdx];
@@ -74,29 +120,33 @@ const QuantumEntangledPortfolio = () => {
         },
       };
     });
+    setShimmered(prev => ({ ...prev, [entangledPairs[pairIdx][projIdx].id]: true }));
+    setTimeout(() => setShimmered(prev => ({ ...prev, [entangledPairs[pairIdx][projIdx].id]: false })), 700);
   };
 
   return (
     <Box sx={{ py: 6, minHeight: '80vh', background: 'linear-gradient(120deg, #0f2027, #2c5364 80%)', position: 'relative', overflow: 'hidden' }}>
-      <Typography variant="h3" sx={{ mb: 3, color: '#00fff7', fontWeight: 'bold', textAlign: 'center', letterSpacing: 2, textShadow: '0 0 24px #00fff7aa' }}>
+      <QuantumParticleLayer />
+      <EntanglementLines pairs={entangledPairs} />
+      <Typography variant="h3" sx={{ mb: 3, color: '#00fff7', fontWeight: 'bold', textAlign: 'center', letterSpacing: 2, textShadow: '0 0 24px #00fff7aa', position: 'relative', zIndex: 3 }}>
         Quantum Entanglement Portfolio
       </Typography>
-      <Typography variant="h6" sx={{ mb: 6, color: '#fff', textAlign: 'center', opacity: 0.8 }}>
+      <Typography variant="h6" sx={{ mb: 6, color: '#fff', textAlign: 'center', opacity: 0.8, position: 'relative', zIndex: 3 }}>
         Projects are linked in pairs — viewing one alters the presentation of its twin. Interact to see quantum entanglement in action!
       </Typography>
-      <Grid container spacing={6} justifyContent="center">
+      <Grid container spacing={6} justifyContent="center" sx={{ position: 'relative', zIndex: 3 }}>
         {entangledPairs.map((pair, pairIdx) => (
-          <Grid item xs={12} md={10} key={pairIdx}>
+          <Grid item xs={12} md={10} key={pairIdx} sx={{ position: 'relative' }}>
             <Grid container spacing={4} justifyContent="center">
               {pair.map((proj, projIdx) => {
                 const twinState = entangledState[proj.id] || {};
                 return (
-                  <Grid item xs={12} sm={6} key={proj.id}>
+                  <Grid item xs={12} sm={6} key={proj.id} sx={{ position: 'relative' }}>
                     <motion.div
                       whileHover={{ scale: 1.06, boxShadow: `0 0 32px 8px ${twinState.color || proj.color}88` }}
                       onHoverStart={() => handleEntangle(pairIdx, projIdx)}
                       onClick={() => handleEntangle(pairIdx, projIdx)}
-                      style={{ cursor: 'pointer' }}
+                      style={{ cursor: 'pointer', position: 'relative' }}
                     >
                       <Paper elevation={6} sx={{
                         p: 4,
@@ -109,7 +159,10 @@ const QuantumEntangledPortfolio = () => {
                         minHeight: 180,
                         position: 'relative',
                         transition: 'all 0.3s cubic-bezier(.4,2,.6,1)',
+                        overflow: 'hidden',
                       }}>
+                        {/* Quantum shimmer/collapse effect */}
+                        {shimmered[proj.id] && <div className="quantum-shimmer" />}
                         <Typography variant="h5" sx={{ color: twinState.color || proj.color, fontWeight: 'bold', mb: 1, textShadow: `0 0 12px ${(twinState.color || proj.color)}cc` }}>{proj.title}</Typography>
                         <Typography variant="body1" sx={{ mb: 2, opacity: 0.9 }}>{twinState.desc || proj.desc}</Typography>
                       </Paper>
@@ -121,7 +174,6 @@ const QuantumEntangledPortfolio = () => {
           </Grid>
         ))}
       </Grid>
-      {/* TODO: Add quantum entanglement lines, wave/particle effects, and advanced quantum visuals */}
     </Box>
   );
 };
