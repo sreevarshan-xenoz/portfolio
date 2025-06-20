@@ -263,4 +263,36 @@
   color: #ffec00;
   opacity: 0.22;
   z-index: 2;
+}
+
+.infinite-scroll-particle-layer {
+  position: absolute;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.infinite-scroll-particle {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  font-family: 'Orbitron', 'monospace', 'Meiryo', 'sans-serif';
+  font-weight: bold;
+  text-shadow: 0 0 8px #00fff7cc, 0 0 24px #ff00c833, 0 0 2px #fff;
+  opacity: 0.22;
+  filter: blur(0.5px) brightness(1.2) saturate(1.5);
+  transition: opacity 0.3s;
+  will-change: transform, opacity;
+  mix-blend-mode: lighten;
+  animation: particle-float 12s linear infinite;
+}
+
+@keyframes particle-float {
+  0% { transform: translateY(0) scale(1); opacity: 0.18; }
+  10% { opacity: 0.32; }
+  50% { opacity: 0.22; }
+  100% { transform: translateY(120vh) scale(1.1); opacity: 0.1; }
 } 

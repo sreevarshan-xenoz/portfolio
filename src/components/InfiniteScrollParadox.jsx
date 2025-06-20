@@ -66,6 +66,71 @@ const futuristicProjects = [
 const CARD_HEIGHT = 260; // px, including margin
 const VISIBLE_CARDS = 5;
 
+const GLYPHS = 'アカサタナハマヤラワガザダバパイキシチニヒミリヰギジヂビピウクスツヌフムユルグズヅブプエケセテネヘメレヱゲゼデベペオコソトノホモヨロヲゴゾドボポヴッンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split('');
+
+function getRandomGlyph() {
+  return GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+}
+
+function getRandomColor() {
+  const colors = ['#00fff7', '#ff00c8', '#39ff14', '#ffec00', '#64ffda', '#ff206e', '#a18cd1', '#7928ca'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
+const PARTICLE_COUNT = 36;
+
+const ParticleLayer = () => {
+  const [particles, setParticles] = useState([]);
+
+  useEffect(() => {
+    // Generate initial particles
+    setParticles(
+      Array.from({ length: PARTICLE_COUNT }, (_, i) => ({
+        id: i,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        size: 18 + Math.random() * 18,
+        color: getRandomColor(),
+        glyph: getRandomGlyph(),
+        duration: 6 + Math.random() * 6,
+        delay: Math.random() * 4,
+        opacity: 0.18 + Math.random() * 0.22,
+        blur: Math.random() > 0.7 ? 2 : 0,
+        rotate: Math.random() * 360,
+      }))
+    );
+  }, []);
+
+  return (
+    <div className="infinite-scroll-particle-layer">
+      {particles.map(p => (
+        <motion.span
+          key={p.id}
+          className="infinite-scroll-particle"
+          initial={{ y: `${p.y}%`, opacity: 0, rotate: p.rotate }}
+          animate={{ y: ['-10%', '110%'], opacity: [0, p.opacity, 0.1], rotate: p.rotate + 60 }}
+          transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: 'linear' }}
+          style={{
+            left: `${p.x}%`,
+            fontSize: p.size,
+            color: p.color,
+            filter: `blur(${p.blur}px)`,
+            opacity: p.opacity,
+            position: 'absolute',
+            pointerEvents: 'none',
+            fontFamily: 'monospace',
+            textShadow: `0 0 8px ${p.color}99, 0 0 24px ${p.color}33`,
+            zIndex: 1,
+            userSelect: 'none',
+          }}
+        >
+          {p.glyph}
+        </motion.span>
+      ))}
+    </div>
+  );
+};
+
 const InfiniteScrollParadox = () => {
   const [scrollIndex, setScrollIndex] = useState(0);
   const timelineRef = useRef(null);
@@ -113,6 +178,8 @@ const InfiniteScrollParadox = () => {
 
   return (
     <Box className="infinite-scroll-paradox-root" sx={{ py: 6, minHeight: '80vh', background: 'linear-gradient(120deg, #0f2027, #2c5364 80%)', position: 'relative', overflow: 'hidden' }}>
+      {/* Particle/glyph background layer */}
+      <ParticleLayer />
       {/* Parallax background layers */}
       <motion.div
         className="parallax-bg-layer bg1"
