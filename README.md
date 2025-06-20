@@ -157,6 +157,21 @@ A portfolio that breaks the scrollbar by blending projects into an endless, loop
   - Scroll with your mouse wheel to cycle through unique, imaginative projects.
   - Enjoy the immersive, animated, and interactive experience—straight out of an anime world!
 
+### The Quantum Entanglement Portfolio
+A portfolio where projects are linked in quantum pairs—interacting with one instantly alters the style and content of its twin, visualizing quantum entanglement.
+
+- **Entangled Project Pairs:** Each project is paired with a twin. Hovering or clicking one changes both its own and its twin's style and description.
+- **Animated Entanglement Lines:** Glowing, animated SVG lines visually link each pair, pulsing with quantum energy.
+- **Wave/Collapse Shimmer:** Interacting with a project triggers a quantum "collapse" shimmer effect, inspired by wave/particle duality.
+- **Quantum Particle Background:** Floating quantum glyphs and symbols drift in the background for a mysterious, high-tech vibe.
+- **Cyberpunk/Quantum Theme:** Neon colors, glowing borders, and a futuristic UI.
+
+**Tech Stack:** React, Framer Motion, Material-UI, custom CSS/SVG for effects and animation.
+
+- **Key Interactions:**
+  - Hover or click a project to see its entangled twin change in real time.
+  - Enjoy the immersive, animated, and interactive quantum experience!
+
 ## Other Concepts (Planned)
 
 - **The Infinite Remix Portfolio:** Every visit feels like a fresh design — the site remixes your projects, fonts, and colors algorithmically.
@@ -164,7 +179,6 @@ A portfolio that breaks the scrollbar by blending projects into an endless, loop
 - **The Holographic Timeline Portfolio:** A 4D timeline where projects appear as layered holograms that shift with scroll speed.
 - **The Decentralized Reputation Portfolio:** Your skills are verified by a blockchain-based reputation system powered by peer reviews.
 - **The Anti-Static Portfolio:** No two page loads are the same — even the text is generated live.
-- **The Quantum Entanglement Portfolio:** Projects are linked in pairs — viewing one alters the presentation of its twin.
 - **The Ephemeral Portfolio:** Projects self-destruct after a set number of views, like a digital Snapchat.
 - **The Zero-Knowledge Portfolio:** Prove you're skilled without revealing anything.
 
