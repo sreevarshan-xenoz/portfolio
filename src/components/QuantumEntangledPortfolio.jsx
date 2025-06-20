@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, Paper, Grid } from '@mui/material';
+import { Box, Typography, Paper, Grid, Tooltip } from '@mui/material';
 import { motion } from 'framer-motion';
 
 // Example entangled project pairs
@@ -54,38 +54,46 @@ const entangledPairs = [
   ],
 ];
 
-// Quantum particle background
+// Quantum particle background (with more organic movement)
 const QUANTUM_PARTICLES = 24;
 const QuantumParticleLayer = () => (
   <div className="quantum-particle-layer">
-    {Array.from({ length: QUANTUM_PARTICLES }).map((_, i) => (
-      <motion.span
-        key={i}
-        className="quantum-particle"
-        initial={{ x: `${Math.random() * 100}%`, y: `${Math.random() * 100}%`, opacity: 0 }}
-        animate={{
-          x: [`${Math.random() * 100}%`, `${Math.random() * 100}%`],
-          y: [`${Math.random() * 100}%`, `${Math.random() * 100}%`],
-          opacity: [0.18, 0.32, 0.18],
-        }}
-        transition={{ duration: 8 + Math.random() * 8, repeat: Infinity, ease: 'linear' }}
-        style={{
-          fontSize: 16 + Math.random() * 18,
-          color: ['#00fff7', '#ff00c8', '#39ff14', '#ffec00', '#a18cd1', '#64ffda'][i % 6],
-          filter: 'blur(1px)',
-          left: 0, top: 0, position: 'absolute', pointerEvents: 'none',
-          userSelect: 'none', fontFamily: 'monospace',
-          zIndex: 1,
-        }}
-      >
-        {['ψ', 'Φ', 'λ', 'Ω', 'Σ', 'Δ', '∑', 'π', 'μ', 'ν'][i % 10]}
-      </motion.span>
-    ))}
+    {Array.from({ length: QUANTUM_PARTICLES }).map((_, i) => {
+      const duration = 8 + Math.random() * 10;
+      const delay = Math.random() * 4;
+      const x1 = Math.random() * 100;
+      const y1 = Math.random() * 100;
+      const x2 = Math.random() * 100;
+      const y2 = Math.random() * 100;
+      return (
+        <motion.span
+          key={i}
+          className="quantum-particle"
+          initial={{ x: `${x1}%`, y: `${y1}%`, opacity: 0 }}
+          animate={{
+            x: [`${x1}%`, `${x2}%`, `${x1}%`],
+            y: [`${y1}%`, `${y2}%`, `${y1}%`],
+            opacity: [0.18, 0.32, 0.18],
+          }}
+          transition={{ duration, delay, repeat: Infinity, ease: 'easeInOut' }}
+          style={{
+            fontSize: 16 + Math.random() * 18,
+            color: ['#00fff7', '#ff00c8', '#39ff14', '#ffec00', '#a18cd1', '#64ffda'][i % 6],
+            filter: 'blur(1px)',
+            left: 0, top: 0, position: 'absolute', pointerEvents: 'none',
+            userSelect: 'none', fontFamily: 'monospace',
+            zIndex: 1,
+          }}
+        >
+          {['ψ', 'Φ', 'λ', 'Ω', 'Σ', 'Δ', '∑', 'π', 'μ', 'ν'][i % 10]}
+        </motion.span>
+      );
+    })}
   </div>
 );
 
-// Entanglement lines SVG
-const EntanglementLines = ({ pairs }) => (
+// Entanglement lines SVG (interactive)
+const EntanglementLines = ({ pairs, activePairIdx }) => (
   <svg className="entanglement-lines-svg" width="100%" height="100%" style={{ position: 'absolute', left: 0, top: 0, zIndex: 2, pointerEvents: 'none' }}>
     {pairs.map((pair, idx) => (
       <line
@@ -93,9 +101,9 @@ const EntanglementLines = ({ pairs }) => (
         x1="25%" x2="75%"
         y1={`${18 + idx * 32}%`} y2={`${18 + idx * 32}%`}
         stroke={pair[0].color}
-        strokeWidth="4"
-        opacity="0.7"
-        className="entanglement-line"
+        strokeWidth={activePairIdx === idx ? 10 : 4}
+        opacity={activePairIdx === idx ? 1 : 0.7}
+        className={activePairIdx === idx ? 'entanglement-line entanglement-line-active' : 'entanglement-line'}
       />
     ))}
   </svg>
@@ -104,6 +112,8 @@ const EntanglementLines = ({ pairs }) => (
 const QuantumEntangledPortfolio = () => {
   const [entangledState, setEntangledState] = useState({});
   const [shimmered, setShimmered] = useState({});
+  const [activePairIdx, setActivePairIdx] = useState(null);
+  const [activeTwinId, setActiveTwinId] = useState(null);
 
   // Handler: when a project is hovered/clicked, update its twin and trigger shimmer
   const handleEntangle = (pairIdx, projIdx) => {
@@ -122,12 +132,20 @@ const QuantumEntangledPortfolio = () => {
     });
     setShimmered(prev => ({ ...prev, [entangledPairs[pairIdx][projIdx].id]: true }));
     setTimeout(() => setShimmered(prev => ({ ...prev, [entangledPairs[pairIdx][projIdx].id]: false })), 700);
+    setActivePairIdx(pairIdx);
+    setActiveTwinId(entangledPairs[pairIdx][projIdx].twinId);
+  };
+
+  // Handler: clear highlight on mouse leave
+  const handleMouseLeave = () => {
+    setActivePairIdx(null);
+    setActiveTwinId(null);
   };
 
   return (
     <Box sx={{ py: 6, minHeight: '80vh', background: 'linear-gradient(120deg, #0f2027, #2c5364 80%)', position: 'relative', overflow: 'hidden' }}>
       <QuantumParticleLayer />
-      <EntanglementLines pairs={entangledPairs} />
+      <EntanglementLines pairs={entangledPairs} activePairIdx={activePairIdx} />
       <Typography variant="h3" sx={{ mb: 3, color: '#00fff7', fontWeight: 'bold', textAlign: 'center', letterSpacing: 2, textShadow: '0 0 24px #00fff7aa', position: 'relative', zIndex: 3 }}>
         Quantum Entanglement Portfolio
       </Typography>
@@ -140,33 +158,40 @@ const QuantumEntangledPortfolio = () => {
             <Grid container spacing={4} justifyContent="center">
               {pair.map((proj, projIdx) => {
                 const twinState = entangledState[proj.id] || {};
+                const isTwinHighlighted = activeTwinId === proj.id;
+                const twinName = pair[projIdx === 0 ? 1 : 0].title;
                 return (
                   <Grid item xs={12} sm={6} key={proj.id} sx={{ position: 'relative' }}>
-                    <motion.div
-                      whileHover={{ scale: 1.06, boxShadow: `0 0 32px 8px ${twinState.color || proj.color}88` }}
-                      onHoverStart={() => handleEntangle(pairIdx, projIdx)}
-                      onClick={() => handleEntangle(pairIdx, projIdx)}
-                      style={{ cursor: 'pointer', position: 'relative' }}
-                    >
-                      <Paper elevation={6} sx={{
-                        p: 4,
-                        borderRadius: 4,
-                        background: 'rgba(20,30,60,0.95)',
-                        boxShadow: `0 0 32px 4px ${(twinState.color || proj.color)}33, 0 2px 24px #000a`,
-                        border: `2px solid ${twinState.color || proj.color}`,
-                        color: '#fff',
-                        fontFamily: 'Orbitron, monospace',
-                        minHeight: 180,
-                        position: 'relative',
-                        transition: 'all 0.3s cubic-bezier(.4,2,.6,1)',
-                        overflow: 'hidden',
-                      }}>
-                        {/* Quantum shimmer/collapse effect */}
-                        {shimmered[proj.id] && <div className="quantum-shimmer" />}
-                        <Typography variant="h5" sx={{ color: twinState.color || proj.color, fontWeight: 'bold', mb: 1, textShadow: `0 0 12px ${(twinState.color || proj.color)}cc` }}>{proj.title}</Typography>
-                        <Typography variant="body1" sx={{ mb: 2, opacity: 0.9 }}>{twinState.desc || proj.desc}</Typography>
-                      </Paper>
-                    </motion.div>
+                    <Tooltip title={`Entangled with: ${twinName}`} arrow placement="top">
+                      <motion.div
+                        whileHover={{ scale: 1.06, boxShadow: `0 0 32px 8px ${twinState.color || proj.color}88`, rotateY: 8 }}
+                        onHoverStart={() => handleEntangle(pairIdx, projIdx)}
+                        onHoverEnd={handleMouseLeave}
+                        onClick={() => handleEntangle(pairIdx, projIdx)}
+                        style={{ cursor: 'pointer', position: 'relative', perspective: 800 }}
+                      >
+                        <Paper elevation={6} sx={{
+                          p: 4,
+                          borderRadius: 4,
+                          background: 'rgba(20,30,60,0.95)',
+                          boxShadow: `0 0 32px 4px ${(twinState.color || proj.color)}33, 0 2px 24px #000a` + (isTwinHighlighted ? `, 0 0 32px 8px ${twinState.color || proj.color}` : ''),
+                          border: `2px solid ${twinState.color || proj.color}`,
+                          color: '#fff',
+                          fontFamily: 'Orbitron, monospace',
+                          minHeight: 180,
+                          position: 'relative',
+                          transition: 'all 0.3s cubic-bezier(.4,2,.6,1)',
+                          overflow: 'hidden',
+                          outline: isTwinHighlighted ? `3px solid ${twinState.color || proj.color}` : 'none',
+                          outlineOffset: isTwinHighlighted ? '2px' : '0',
+                        }}>
+                          {/* Quantum shimmer/collapse effect */}
+                          {shimmered[proj.id] && <div className="quantum-shimmer" />}
+                          <Typography variant="h5" sx={{ color: twinState.color || proj.color, fontWeight: 'bold', mb: 1, textShadow: `0 0 12px ${(twinState.color || proj.color)}cc` }}>{proj.title}</Typography>
+                          <Typography variant="body1" sx={{ mb: 2, opacity: 0.9 }}>{twinState.desc || proj.desc}</Typography>
+                        </Paper>
+                      </motion.div>
+                    </Tooltip>
                   </Grid>
                 );
               })}
