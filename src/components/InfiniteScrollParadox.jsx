@@ -131,6 +131,38 @@ const ParticleLayer = () => {
   );
 };
 
+// PortalRing SVG component
+const PortalRing = ({ color, idx }) => (
+  <svg
+    className="portal-ring-svg"
+    width="180" height="180" viewBox="0 0 180 180"
+    style={{ position: 'absolute', top: -20, left: '50%', transform: 'translateX(-50%)', zIndex: 3, pointerEvents: 'none' }}
+  >
+    <circle
+      cx="90" cy="90" r="70"
+      fill="none"
+      stroke={color}
+      strokeWidth="4"
+      strokeDasharray="12 8"
+      opacity="0.7"
+      className={`portal-ring-anim portal-ring-anim-${idx % 2}`}
+    />
+  </svg>
+);
+
+const ScanlineOverlay = () => (
+  <div className="scanline-overlay" />
+);
+
+const TimelineConnector = () => (
+  <div className="timeline-connector">
+    {/* Neon pulses */}
+    {Array.from({ length: 8 }).map((_, i) => (
+      <span key={i} className="timeline-pulse" style={{ top: `${12.5 * i}%` }} />
+    ))}
+  </div>
+);
+
 const InfiniteScrollParadox = () => {
   const [scrollIndex, setScrollIndex] = useState(0);
   const timelineRef = useRef(null);
@@ -178,7 +210,7 @@ const InfiniteScrollParadox = () => {
 
   return (
     <Box className="infinite-scroll-paradox-root" sx={{ py: 6, minHeight: '80vh', background: 'linear-gradient(120deg, #0f2027, #2c5364 80%)', position: 'relative', overflow: 'hidden' }}>
-      {/* Particle/glyph background layer */}
+      <ScanlineOverlay />
       <ParticleLayer />
       {/* Parallax background layers */}
       <motion.div
@@ -201,6 +233,7 @@ const InfiniteScrollParadox = () => {
         sx={{ maxWidth: 900, mx: 'auto', position: 'relative', zIndex: 2, height: CARD_HEIGHT * VISIBLE_CARDS, overflow: 'hidden' }}
         onWheel={handleWheel}
       >
+        <TimelineConnector />
         {getVisibleProjects().map((proj, idx) => (
           <motion.div
             key={proj.id}
@@ -226,6 +259,7 @@ const InfiniteScrollParadox = () => {
               transition={{ duration: 0.7, type: 'spring' }}
               style={{ background: `radial-gradient(circle at 50% 50%, ${proj.portalColor}99 0%, transparent 80%)` }}
             />
+            <PortalRing color={proj.portalColor} idx={idx} />
             <Paper elevation={6} sx={{
               p: 3,
               mb: 6,
