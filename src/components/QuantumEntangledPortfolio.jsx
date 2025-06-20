@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Box, Typography, Paper, Grid, Tooltip } from '@mui/material';
 import { motion } from 'framer-motion';
 
@@ -114,6 +114,7 @@ const QuantumEntangledPortfolio = () => {
   const [shimmered, setShimmered] = useState({});
   const [activePairIdx, setActivePairIdx] = useState(null);
   const [activeTwinId, setActiveTwinId] = useState(null);
+  const gridRef = useRef(null);
 
   // Handler: when a project is hovered/clicked, update its twin and trigger shimmer
   const handleEntangle = (pairIdx, projIdx) => {
@@ -152,7 +153,7 @@ const QuantumEntangledPortfolio = () => {
       <Typography variant="h6" sx={{ mb: 6, color: '#fff', textAlign: 'center', opacity: 0.8, position: 'relative', zIndex: 3 }}>
         Projects are linked in pairs — viewing one alters the presentation of its twin. Interact to see quantum entanglement in action!
       </Typography>
-      <Grid container spacing={6} justifyContent="center" sx={{ position: 'relative', zIndex: 3 }}>
+      <Grid container spacing={6} justifyContent="center" sx={{ position: 'relative', zIndex: 3 }} ref={gridRef}>
         {entangledPairs.map((pair, pairIdx) => (
           <Grid item xs={12} md={10} key={pairIdx} sx={{ position: 'relative' }}>
             <Grid container spacing={4} justifyContent="center">
@@ -164,7 +165,15 @@ const QuantumEntangledPortfolio = () => {
                   <Grid item xs={12} sm={6} key={proj.id} sx={{ position: 'relative' }}>
                     <Tooltip title={`Entangled with: ${twinName}`} arrow placement="top">
                       <motion.div
-                        whileHover={{ scale: 1.06, boxShadow: `0 0 32px 8px ${twinState.color || proj.color}88`, rotateY: 8 }}
+                        initial={{ opacity: 0, scale: 0.8, y: 60 }}
+                        whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.3 }}
+                        whileHover={{
+                          scale: 1.08,
+                          boxShadow: `0 0 32px 12px ${twinState.color || proj.color}cc`,
+                          rotateY: 8,
+                          y: -8,
+                        }}
                         onHoverStart={() => handleEntangle(pairIdx, projIdx)}
                         onHoverEnd={handleMouseLeave}
                         onClick={() => handleEntangle(pairIdx, projIdx)}
@@ -187,6 +196,8 @@ const QuantumEntangledPortfolio = () => {
                         }}>
                           {/* Quantum shimmer/collapse effect */}
                           {shimmered[proj.id] && <div className="quantum-shimmer" />}
+                          {/* Quantum ripple effect on hover */}
+                          <span className="quantum-ripple" />
                           <Typography variant="h5" sx={{ color: twinState.color || proj.color, fontWeight: 'bold', mb: 1, textShadow: `0 0 12px ${(twinState.color || proj.color)}cc` }}>{proj.title}</Typography>
                           <Typography variant="body1" sx={{ mb: 2, opacity: 0.9 }}>{twinState.desc || proj.desc}</Typography>
                         </Paper>
