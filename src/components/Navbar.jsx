@@ -199,108 +199,128 @@ function Navbar() {
               whileHover="hover"
               style={{ flex: 1 }}
             >
-              <Typography
-                variant="h6"
-                component={RouterLink}
-                to="/"
-                sx={{
-                  textDecoration: 'none',
-                  fontWeight: 700,
-                  position: 'relative',
-                  display: 'inline-block',
-                  background: 'linear-gradient(45deg, #64ffda 30%, #7928ca 90%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  '&:hover': {
-                    animation: 'glitch 2s infinite',
-                    '&::before, &::after': {
-                      content: '"SREEVARSHAN"',
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      background: 'inherit',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      clipPath: 'inset(0)',
-                    },
-                    '&::before': {
-                      left: '1px',
-                      textShadow: '1px 0 #ff00ff88',
-                      animation: 'glitch-anim 4s infinite linear alternate-reverse',
-                    },
-                    '&::after': {
-                      left: '-1px',
-                      textShadow: '-1px 0 #00ffff88',
-                      animation: 'glitch-anim2 5s infinite linear alternate-reverse',
-                    },
-                  },
-                  '@keyframes glitch': {
-                    '0%, 100%': {
-                      transform: 'translate(0)',
-                      textShadow: '0 0 8px rgba(100, 255, 218, 0.3), 0 0 12px rgba(100, 255, 218, 0.2)',
-                    },
-                    '20%': {
-                      transform: 'translate(-1px, 1px)',
-                      textShadow: '0 0 8px rgba(255, 0, 255, 0.3), 0 0 12px rgba(255, 0, 255, 0.2)',
-                    },
-                    '40%': {
-                      transform: 'translate(-1px, -1px)',
-                      textShadow: '0 0 8px rgba(0, 255, 255, 0.3), 0 0 12px rgba(0, 255, 255, 0.2)',
-                    },
-                    '60%': {
-                      transform: 'translate(1px, 1px)',
-                      textShadow: '0 0 8px rgba(121, 40, 202, 0.3), 0 0 12px rgba(121, 40, 202, 0.2)',
-                    },
-                    '80%': {
-                      transform: 'translate(1px, -1px)',
-                      textShadow: '0 0 8px rgba(100, 255, 218, 0.3), 0 0 12px rgba(100, 255, 218, 0.2)',
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                <Box
+                  component="img"
+                  src="https://github.com/sreevarshan-xenoz.png"
+                  alt="SV Profile"
+                  sx={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: '50%',
+                    border: '2px solid #64ffda',
+                    boxShadow: '0 0 10px rgba(100, 255, 218, 0.3)',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      transform: 'scale(1.1)',
+                      boxShadow: '0 0 15px rgba(100, 255, 218, 0.5)',
                     }
-                  },
-                  '@keyframes glitch-anim': {
-                    '0%': {
-                      clipPath: 'inset(10% 0 15% 0)',
+                  }}
+                />
+                <Typography
+                  variant="h5"
+                  component={RouterLink}
+                  to="/"
+                  sx={{
+                    textDecoration: 'none',
+                    fontWeight: 700,
+                    fontSize: '1.8rem',
+                    position: 'relative',
+                    display: 'inline-block',
+                    background: 'linear-gradient(45deg, #64ffda 30%, #7928ca 90%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    '&:hover': {
+                      animation: 'glitch 2s infinite',
+                      '&::before, &::after': {
+                        content: '"SV"',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        background: 'inherit',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        clipPath: 'inset(0)',
+                      },
+                      '&::before': {
+                        left: '1px',
+                        textShadow: '1px 0 #ff00ff88',
+                        animation: 'glitch-anim 4s infinite linear alternate-reverse',
+                      },
+                      '&::after': {
+                        left: '-1px',
+                        textShadow: '-1px 0 #00ffff88',
+                        animation: 'glitch-anim2 5s infinite linear alternate-reverse',
+                      },
                     },
-                    '20%': {
-                      clipPath: 'inset(35% 0 5% 0)',
+                    '@keyframes glitch': {
+                      '0%, 100%': {
+                        transform: 'translate(0)',
+                        textShadow: '0 0 8px rgba(100, 255, 218, 0.3), 0 0 12px rgba(100, 255, 218, 0.2)',
+                      },
+                      '20%': {
+                        transform: 'translate(-1px, 1px)',
+                        textShadow: '0 0 8px rgba(255, 0, 255, 0.3), 0 0 12px rgba(255, 0, 255, 0.2)',
+                      },
+                      '40%': {
+                        transform: 'translate(-1px, -1px)',
+                        textShadow: '0 0 8px rgba(0, 255, 255, 0.3), 0 0 12px rgba(0, 255, 255, 0.2)',
+                      },
+                      '60%': {
+                        transform: 'translate(1px, 1px)',
+                        textShadow: '0 0 8px rgba(121, 40, 202, 0.3), 0 0 12px rgba(121, 40, 202, 0.2)',
+                      },
+                      '80%': {
+                        transform: 'translate(1px, -1px)',
+                        textShadow: '0 0 8px rgba(100, 255, 218, 0.3), 0 0 12px rgba(100, 255, 218, 0.2)',
+                      }
                     },
-                    '40%': {
-                      clipPath: 'inset(23% 0 20% 0)',
+                    '@keyframes glitch-anim': {
+                      '0%': {
+                        clipPath: 'inset(10% 0 15% 0)',
+                      },
+                      '20%': {
+                        clipPath: 'inset(35% 0 5% 0)',
+                      },
+                      '40%': {
+                        clipPath: 'inset(23% 0 20% 0)',
+                      },
+                      '60%': {
+                        clipPath: 'inset(5% 0 35% 0)',
+                      },
+                      '80%': {
+                        clipPath: 'inset(15% 0 10% 0)',
+                      },
+                      '100%': {
+                        clipPath: 'inset(25% 0 15% 0)',
+                      },
                     },
-                    '60%': {
-                      clipPath: 'inset(5% 0 35% 0)',
+                    '@keyframes glitch-anim2': {
+                      '0%': {
+                        clipPath: 'inset(15% 0 10% 0)',
+                      },
+                      '20%': {
+                        clipPath: 'inset(5% 0 35% 0)',
+                      },
+                      '40%': {
+                        clipPath: 'inset(25% 0 15% 0)',
+                      },
+                      '60%': {
+                        clipPath: 'inset(10% 0 15% 0)',
+                      },
+                      '80%': {
+                        clipPath: 'inset(35% 0 5% 0)',
+                      },
+                      '100%': {
+                        clipPath: 'inset(23% 0 20% 0)',
+                      },
                     },
-                    '80%': {
-                      clipPath: 'inset(15% 0 10% 0)',
-                    },
-                    '100%': {
-                      clipPath: 'inset(25% 0 15% 0)',
-                    },
-                  },
-                  '@keyframes glitch-anim2': {
-                    '0%': {
-                      clipPath: 'inset(15% 0 10% 0)',
-                    },
-                    '20%': {
-                      clipPath: 'inset(5% 0 35% 0)',
-                    },
-                    '40%': {
-                      clipPath: 'inset(25% 0 15% 0)',
-                    },
-                    '60%': {
-                      clipPath: 'inset(10% 0 15% 0)',
-                    },
-                    '80%': {
-                      clipPath: 'inset(35% 0 5% 0)',
-                    },
-                    '100%': {
-                      clipPath: 'inset(23% 0 20% 0)',
-                    },
-                  },
-                }}
-              >
-                SREEVARSHAN
-              </Typography>
+                  }}
+                >
+                  SV
+                </Typography>
+              </Box>
             </motion.div>
 
             {isMobile ? (
