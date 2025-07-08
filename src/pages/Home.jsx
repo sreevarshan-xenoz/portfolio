@@ -3,6 +3,8 @@ import { motion, useAnimation, AnimatePresence, useInView } from 'framer-motion'
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import GitHubIntegration from '../components/GitHubIntegration';
+import GitHubStats from '../components/GitHubStats';
+import GitHubContributions from '../components/GitHubContributions';
 import TerminalEasterEggs from '../components/TerminalEasterEggs';
 import ResumeDownload from '../components/ResumeDownload';
 import SocialLinks from '../components/SocialLinks';
@@ -2209,8 +2211,40 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
           </motion.div>
         </Box>
 
-        {/* GitHub Integration Section */}
+        {/* GitHub Profile & Stats Section */}
+        <GitHubStats />
+
+        {/* GitHub Contributions & Activity Section */}
+        <GitHubContributions />
+
+        {/* GitHub Repositories Section */}
         <GitHubIntegration />
+
+        {/* GitHub Page Link */}
+        <Box sx={{ textAlign: 'center', mt: 4, mb: 6 }}>
+          <Button
+            variant="outlined"
+            size="large"
+            component={Link}
+            to="/github"
+            sx={{
+              borderRadius: '12px',
+              borderWidth: '2px',
+              fontSize: '1.1rem',
+              py: 1.5,
+              px: 4,
+              textTransform: 'none',
+              '&:hover': {
+                borderWidth: '2px',
+                backgroundColor: 'rgba(100, 255, 218, 0.1)',
+                transform: 'translateY(-2px)',
+              },
+              transition: 'all 0.3s ease',
+            }}
+          >
+            View Complete GitHub Portfolio →
+          </Button>
+        </Box>
 
         {/* Terminal Section with Easter Eggs */}
         <TerminalEasterEggs />

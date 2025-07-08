@@ -13,6 +13,13 @@ A modern, interactive portfolio website built with React and Vite, featuring dyn
   - Code Typewriter Effects
   - Terminal-style Easter Eggs
   - Interactive Timeline
+- **GitHub Integration** - Comprehensive GitHub profile integration including:
+  - Real-time GitHub profile data and statistics
+  - Contribution graphs and activity tracking
+  - Repository showcase with detailed analytics
+  - GitHub stats cards and streak information
+  - Top languages visualization
+  - Dedicated GitHub portfolio page
 - **Theme Switching** - Toggle between dark and light themes
 - **Responsive Design** - Fully responsive layout that works seamlessly across all devices
 - **Fast Performance** - Optimized build with Vite for quick loading and smooth navigation
@@ -99,6 +106,11 @@ npm run preview
 - **Code Typewriter** - Animated code typing effect
 - **Terminal Easter Eggs** - Command-line style interactive features
 - **Interactive Timeline** - Visual representation of experience and milestones
+- **GitHub Integration Components**:
+  - **GitHubStats** - Real-time profile data, statistics, and top languages visualization
+  - **GitHubContributions** - Contribution graphs, activity tracking, and streak information
+  - **GitHubIntegration** - Repository showcase with detailed analytics and metadata
+  - **GitHub Page** - Dedicated comprehensive GitHub portfolio page
 
 ## Browser Support
 
