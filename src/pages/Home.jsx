@@ -2212,10 +2212,10 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
         </Box>
 
         {/* GitHub Profile & Stats Section */}
-        <GitHubStats />
+        <GitHubStats isHomePage={true} />
 
         {/* GitHub Contributions & Activity Section */}
-        <GitHubContributions />
+        <GitHubContributions isHomePage={true} />
 
         {/* GitHub Repositories Section */}
         <GitHubIntegration />

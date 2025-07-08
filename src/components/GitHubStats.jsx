@@ -27,7 +27,7 @@ import {
   CalendarToday as CalendarIcon
 } from '@mui/icons-material';
 
-const GitHubStats = () => {
+const GitHubStats = ({ isHomePage = false }) => {
   const [profile, setProfile] = useState(null);
   const [stats, setStats] = useState(null);
   const [topLanguages, setTopLanguages] = useState([]);
@@ -40,12 +40,14 @@ const GitHubStats = () => {
       try {
         setLoading(true);
         
-        // Fetch profile data
-        const profileResponse = await fetch(`https://api.github.com/users/${username}`);
-        if (!profileResponse.ok) throw new Error('Failed to fetch profile');
-        const profileData = await profileResponse.json();
-        setProfile(profileData);
-
+        // Fetch profile data (only if not home page)
+        if (!isHomePage) {
+          const profileResponse = await fetch(`https://api.github.com/users/${username}`);
+          if (!profileResponse.ok) throw new Error('Failed to fetch profile');
+          const profileData = await profileResponse.json();
+          setProfile(profileData);
+        }
+        
         // Fetch repositories for stats
         const reposResponse = await fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`);
         if (!reposResponse.ok) throw new Error('Failed to fetch repositories');
@@ -58,24 +60,27 @@ const GitHubStats = () => {
         const publicRepos = reposData.length;
         const totalSize = reposData.reduce((sum, repo) => sum + (repo.size || 0), 0);
 
-        // Calculate top languages
-        const languageStats = {};
-        reposData.forEach(repo => {
-          if (repo.language) {
-            languageStats[repo.language] = (languageStats[repo.language] || 0) + 1;
-          }
-        });
+        // Calculate top languages (only if not home page)
+        if (!isHomePage) {
+          const languageStats = {};
+          reposData.forEach(repo => {
+            if (repo.language) {
+              languageStats[repo.language] = (languageStats[repo.language] || 0) + 1;
+            }
+          });
 
-        const sortedLanguages = Object.entries(languageStats)
-          .sort(([,a], [,b]) => b - a)
-          .slice(0, 5)
-          .map(([language, count]) => ({
-            language,
-            count,
-            percentage: Math.round((count / publicRepos) * 100)
-          }));
+          const sortedLanguages = Object.entries(languageStats)
+            .sort(([,a], [,b]) => b - a)
+            .slice(0, 5)
+            .map(([language, count]) => ({
+              language,
+              count,
+              percentage: Math.round((count / publicRepos) * 100)
+            }));
 
-        setTopLanguages(sortedLanguages);
+          setTopLanguages(sortedLanguages);
+        }
+
         setStats({
           totalStars,
           totalForks,
@@ -93,7 +98,7 @@ const GitHubStats = () => {
     };
 
     fetchGitHubData();
-  }, [username]);
+  }, [username, isHomePage]);
 
   const StatCard = ({ title, value, icon, color = '#64ffda', subtitle = '' }) => (
     <motion.div
@@ -228,13 +233,13 @@ const GitHubStats = () => {
           }
         }}
       >
-        GitHub Profile & Stats
+        {isHomePage ? 'GitHub Stats' : 'GitHub Profile & Stats'}
       </Typography>
 
       {loading ? (
         <Grid container spacing={3}>
-          {Array.from(new Array(6)).map((_, index) => (
-            <Grid item xs={12} sm={6} md={4} key={`skeleton-${index}`}>
+          {Array.from(new Array(isHomePage ? 4 : 6)).map((_, index) => (
+            <Grid item xs={12} sm={6} md={isHomePage ? 3 : 4} key={`skeleton-${index}`}>
               <Card sx={{ 
                 height: '200px',
                 backgroundColor: 'rgba(10, 25, 47, 0.7)',
@@ -252,8 +257,8 @@ const GitHubStats = () => {
         </Grid>
       ) : (
         <>
-          {/* Profile Section */}
-          {profile && (
+          {/* Profile Section - Only show on GitHub page */}
+          {!isHomePage && profile && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -375,62 +380,79 @@ const GitHubStats = () => {
             </Grid>
           )}
 
-          {/* Top Languages */}
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
-              <LanguageCard />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                <Card sx={{ 
-                  height: '100%',
-                  backgroundColor: 'rgba(10, 25, 47, 0.7)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(100, 255, 218, 0.1)',
-                }}>
-                  <CardContent>
-                    <Typography variant="h6" sx={{ mb: 3, color: 'primary.main' }}>
-                      GitHub Stats Card
-                    </Typography>
-                    <Box sx={{ textAlign: 'center', p: 2 }}>
-                      <img
-                        src={`https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=dark&hide_border=true&bg_color=0a192f&text_color=64ffda&icon_color=64ffda&title_color=64ffda`}
-                        alt="GitHub Stats"
-                        style={{ 
-                          width: '100%', 
-                          maxWidth: '400px',
-                          borderRadius: '8px'
-                        }}
-                      />
-                    </Box>
-                    <Box sx={{ textAlign: 'center', mt: 2 }}>
-                      <Button
-                        variant="outlined"
-                        href={`https://github.com/${username}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        startIcon={<GitHubIcon />}
-                        sx={{ 
-                          borderRadius: '8px',
-                          borderWidth: '2px',
-                          '&:hover': {
+          {/* Top Languages and GitHub Stats Card - Only show on GitHub page */}
+          {!isHomePage && (
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={6}>
+                <LanguageCard />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  <Card sx={{ 
+                    height: '100%',
+                    backgroundColor: 'rgba(10, 25, 47, 0.7)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(100, 255, 218, 0.1)',
+                  }}>
+                    <CardContent>
+                      <Typography variant="h6" sx={{ mb: 3, color: 'primary.main' }}>
+                        GitHub Stats Card
+                      </Typography>
+                      <Box sx={{ textAlign: 'center', p: 2 }}>
+                        <img
+                          src={`https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=dark&hide_border=true&bg_color=0a192f&text_color=64ffda&icon_color=64ffda&title_color=64ffda`}
+                          alt="GitHub Stats"
+                          style={{ 
+                            width: '100%', 
+                            maxWidth: '400px',
+                            borderRadius: '8px'
+                          }}
+                        />
+                      </Box>
+                      <Box sx={{ textAlign: 'center', mt: 2 }}>
+                        <Button
+                          variant="outlined"
+                          href={`https://github.com/${username}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          startIcon={<GitHubIcon />}
+                          sx={{ 
+                            borderRadius: '8px',
                             borderWidth: '2px',
-                            backgroundColor: 'rgba(100, 255, 218, 0.1)',
-                          }
-                        }}
-                      >
-                        View Full Profile
-                      </Button>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                            '&:hover': {
+                              borderWidth: '2px',
+                              backgroundColor: 'rgba(100, 255, 218, 0.1)',
+                            }
+                          }}
+                        >
+                          View Full Profile
+                        </Button>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </Grid>
             </Grid>
-          </Grid>
+          )}
+
+          {/* GitHub Stats Card - Only show on home page */}
+          {isHomePage && (
+            <Box sx={{ textAlign: 'center', mt: 4 }}>
+              <img
+                src={`https://github-readme-stats.vercel.app/api?username=${username}&show_icons=true&theme=dark&hide_border=true&bg_color=0a192f&text_color=64ffda&icon_color=64ffda&title_color=64ffda`}
+                alt="GitHub Stats"
+                style={{ 
+                  width: '100%', 
+                  maxWidth: '400px',
+                  borderRadius: '8px'
+                }}
+              />
+            </Box>
+          )}
         </>
       )}
     </Box>

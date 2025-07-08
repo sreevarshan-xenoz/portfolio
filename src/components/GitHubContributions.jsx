@@ -15,7 +15,7 @@ import {
   CalendarToday as CalendarIcon
 } from '@mui/icons-material';
 
-const GitHubContributions = () => {
+const GitHubContributions = ({ isHomePage = false }) => {
   const [contributionData, setContributionData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -261,7 +261,7 @@ const GitHubContributions = () => {
           }
         }}
       >
-        GitHub Contributions & Activity
+        {isHomePage ? 'GitHub Activity' : 'GitHub Contributions & Activity'}
       </Typography>
 
       {contributionData && (
@@ -308,94 +308,98 @@ const GitHubContributions = () => {
 
           {/* Contribution Graph */}
           <Grid container spacing={3}>
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} md={isHomePage ? 12 : 8}>
               <ContributionGraph />
             </Grid>
-            <Grid item xs={12} md={4}>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                <Card sx={{ 
-                  height: '100%',
-                  backgroundColor: 'rgba(10, 25, 47, 0.7)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(100, 255, 218, 0.1)',
-                }}>
-                  <CardContent>
-                    <Typography variant="h6" sx={{ mb: 3, color: 'primary.main' }}>
-                      Activity Summary
-                    </Typography>
-                    
-                    <Box sx={{ mb: 3 }}>
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                        Total Contributions (Last Year)
+            {!isHomePage && (
+              <Grid item xs={12} md={4}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                >
+                  <Card sx={{ 
+                    height: '100%',
+                    backgroundColor: 'rgba(10, 25, 47, 0.7)',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(100, 255, 218, 0.1)',
+                  }}>
+                    <CardContent>
+                      <Typography variant="h6" sx={{ mb: 3, color: 'primary.main' }}>
+                        Activity Summary
                       </Typography>
-                      <Typography variant="h4" sx={{ color: 'primary.main', fontWeight: 'bold' }}>
-                        {contributionData.contributionCalendar.totalContributions}
-                      </Typography>
-                    </Box>
-
-                    <Box sx={{ mb: 3 }}>
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                        Current Streak
-                      </Typography>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <FireIcon sx={{ color: '#f7df1e' }} />
-                        <Typography variant="h5" sx={{ color: '#f7df1e', fontWeight: 'bold' }}>
-                          7 days
+                      
+                      <Box sx={{ mb: 3 }}>
+                        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                          Total Contributions (Last Year)
+                        </Typography>
+                        <Typography variant="h4" sx={{ color: 'primary.main', fontWeight: 'bold' }}>
+                          {contributionData.contributionCalendar.totalContributions}
                         </Typography>
                       </Box>
-                    </Box>
 
-                    <Box sx={{ mb: 3 }}>
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                        Longest Streak
-                      </Typography>
-                      <Typography variant="h5" sx={{ color: 'primary.main', fontWeight: 'bold' }}>
-                        30 days
-                      </Typography>
-                    </Box>
+                      <Box sx={{ mb: 3 }}>
+                        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                          Current Streak
+                        </Typography>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <FireIcon sx={{ color: '#f7df1e' }} />
+                          <Typography variant="h5" sx={{ color: '#f7df1e', fontWeight: 'bold' }}>
+                            7 days
+                          </Typography>
+                        </Box>
+                      </Box>
 
-                    <Box>
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                        Most Active Day
-                      </Typography>
-                      <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-                        Wednesday
-                      </Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </Grid>
+                      <Box sx={{ mb: 3 }}>
+                        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                          Longest Streak
+                        </Typography>
+                        <Typography variant="h5" sx={{ color: 'primary.main', fontWeight: 'bold' }}>
+                          30 days
+                        </Typography>
+                      </Box>
+
+                      <Box>
+                        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                          Most Active Day
+                        </Typography>
+                        <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+                          Wednesday
+                        </Typography>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </Grid>
+            )}
           </Grid>
 
-          {/* GitHub Stats Cards */}
-          <Box sx={{ mt: 4, textAlign: 'center' }}>
-            <Typography variant="h6" sx={{ mb: 3, color: 'primary.main' }}>
-              GitHub Stats Cards
-            </Typography>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'center' }}>
-              <img
-                src={`https://github-readme-streak-stats.herokuapp.com/?user=${username}&theme=dark&hide_border=true&background=0a192f&stroke=64ffda&ring=64ffda&fire=64ffda&currStreakNum=64ffda&currStreakLabel=64ffda&sideNums=64ffda&sideLabels=64ffda&dates=64ffda`}
-                alt="GitHub Streak Stats"
-                style={{ 
-                  height: '200px',
-                  borderRadius: '8px'
-                }}
-              />
-              <img
-                src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&layout=compact&theme=dark&hide_border=true&bg_color=0a192f&text_color=64ffda&title_color=64ffda`}
-                alt="Top Languages"
-                style={{ 
-                  height: '200px',
-                  borderRadius: '8px'
-                }}
-              />
+          {/* GitHub Stats Cards - Only show on GitHub page */}
+          {!isHomePage && (
+            <Box sx={{ mt: 4, textAlign: 'center' }}>
+              <Typography variant="h6" sx={{ mb: 3, color: 'primary.main' }}>
+                GitHub Stats Cards
+              </Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'center' }}>
+                <img
+                  src={`https://github-readme-streak-stats.herokuapp.com/?user=${username}&theme=dark&hide_border=true&background=0a192f&stroke=64ffda&ring=64ffda&fire=64ffda&currStreakNum=64ffda&currStreakLabel=64ffda&sideNums=64ffda&sideLabels=64ffda&dates=64ffda`}
+                  alt="GitHub Streak Stats"
+                  style={{ 
+                    height: '200px',
+                    borderRadius: '8px'
+                  }}
+                />
+                <img
+                  src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&layout=compact&theme=dark&hide_border=true&bg_color=0a192f&text_color=64ffda&title_color=64ffda`}
+                  alt="Top Languages"
+                  style={{ 
+                    height: '200px',
+                    borderRadius: '8px'
+                  }}
+                />
+              </Box>
             </Box>
-          </Box>
+          )}
         </>
       )}
     </Box>
