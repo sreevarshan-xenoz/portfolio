@@ -24,8 +24,8 @@ const Resume = () => {
           src={RESUME_URL}
           title="Resume PDF"
           width="100%"
-          height="900px"
-          style={{ border: '2px solid #64ffda', borderRadius: 8, background: '#fff', maxWidth: 900 }}
+          height="calc(100vh - 220px)"
+          style={{ border: '2px solid #64ffda', borderRadius: 8, background: '#fff', maxWidth: 1200, minHeight: 600 }}
         />
       </Box>
     </Box>
