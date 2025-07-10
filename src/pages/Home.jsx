@@ -1198,7 +1198,7 @@ Future-focused tech nerd building bleeding-edge AI systems, operating systems, a
                 },
               }}
             >
-              Student | Ethical Hacker | AI Dev | Fantasy World Architect
+              Ethical Hacker | AI Dev | Fantasy World Architect
             </Typography>
           </motion.div>
 
