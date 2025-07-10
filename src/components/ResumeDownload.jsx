@@ -8,7 +8,7 @@ const ResumeDownload = () => {
 
   // Placeholder for actual resume download link
   // In a real implementation, this would point to an actual PDF file
-  const resumeUrl = "https://example.com/sreevarshan-resume.pdf";
+  const resumeUrl = "/sree-varshan-resume.pdf"; // Use the real resume in public folder
 
   const handleDownloadClick = () => {
     setDialogOpen(true);
@@ -27,7 +27,7 @@ const ResumeDownload = () => {
     // In production, you'd use a real PDF URL
     const link = document.createElement('a');
     link.href = resumeUrl;
-    link.download = 'sreevarshan-resume.pdf';
+    link.download = 'sree-varshan-resume.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

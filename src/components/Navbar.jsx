@@ -27,6 +27,7 @@ const navItems = [
   { name: 'GitHub', path: '/github' },
   { name: 'Contact', path: '/contact' },
   { name: 'Experimental', path: '/experimental' },
+  { name: 'Resume', path: '/resume' },
 ];
 
 const MotionButton = motion(Button);

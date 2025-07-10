@@ -7,6 +7,7 @@ import GitHub from './pages/GitHub';
 import ExperimentalPortfolio from './pages/ExperimentalPortfolio';
 import InfiniteScrollParadox from './components/InfiniteScrollParadox';
 import QuantumEntangledPortfolio from './components/QuantumEntangledPortfolio';
+import Resume from './pages/Resume';
 
 const Routes = () => {
   return (
@@ -19,6 +20,7 @@ const Routes = () => {
       <Route path="/experimental" element={<ExperimentalPortfolio />} />
       <Route path="/experimental/infinite-scroll-paradox" element={<InfiniteScrollParadox />} />
       <Route path="/experimental/quantum-entangled-portfolio" element={<QuantumEntangledPortfolio />} />
+      <Route path="/resume" element={<Resume />} />
     </RouterRoutes>
   );
 };
